@@ -140,3 +140,31 @@ input[type="checkbox"]:focus{
     font-weight: 50;
 }
 
+
+.hackathon-location {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+    box-shadow: none;
+    width:300px;
+    height:30px;
+}
+
+.hackathon-size {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+    box-shadow: none;
+    width:300px;
+    height:30px;
+}
+
+
+.hackathon-desc {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+    box-shadow: none;
+    width:300px;
+    height:30px;
+}

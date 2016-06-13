@@ -42,7 +42,7 @@
         hackathon_location: "",
         hackathon_floorplan_urls: {},
         hackathon_size: 0,
-        hackathon_desc: 0,
+        hackathon_desc: "",
         hackathon_travel: false,
         hackathon_links: {
         	h_website: "",
