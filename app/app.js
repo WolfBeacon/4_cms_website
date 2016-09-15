@@ -1,4 +1,4 @@
-  angular.module('SponserForm', ['LocalStorageModule'])
+  angular.module('SponsorForm', ['LocalStorageModule'])
     .controller('FormController', ['$scope','localStorageService', function($scope, localStorageService) {
 
 
@@ -26,19 +26,19 @@
   	  $scope.data = {
   	  	hackathon_name: "",
         hackathon_logo_url: "",
-        hackaton_type: {
+        hackathon_type: {
           University: false,
           Company: false,
           HighSchool: false,
           Other: false },
-        hackathon_start_date: new Date(2015, 9, 22),
-        hackathon_end_date:  new Date(2015, 9, 23),
-        hackathon_timetable: {
-          e1: {date: "", from: "", to: "", event_desc: ""},
-          e2: {date: "", from: "", to: "", event_desc: ""},
-          e3: {date: "", from: "", to: "", event_desc: ""},
-          e4: {date: "", from: "", to: "", event_desc: ""}
-        },
+        hackathon_start_date: new Date(2016, 9, 22),
+        hackathon_end_date:  new Date(2016, 9, 23),
+        hackathon_timetable: [
+          {date: "", from: "", to: "", event_desc: "Registration"},
+          {date: "", from: "", to: "", event_desc: "Hacking Starts"},
+          {date: "", from: "", to: "", event_desc: "Sponsor Presentation"},
+          {date: "", from: "", to: "", event_desc: "Closing Ceremony"}
+        ],
         hackathon_location: "",
         hackathon_floorplan_urls: {},
         hackathon_size: 0,
@@ -53,7 +53,7 @@
         	h_snapchat: "",
         	h_devpost: ""
         },
-        hackathon_sponsers: {},
+        hackathon_sponsors: {},
         hackathon_judges: {},
         hackathon_prizes: {},
         hackathon_hardware: {},
@@ -68,6 +68,17 @@
       $scope.reset = function() {
         $scope.data = angular.copy($scope.master);
       };
+	  
+	  $scope.removeRow = function(time) {
+		  var index = $scope.data.hackathon_timetable.indexOf(time);
+		  if (index >= 0) {
+			$scope.data.hackathon_timetable.splice(index, 1);
+		  }
+	  };
+	  
+	  $scope.addRow = function() {
+		  $scope.data.hackathon_timetable.push({date: "", from: "", to: "", event_desc: ""});
+	  };
 
       //$scope.reset();
 

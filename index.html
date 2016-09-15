@@ -1,37 +1,38 @@
 <html>
 <head>
 
-<!-- Jquery-->
+	<title>WolfBeacon</title>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<!-- Jquery-->
 
-<!--Angular-->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.js"></script>
-<script src="app/app.js"></script>
-<script src="app/angular-local-storage.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
-<!--Bootstrap -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!--Angular-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.js"></script>
+	<script src="app/app.js"></script>
+	<script src="app/angular-local-storage.js"></script>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
-
-<!-- Other CSS -->
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/imgur.css">
-<link rel="stylesheet" href="css/build.css">
+	<!--Bootstrap -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
 
-<!--imgur -->
-<!--<link rel="stylesheet" href="imgur/imgur.min.css">-->
-<script type="text/javascript" src="imgur/imgur.min.js"></script>
+	<!-- Other CSS -->
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/imgur.css">
+	<link rel="stylesheet" href="css/build.css">
 
+
+	<!--imgur -->
+	<!--<link rel="stylesheet" href="imgur/imgur.min.css">-->
+	<script type="text/javascript" src="imgur/imgur.min.js"></script>
 
 </head>
 
 
-<body ng-app="SponserForm" style="background-color: #99CCFF;">
+<body ng-app="SponsorForm" style="background-color: #99CCFF;">
 
 
     <div class="header clearfix">
@@ -63,19 +64,19 @@
                 <h3 class = "header-fix">Type of Hackathon</h3>
 
                 <div>
-                    <input type="checkbox" ng-model="data.hackaton_type.University">
+                    <input type="checkbox" ng-model="data.hackathon_type.University">
                     <label class = "h-type-label">University</label>
                 </div>
                 <div>
-                    <input type="checkbox" ng-model="data.hackaton_type.Company">
+                    <input type="checkbox" ng-model="data.hackathon_type.Company">
                     <label class = "h-type-label">Company</label>
                 </div>
                 <div>
-                    <input type="checkbox" ng-model="data.hackaton_type.Highschool">
+                    <input type="checkbox" ng-model="data.hackathon_type.Highschool">
                     <label class = "h-type-label">Highschool</label>
                 </div>
                 <div>
-                    <input type="checkbox" ng-model="data.hackaton_type.Other">
+                    <input type="checkbox" ng-model="data.hackathon_type.Other">
                     <label class = "h-type-label">Other</label>
                 </div>
                 <h3 class = "header-fix">Date Range of Hackathon</h3>
@@ -83,11 +84,11 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label class = "h-date-label">Starts:</label>
-                        <input type="date" class = "h-date" name="input" ng-model="data.hackathon_start_date" placeholder="yyyy-MM-dd" min="2013-01-01" max="2018-12-31" required />
+                        <input type="date" class = "h-date" name="input" ng-model="data.hackathon_start_date" placeholder="yyyy-MM-dd" min="2016-01-01" required />
                     </div>
                     <div class="col-sm-6">
                         <label class = "h-date-label">Ends:</label>
-                        <input type="date" class = "h-date" name="input" ng-model="data.hackathon_end_date" placeholder="yyyy-MM-dd" min="2013-01-01" max="2018-12-31" required />
+                        <input type="date" class = "h-date" name="input" ng-model="data.hackathon_end_date" placeholder="yyyy-MM-dd" min="2016-01-01" required />
                     </div>
                 </div>
 
@@ -105,45 +106,13 @@
                 <div class="row">
                     <div class="col-sm-12">
                         Date
-                        <div class = "row" >
-                            <input type="text" class = "timetable_row_input" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" id="24h" placeholder = "MM/DD" ng-model = "data.hackathon_timetable.e1.date"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "data.hackathon_timetable.e1.from"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "00:00" ng-model = "data.hackathon_timetable.e1.to"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "Registration" ng-model = "data.hackathon_timetable.e1.event_desc"/>
-                            <input class="add-row" type="image" src="assets/plus.png" style="margin-left: -30px;">
-                            <input class="no-row" type="image" src="assets/delete.png" />
-                        </div>
-                        <div class = "row" >
-                            <input type="text" class = "timetable_row_input" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" id="24h" placeholder = "MM/DD" ng-model = "data.hackathon_timetable.e2.date"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "data.hackathon_timetable.e2.from"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "00:00" ng-model = "data.hackathon_timetable.e2.to"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "Brunch" ng-model = "data.hackathon_timetable.e2.event_desc"/>
-                            <input class="add-row" type="image" src="assets/plus.png" style="margin-left: -30px;">
-                            <input class="no-row" type="image" src="assets/delete.png" />
-                        </div>
-                        <div class = "row" >
-                            <input type="text" class = "timetable_row_input" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" id="24h" placeholder = "MM/DD" ng-model = "data.hackathon_timetable.e3.date"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "data.hackathon_timetable.e3.from"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "00:00" ng-model = "data.hackathon_timetable.e3.to"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "Hacking Starts" ng-model = "data.hackathon_timetable.e3.event_desc"/>
-                            <input class="add-row" type="image" src="assets/plus.png" style="margin-left: -30px;">
-                            <input class="no-row" type="image" src="assets/delete.png" />
-                        </div>
-                        <div class = "row" >
-                            <input type="text" class = "timetable_row_input" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" id="24h" placeholder = "MM/DD" ng-model = "data.hackathon_timetable.e4.date"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "data.hackathon_timetable.e4.from"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "00:00" ng-model = "data.hackathon_timetable.e4.to"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "FB presentation" ng-model = "data.hackathon_timetable.e4.event_desc"/>
-                            <input class="add-row" type="image" src="assets/plus.png" style="margin-left: -30px;">
-                            <input class="no-row" type="image" src="assets/delete.png" />
-                        </div>
-                        <div class = "row" >
-                            <input type="text" class = "timetable_row_input" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" id="24h" placeholder = "MM/DD" ng-model = "data.hackathon_timetable.e5.date"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "data.hackathon_timetable.e5.from"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "00:00" ng-model = "data.hackathon_timetable.e5.to"/>
-                            <input type="text" class = "timetable_row_input"  id="24h" placeholder = "Ceremony" ng-model = "data.hackathon_timetable.e5.event_desc"/>
-                            <input class="add-row" type="image" src="assets/plus.png" style="margin-left: -30px;">
-                            <input class="no-row" type="image" src="assets/delete.png" />
+                        <div class = "row" ng-repeat="e in data.hackathon_timetable | orderBy:from">
+                            <input type="text" class = "timetable_row_input" placeholder = "MM/DD" ng-model = "e.date"/>
+                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "e.from"/>
+                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "e.to"/>
+                            <input type="text" class = "timetable_row_input"  placeholder = "Event" ng-model = "e.event_desc"/>
+                            <input class="add-row" type="image" ng-click="addRow()" src="assets/plus.png" style="margin-left: -30px;">
+                            <input class="no-row" type="image" ng-click="removeRow(e)" src="assets/delete.png" />
                         </div>
                     </div>
                 </div>
@@ -179,7 +148,7 @@
 
 
     <footer class="footer">
-        <p>&copy; 2015 Company, Inc.</p>
+        <p>&copy; 2016 WolfBeacon</p>
     </footer>
 
     </div> <!-- /container -->
@@ -187,18 +156,6 @@
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-<script type="text/javascript">
-    // Removes the row from the schedule
-    $(document).on('click', '.no-row', function () {
-        $(this).parent().remove();
-    });
-
-    // Dynamically adds a new row from the schedule and attaches and this function to it
-    $(document).on('click', '.add-row', function () {
-        $('<div class = "row" ><input type="text" class = "timetable_row_input" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" id="24h" placeholder = "MM/DD" ng-model = "data.hackathon_timetable.e5.date"/><input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "data.hackathon_timetable.e5.from"/><input type="text" class = "timetable_row_input"  id="24h" placeholder = "00:00" ng-model = "data.hackathon_timetable.e5.to"/><input type="text" class = "timetable_row_input"  id="24h2" placeholder = "Event" ng-model = "data.hackathon_timetable.e5.event_desc"/><input class="add-row" type="image" src="assets/plus.png" style="margin-left: -30px;"><input class="no-row" type="image" src="assets/delete.png" /></div>').insertAfter($(this).parent());
-    });
-
-</script>
 </body>
 </html>
 
