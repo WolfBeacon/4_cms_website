@@ -138,10 +138,10 @@
 										<input type="text" ng-model="e.event_desc" placeholder="Event"/>
 									</div>
 									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRow()" src="assets/plus.png">
+										<input class="add-row" type="image" ng-click="addRowTimetable()" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRow(e)" src="assets/delete.png" />
+										<input class="no-row" type="image" ng-click="removeRowTimetable(e)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>
@@ -201,14 +201,177 @@
 				</section>
 				
 				<!-- Hyperlinks -->
+				<section>
+					<h4>Hyperlinks</h4>
+					<div class="input-field">
+						<input id="website" required type="text" ng-model="data.hackathon_links.h_website" />
+						<label for="website">Website <span class="red-text">*</span></label>
+					</div>
+					<div class="input-field">
+						<input id="facebook" type="text" ng-model="data.hackathon_links.h_facebook" />
+						<label for="facebook">Facebook</label>
+					</div>
+					<div class="input-field">
+						<input id="twitter" type="text" ng-model="data.hackathon_links.h_twitter" />
+						<label for="twitter">Twitter</label>
+					</div>
+					<div class="input-field">
+						<input id="slack" type="text" ng-model="data.hackathon_links.h_slack" />
+						<label for="slack">Slack</label>
+					</div>
+					<div class="input-field">
+						<input id="medium" type="text" ng-model="data.hackathon_links.h_medium" />
+						<label for="medium">Medium</label>
+					</div>
+					<div class="input-field">
+						<input id="snapchat" type="text" ng-model="data.hackathon_links.h_snapchat" />
+						<label for="snapchat">Snapchat</label>
+					</div>
+					<div class="input-field">
+						<input id="devpost" type="text" ng-model="data.hackathon_links.h_devpost" />
+						<label for="devpost">Devpost</label>
+					</div>
+					<div class="input-field">
+						<input id="other" type="text" ng-model="data.hackathon_links.h_other" />
+						<label for="other">Other</label>
+					</div>
+				</section>
 				
 				<!-- Sponsors -->
+                <section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Sponsors</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Sponsors will be listed in rank order</label>
+								<div class="row">
+									<p class="col s3">
+										Rank
+									</p>
+									<p class="col s9">
+										Organization
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.hackathon_sponsors | orderBy:rank">
+									<div class="col s3 input-field">
+										<input type="number" min="0" ng-model="e.rank" placeholder="Rank"/>
+									</div>
+									<div class="col s7 input-field">
+										<input type="text" ng-model="e.organization" placeholder="Organization"/>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRowSponsor()" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRowSponsor(e)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
 				
 				<!-- Judges -->
+                <section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Judges</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Judges will be listed in alphabetical order</label>
+								<div class="row">
+									<p class="col s5">
+										Name
+									</p>
+									<p class="col s7">
+										Title
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.hackathon_judges | orderBy:name">
+									<div class="col s5 input-field">
+										<input type="text" ng-model="e.name" placeholder="Full Name"/>
+									</div>
+									<div class="col s5 input-field">
+										<input type="text" ng-model="e.title" placeholder="Title of Judge"/>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRowJudge()" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRowJudge(e)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
 				
 				<!-- Prizes -->
+                <section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Prizes</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Prizes will be listed in alphabetical order</label>
+								<div class="row">
+									<p class="col s5">
+										Name
+									</p>
+									<p class="col s7">
+										Category
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.hackathon_prizes | orderBy:name">
+									<div class="col s5 input-field">
+										<input type="text" ng-model="e.name" placeholder="Name"/>
+									</div>
+									<div class="col s5 input-field">
+										<input type="text" ng-model="e.category" placeholder="General / API"/>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRowPrize()" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRowPrize(e)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
 				
 				<!-- Hardware -->
+                <section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Available Hardware</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Hardware will be listed in alphabetical order</label>
+								<div class="row">
+									<p class="col s5">
+										Amount
+									</p>
+									<p class="col s7">
+										Type
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.hackathon_hardware | orderBy:type">
+									<div class="col s5 input-field">
+										<input type="text" ng-model="e.amount" placeholder="Amount"/>
+									</div>
+									<div class="col s5 input-field">
+										<input type="text" ng-model="e.type" placeholder="Type"/>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRowHardware()" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRowHardware(e)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
 				
 				<section>
 					<h4>Contact Information <span class="red-text">*</span></h4>

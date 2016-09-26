@@ -40,7 +40,7 @@
           {date: "", from: "", to: "", event_desc: "Sponsor Presentation"},
           {date: "", from: "", to: "", event_desc: "Closing Ceremony"}
         ],
-        hackathon_floorplan_urls: {},
+        hackathon_floorplan_urls: [],
         hackathon_travel: false,
         hackathon_links: {
         	h_website: "",
@@ -49,12 +49,21 @@
         	h_slack: "",
         	h_medium: "",
         	h_snapchat: "",
-        	h_devpost: ""
+        	h_devpost: "",
+        	h_other: ""
         },
-        hackathon_sponsors: {},
-        hackathon_judges: {},
-        hackathon_prizes: {},
-        hackathon_hardware: {},
+        hackathon_sponsors: [
+        	{rank: 0, organization: ""}
+        ],
+        hackathon_judges: [
+        	{name: "", title: ""}
+        ],
+        hackathon_prizes: [
+        	{name: "", category: ""}
+        ],
+        hackathon_hardware: [
+        	{amount: 0, type: ""}
+        ],
         hackathon_contact: ""
   	  };
 
@@ -64,26 +73,75 @@
       };
 
       $scope.reset = function() {
-        $scope.data = angular.copy($scope.master);
+      	if ($scope.master) {
+      	  $scope.data = angular.copy($scope.master);
+    	}
       };
-	  
-	  $scope.removeRow = function(time) {
+
+	  $scope.removeRowTimetable = function(time) {
 		  var index = $scope.data.hackathon_timetable.indexOf(time);
 		  if (index >= 0 && $scope.data.hackathon_timetable.length > 1) {
 			$scope.data.hackathon_timetable.splice(index, 1);
 		  }
 	  };
-	  
-	  $scope.addRow = function() {
+
+	  $scope.addRowTimetable = function() {
 		  $scope.data.hackathon_timetable.push({date: "", from: "", to: "", event_desc: ""});
 	  };
 
+	  $scope.removeRowSponsor = function(time) {
+		  var index = $scope.data.hackathon_sponsors.indexOf(time);
+		  if (index >= 0 && $scope.data.hackathon_sponsors.length > 1) {
+			$scope.data.hackathon_sponsors.splice(index, 1);
+		  }
+	  };
+
+	  $scope.addRowSponsor = function() {
+		  $scope.data.hackathon_sponsors.push({rank: 0, organization: ""});
+	  };
+
+	  $scope.removeRowJudge = function(time) {
+		  var index = $scope.data.hackathon_judges.indexOf(time);
+		  if (index >= 0 && $scope.data.hackathon_judges.length > 1) {
+			$scope.data.hackathon_judges.splice(index, 1);
+		  }
+	  };
+
+	  $scope.addRowJudge = function() {
+		  $scope.data.hackathon_judges.push({name: "", title: ""});
+	  };
+
+	  $scope.removeRowPrize = function(time) {
+		  var index = $scope.data.hackathon_prizes.indexOf(time);
+		  if (index >= 0 && $scope.data.hackathon_prizes.length > 1) {
+			$scope.data.hackathon_prizes.splice(index, 1);
+		  }
+	  };
+
+	  $scope.addRowPrize = function() {
+		  $scope.data.hackathon_prizes.push({name: "", category: ""});
+	  };
+
+
+	  $scope.removeRowHardware = function(time) {
+		  var index = $scope.data.hackathon_hardware.indexOf(time);
+		  if (index >= 0 && $scope.data.hackathon_hardware.length > 1) {
+			$scope.data.hackathon_hardware.splice(index, 1);
+		  }
+	  };
+
+	  $scope.addRowHardware = function() {
+		  $scope.data.hackathon_hardware.push({amount: "", type: ""});
+	  };
     	try {
   	  		$scope.master = JSON.parse(localStorageService.get('localStorageKey'));
   	  		$scope.reset();
   	  	} catch(e) {
-  	  		$scope.master = {};
-  	  		localStorageService.set('localStorageKey', JSON.stringify($scope.master));
+  	  		$scope.master = null;
+  	  	}
+
+  	  	if (!$scope.master) {
+  	  		$scope.update();
   	  	}
     
 
