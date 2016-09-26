@@ -33,6 +33,8 @@ form {
 
 .info-label {
  font-style: italic;
+	margin-bottom: 2em;
+	display: block;
 }
 
 .row-field {
