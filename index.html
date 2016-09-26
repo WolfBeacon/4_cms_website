@@ -1,41 +1,41 @@
 <html>
 <head>
-
+	<meta charset="utf-8" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<title>WolfBeacon</title>
 
 	<!-- Jquery-->
 
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script defer type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 	<!--Angular-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.js"></script>
-	<script src="app/app.js"></script>
-	<script src="app/angular-local-storage.js"></script>
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script defer type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.js"></script>
+	<script defer src="app/angular-local-storage.js"></script>
 
-	<!--Bootstrap -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-
+	<!-- Materialize -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+	
 	<!-- Other CSS -->
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/imgur.css">
 	<link rel="stylesheet" href="css/build.css">
 
+	<script defer src="app/app.js"></script>
 
 	<!--imgur -->
-	<!--<link rel="stylesheet" href="imgur/imgur.min.css">-->
-	<script type="text/javascript" src="imgur/imgur.min.js"></script>
+	<script defer type="text/javascript" src="js/imgur.min.js"></script>
 
 </head>
 
 
-<body ng-app="SponsorForm" style="background-color: #99CCFF;">
+<body ng-app="SponsorForm">
 
 
-    <div class="header clearfix">
+    <header class="clearfix">
         <!--
         <nav>
           <ul class="nav nav-pills pull-right">
@@ -45,117 +45,189 @@
           </ul>
         </nav>
       -->
-        <h3 class="text-muted">OSH</h3>
-    </div>
+        <h2>WolfBeacon</h2>
+    </header>
 
 
-    <div class="container" ng-controller="FormController">
-        <div class="jumbotron">
+    <main ng-controller="FormController">
+		<div class="container">
             <form novalidate class="simple-form">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <input type="text" id = "hack_name" class = "hackathon-name input-lg" ng-model="data.hackathon_name" placeholder="Name of Hackathon"/>
-                        <h4 class = "header-fix">Logo</h4>
-                        <div class="dropzone">
-                            <img class ="upload-image" src="assets/image-add.png">
-                        </div>
-                    </div>
-                </div>
-                <h3 class = "header-fix">Type of Hackathon</h3>
+				<section>
+					<h4>Name of Hackathon <span class="red-text">*</span></h4>
+					
+					<div class="input-field">
+						<label for="hack_name">Name</label>
+						<input required type="text" id="hack_name" ng-model="data.hackathon_name"/>
+					</div>
+				</section>
+				
+				<section>
+					<h4>Logo <span class="red-text">*</span></h4>
+					<div class="dropzone">
+						<img class ="upload-image" src="assets/image-add.png">
+					</div>
+				</section>
+				
+				<section>
+					<h4>Type of Hackathon <span class="red-text">*</span></h4>
 
-                <div>
-                    <input type="checkbox" ng-model="data.hackathon_type.University">
-                    <label class = "h-type-label">University</label>
-                </div>
-                <div>
-                    <input type="checkbox" ng-model="data.hackathon_type.Company">
-                    <label class = "h-type-label">Company</label>
-                </div>
-                <div>
-                    <input type="checkbox" ng-model="data.hackathon_type.Highschool">
-                    <label class = "h-type-label">Highschool</label>
-                </div>
-                <div>
-                    <input type="checkbox" ng-model="data.hackathon_type.Other">
-                    <label class = "h-type-label">Other</label>
-                </div>
-                <h3 class = "header-fix">Date Range of Hackathon</h3>
+					<div class="input-field">
+						<input type="checkbox" id="box1" class="filled-in" ng-model="data.hackathon_type.University">
+						<label for="box1" class="h-type-label">University</label>
+					</div>
+					<div class="input-field">
+						<input type="checkbox" id="box2" class="filled-in" ng-model="data.hackathon_type.Company">
+						<label for="box2" class="h-type-label">Company</label>
+					</div>
+					<div class="input-field">
+						<input type="checkbox" id="box3" class="filled-in" ng-model="data.hackathon_type.HighSchool">
+						<label for="box3" class="h-type-label">High School</label>
+					</div>
+					<div class="input-field">
+						<input type="checkbox" id="box4" class="filled-in" ng-model="data.hackathon_type.Other">
+						<label for="box4" class="h-type-label">Other</label>
+					</div>
+                </section>
 
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label class = "h-date-label">Starts:</label>
-                        <input type="date" class = "h-date" name="input" ng-model="data.hackathon_start_date" placeholder="yyyy-MM-dd" min="2016-01-01" required />
-                    </div>
-                    <div class="col-sm-6">
-                        <label class = "h-date-label">Ends:</label>
-                        <input type="date" class = "h-date" name="input" ng-model="data.hackathon_end_date" placeholder="yyyy-MM-dd" min="2016-01-01" required />
-                    </div>
-                </div>
+				<section>
+					<h4>Date Range of Hackathon <span class="red-text">*</span></h4>
 
-                <div class="row">
-                    <div class="col-sm-6">
-                    <!-- <img src = "assets/hidesection.png"> -->
-                        <div class="col-sm-6">
-                            <h3 class = "header-fix">Timetable</h3>
-                        </div>
-                    </div>
-                </div>
+					<div class="row">
+						<div class="col s6 input-field">
+							<label for="start-date">Starts On</label>
+							<input type="date" id="start-date" class="datepicker" name="start" ng-model="hackathon_start_date" min="2016-01-01" required />
+						</div>
+						<div class="col s6 input-field">
+							<label for="end-date">Ends On</label>
+							<input type="date" id="end-date" class="datepicker" name="end" ng-model="hackathon_end_date" min="2016-01-01" required />
+						</div>
+					</div>
+				</section>
 
-                <label class="info-label">Events will be listed in chronological order</label>
+                <section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Timetable</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Events will be listed in chronological order</label>
+								<div class="row">
+									<p class="col s2">
+										Date
+									</p>
+									<p class="col s2">
+										From
+									</p>
+									<p class="col s2">
+										To
+									</p>
+									<p class="col s6">
+										Event
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.hackathon_timetable | orderBy:from">
+									<div class="col s2 input-field">
+										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
+									</div>
+									<div class="col s2 input-field">
+										<input type="text" ng-model="e.from" placeholder="00:00 AM"/>
+									</div>
+									<div class="col s2 input-field">
+										<input type="text" ng-model="e.to" placeholder="00:00 AM"/>
+									</div>
+									<div class="col s4 input-field">
+										<input type="text" ng-model="e.event_desc" placeholder="Event"/>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRow()" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRow(e)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        Date
-                        <div class = "row" ng-repeat="e in data.hackathon_timetable | orderBy:from">
-                            <input type="text" class = "timetable_row_input" placeholder = "MM/DD" ng-model = "e.date"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "e.from"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "00:00" ng-model = "e.to"/>
-                            <input type="text" class = "timetable_row_input"  placeholder = "Event" ng-model = "e.event_desc"/>
-                            <input class="add-row" type="image" ng-click="addRow()" src="assets/plus.png" style="margin-left: -30px;">
-                            <input class="no-row" type="image" ng-click="removeRow(e)" src="assets/delete.png" />
-                        </div>
-                    </div>
-                </div>
+				<section>
+					<h4>Location <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="location">Which city?</label>
+						<input required type="text" id="location" ng-model="data.hackathon_location"/>
+					</div>
+				</section>
+				
+				<section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Venue Floor Plan</h4>
+							
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Tip: Highlight hacker spaces</label>
+								<div class="dropzone">
+									<img class="upload-image" src="assets/image-add.png">
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
 
-
-                <h3 class = "header-fix">Location</h3>
-                <input type="text" id = "loc" class = "hackathon-location input-lg" ng-model="data.hackathon_location" placeholder="Which city?"/>
-
-
-
-                <h3 class = "header-fix">Venue Floor Plan</h3>
-
-
-                <h3 class = "header-fix">Hackathon Size</h3>
-                <input type="text" class = "hackathon-size input-lg" ng-model="data.hackathon_size" placeholder="How many hackers can you accomedate?"/>
-
-                <h3 class = "header-fix">Hackathon Description</h3>
-                <input type="text" class = "hackathon-desc input-lg" ng-model="data.hackathon_desc" placeholder="Add a short description of your hackathon (eg a slogan)"/>
-
-                </br>
-                </br>
-                </br>
-                </br>
-
-                <input type="button" class ="btn btn-danger" ng-click="reset()" value="Reset" />
-                <input type="submit" class ="btn btn-success" ng-click="update(data)" value="Submit" />
-                <input type="submit" class ="btn btn-warning" value="Save" />
+				<section>
+					<h4>Size of Hackathon <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="size">How many hackers can you accommodate?</label>
+						<input required type="text" id="size" ng-model="data.hackathon_size" />
+					</div>
+				</section>
+				
+				<section>
+					<h4>Description <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="description">Add a short description of your hackathon (e.g. your slogan)</label>
+						<input required type="text" id="description" ng-model="data.hackathon_desc"/>
+					</div>
+				</section>
+				
+				<section>
+					<h4>Do you offer travel reimbursements? <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.hackathon_travel" />
+						<label for="yes">Yes</label>
+					</div>
+					<div class="input-field">
+						<input class="with-gap" name="no" id="no" type="radio" ng-value="false" ng-model="data.hackathon_travel" />
+						<label for="no">No</label>
+					</div>
+				</section>
+				
+				<!-- Hyperlinks -->
+				
+				<!-- Sponsors -->
+				
+				<!-- Judges -->
+				
+				<!-- Prizes -->
+				
+				<!-- Hardware -->
+				
+				<section>
+					<h4>Contact Information <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="contact">Who can I email if I have questions or concerns?</label>
+						<input required type="text" id="contact" ng-model="data.hackathon_contact"/>
+					</div>
+				</section>
+				
+				<pre>current_data = {{data | json}}</pre>
+				<pre>master = {{master | json}}</pre>
             </form>
-
-            <pre>current_data = {{data | json}}</pre>
-            <pre>master = {{master | json}}</pre>
-        </div>
-
-
-    <footer class="footer">
-        <p>&copy; 2016 WolfBeacon</p>
-    </footer>
-
-    </div> <!-- /container -->
-
-
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+		</div>
+		<div class="row container">
+			<button class="waves-effect waves-light btn red" ng-click="reset()">Reset</button>
+			<button type="submit" class ="waves-effect waves-light btn green">Submit</button>
+			<button type="submit" class ="waves-effect waves-light btn yellow" ng-click="update()">Save</button>
+		</div>
+    </main> 
 </body>
 </html>
 

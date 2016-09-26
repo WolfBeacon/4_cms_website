@@ -1,170 +1,67 @@
-.container {
-    max-width: 730px;
+body{
+    background-color: #E0F1F0;
 }
 
-.body.ng-scope{
-    background-color: #CCFFFF;
+header{
+	background-color: #03897b;
+	margin: 0;
+	padding: 1em 0 5em 3em;
+	color: white;
 }
 
-.header{
-background-color: #339999;
+form {
+	margin-top: -5em;
+	background-color: white;
+	padding: 3em;
+	margin-bottom: 2em;
 }
 
-.container .jumbotron {
-  margin-top: -50px;
-  background: white;
-
-}
-
-.hackathon-name {
-	border-top: 0;
-	border-left: 0;
-	border-right: 0;
-    box-shadow: none;
-    width:600px;
-    height:50px;
-}
-
-
-.hackathon-name::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    #000000;
-    font-size: 24px;
-    line-height: 1;
-    font-weight: 600;
-}
-.hackathon-name:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #000000;
-    font-size: 24px;
-    line-height: 1;
-    font-weight: bold;
-}
-.hackathon-name::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #000000;
-    font-size: 24px;
-    line-height: 1;
-    font-weight: bold;
-}
-.hackathon-name:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    #000000;
-    font-size: 24px;
-    line-height: 1;
-    font-weight: normal;
-}
-
-
-.header-fix {
-	margin-top: 40px;
-	margin-bottom: 20px;
-}
 
 .upload-image {
 	vertical-align: middle;
-	margin-left: 40px;
-	margin-top: 20px;
+	margin-left: 3em;
+	margin-top: 2em;
 }
-
-
-input[type="checkbox"]{
- cursor: pointer;
- -webkit-appearance: none;
- appearance: none;
- outline: 2px solid #A8ADB3;
- border-radius: 1px;
- outline: 1px solid #1e5180
- box-sizing: border-box;
- position: relative;
- box-sizing: content-box ;
- width: 25px;
- height: 25px;
- border-width: 0;
- transition: all .3s linear;
-}
-
-input[type="checkbox"]:checked{
-  background-color: #99CCFF;
-}
-
-/*
-input[type="checkbox"]:focus{
-  outline: 0 none;
-  box-shadow: none;
-}
-*/
 
 
 .h-type-label {
 
- font-weight: 200;
- color: gray;
- margin-left: 8px;
- margin-bottom: 10px;
+ margin-left: 0.5em;
+ margin-bottom: 0.5em;
 
-}
-
-.h-date {
- border-top: 0;
- border-left: 0;
- border-right: 0;
- box-shadow: none;
-
-}
-
-.h-date-label {
- font-weight: 200;
- color: gray;
 }
 
 .info-label {
  font-style: italic;
- color: #9CF; 
- font-weight: 100;
 }
 
-
-
-.timetable_row_input {
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  box-shadow: none;
-  width:90px;
-  height:30px;
-  margin:20px;
+.row-field {
+	margin-top: 1.5em;
 }
 
-
-.timetable_row_input::-webkit-input-placeholder { 
-    color:    #D3D3D3
-    font-size: 14px;
-    line-height: 1;
-    font-weight: 50;
+section {
+	margin-bottom: 3em;
 }
 
-
-.hackathon-location {
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-    box-shadow: none;
-    width:300px;
-    height:30px;
+button {
+	margin-right: 1em;
 }
 
-.hackathon-size {
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-    box-shadow: none;
-    width:300px;
-    height:30px;
+.collapsible-body p {
+	padding: initial;
 }
 
-
-.hackathon-desc {
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-    box-shadow: none;
-    width:300px;
-    height:30px;
+.collapsible-header {
+	line-height: initial;
+	padding: initial;
+	border: initial;
 }
+
+.collapsible-body {
+	border: initial;
+}
+
+.collapsible {
+	border: initial;
+	box-shadow: initial;
+}	
