@@ -30,6 +30,8 @@
 
 	<!--imgur -->
 	<script defer type="text/javascript" src="js/imgur.min.js"></script>
+	<script defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaNRkaMJ0gY7fCPgjsaX0Fr2FuzwJJRnY&libraries=places"></script>
+	
 	<script defer src="app/app.js"></script>
 	
 </head>
@@ -171,10 +173,11 @@
 
 				<section>
 					<h4>Location <span class="red-text">*</span></h4>
-					<div class="input-field">
+					<div class="input-field autocomplete ac-input">
 						<label for="location">Which city?</label>
-						<input required class="validate" type="text" id="location" ng-model="data.location"/>
+						<input required class="validate" data-activates="singleDropdown" data-beloworigin="true" type="text" id="location" ng-model="data.location"/>
 					</div>
+					<ul id="singleDropdown" class="dropdown-content ac-dropdown"></ul>
 				</section>
 				
 				<section>

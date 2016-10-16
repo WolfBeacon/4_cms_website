@@ -1,3 +1,5 @@
+var GOOGLE_KEY = 'AIzaSyBaNRkaMJ0gY7fCPgjsaX0Fr2FuzwJJRnY';
+
 function updatePicker($root) {
 
     $root.find('.datepicker').pickadate({
@@ -30,6 +32,8 @@ $(document).ready(function() {
 
     updatePicker($('form'));
 
+    var service = new google.maps.places.AutocompleteService();
+
     new Imgur({
         clientid: 'cc86a8de0e7c459',
         callback: function(res, elem) {
@@ -47,16 +51,20 @@ $(document).ready(function() {
     });
 
     $('#location').materialize_autocomplete({
-        getData: function (value, callback) {
-            $.getJSON("https://maps.googleapis.com/maps/api/place/autocomplete/json", { input: value, types: '(cities)', key: GOOGLE_KEY }, function(data) {
-              var ret = [];
-              data.predictions.forEach(function(prediction) {
-                ret.push({id: prediction.place_id, text: prediction.description});
-              });
-              callback(value, ret);
-            }).fail(function(err) {
-              console.log(err);
-              callback(value, []);
+        dropdown: {
+            el: '#singleDropdown'
+        },
+        getData: function(value, callback) {
+            service.getPlacePredictions({ input: value, types: ['(cities)'] }, function(data, status) {
+                if (status != google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(status);
+                    return;
+                }
+                var ret = [];
+                data.forEach(function(prediction) {
+                    ret.push({ id: prediction.place_id, text: prediction.description });
+                });
+                callback(value, ret);
             });
         }
     });
