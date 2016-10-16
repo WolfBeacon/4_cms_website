@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+	<script defer type="text/javascript" src="js/jquery.materialize-autocomplete.min.js"></script>
 	
 	<!-- Clockpicker -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.css">
@@ -185,6 +186,21 @@
 								<label class="info-label blue-text">Tip: Highlight hacker spaces</label>
 								<div class="dropzone" id="venue-upload">
 									<img class="upload-image" src="assets/image-add.png">
+								</div>
+								
+								
+								<div class="row">
+									<p class="col s5">
+										URL
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.floorplan">
+									<div class="col s10 input-field">
+										<p ng-bind="e"></p>
+									</div>
+									<div class="col s2 row-field">
+										<input class="no-row" type="image" ng-click="removeRowFloor($index)" src="assets/delete.png" />
+									</div>
 								</div>
 							</div>
 						</li>

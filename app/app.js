@@ -38,11 +38,26 @@ $(document).ready(function() {
                 if ($elem.attr("id") === "logo-upload") {
                     $scope.data.logo_url = res.data.link;
                 } else {
-                    $scope.data.floorplan_urls.push(res.data.link);
+                    $scope.data.floorplan.push(res.data.link);
                 }
                 console.log($elem.attr("id"));
                 console.log(res.data.link);
             }
+        }
+    });
+
+    $('#location').materialize_autocomplete({
+        getData: function (value, callback) {
+            $.getJSON("https://maps.googleapis.com/maps/api/place/autocomplete/json", { input: value, types: '(cities)', key: GOOGLE_KEY }, function(data) {
+              var ret = [];
+              data.predictions.forEach(function(prediction) {
+                ret.push({id: prediction.place_id, text: prediction.description});
+              });
+              callback(value, ret);
+            }).fail(function(err) {
+              console.log(err);
+              callback(value, []);
+            });
         }
     });
 });
@@ -66,7 +81,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
                 { date: "", from: "00:00", to: "00:00", event_desc: "Sponsor Presentation" },
                 { date: "", from: "00:00", to: "00:00", event_desc: "Closing Ceremony" }
             ],
-            floorplan_urls: [],
+            floorplan: [],
             travel: false,
             links: {
                 h_website: "",
@@ -144,6 +159,10 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
         $scope.removeRowTicket = function(index) {
             $scope.data.tickets.splice(index, 1);
+        };
+
+        $scope.removeRowFloor = function(index) {
+            $scope.data.floorplan.splice(index, 1);
         };
 
         $scope.addRowTicket = function(index) {
