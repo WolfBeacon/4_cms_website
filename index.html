@@ -91,11 +91,11 @@
 					<div class="row">
 						<div class="col s6 input-field">
 							<label for="start-date">Starts On</label>
-							<input type="date" id="start-date" class="datepicker validate" name="start" ng-model="data.start_date" min="2016-01-01" required />
+							<input type="date" id="start-date" class="datepicker" name="start" ng-model="data.start_date" required />
 						</div>
 						<div class="col s6 input-field">
 							<label for="end-date">Ends On</label>
-							<input type="date" id="end-date" class="datepicker validate" name="end" ng-model="data.end_date" min="2016-01-01" required />
+							<input type="date" id="end-date" class="datepicker" name="end" ng-model="data.end_date" required />
 						</div>
 					</div>
 				</section>
@@ -122,7 +122,7 @@
 								</div>
 								<div class="row" ng-repeat="e in data.timetable | orderBy:from">
 									<div class="col s2 input-field">
-										<input type="date" class="datepicker validate" placeholder="Date" min="2016-01-01" ng-model="e.date"/>
+										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
 									</div>
 									<div class="col s2 input-field clockpicker">
 										<input type="text" ng-model="e.from" value="00:00" />
@@ -131,7 +131,7 @@
 										<input type="text" ng-model="e.to" value="00:00" />
 									</div>
 									<div class="col s4 input-field">
-										<input type="text" ng-model="e.event_desc" placeholder="Event"/>
+										<input type="text" ng-model="e.description" placeholder="Event"/>
 									</div>
 									<div class="col s1 row-field">
 										<input class="add-row" type="image" ng-click="addRowTimetable($index)" src="assets/plus.png">
@@ -173,11 +173,20 @@
 
 				<section>
 					<h4>Location <span class="red-text">*</span></h4>
-					<div class="input-field autocomplete ac-input">
-						<label for="location">Which city?</label>
-						<input required class="validate" data-activates="singleDropdown" data-beloworigin="true" type="text" id="location" ng-model="data.location"/>
+					<div class="row">
+						<div class="col s6 input-field autocomplete ac-input">
+							<label for="location">Which city?</label>
+							<input required class="validate" data-activates="firstDropdown" data-beloworigin="true" type="text" id="city" ng-model="data.city"/>
+							<ul id="firstDropdown" class="dropdown-content ac-dropdown"></ul>
+						</div>
+						
+						<div class="col s6 input-field autocomplete ac-input">
+							<label for="location">Which address?</label>
+							<input required class="validate" data-activates="secondDropdown" data-beloworigin="true" type="text" id="address" ng-model="data.address"/>
+							<ul id="secondDropdown" class="dropdown-content ac-dropdown"></ul>
+						</div>
 					</div>
-					<ul id="singleDropdown" class="dropdown-content ac-dropdown"></ul>
+					
 				</section>
 				
 				<section>
@@ -245,35 +254,35 @@
 							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Hyperlinks</h4>
 							<div class="collapsible-body">
 								<div class="input-field">
-									<input id="website" required class="validate" type="text" ng-model="data.links.h_website" />
+									<input id="website" required class="validate" type="text" ng-model="data.links.website" />
 									<label for="website">Website <span class="red-text">*</span></label>
 								</div>
 								<div class="input-field">
-									<input id="facebook" type="text" ng-model="data.links.h_facebook" />
+									<input id="facebook" type="text" ng-model="data.links.facebook" />
 									<label for="facebook">Facebook</label>
 								</div>
 								<div class="input-field">
-									<input id="twitter" type="text" ng-model="data.links.h_twitter" />
+									<input id="twitter" type="text" ng-model="data.links.twitter" />
 									<label for="twitter">Twitter</label>
 								</div>
 								<div class="input-field">
-									<input id="slack" type="text" ng-model="data.links.h_slack" />
+									<input id="slack" type="text" ng-model="data.links.slack" />
 									<label for="slack">Slack</label>
 								</div>
 								<div class="input-field">
-									<input id="medium" type="text" ng-model="data.links.h_medium" />
+									<input id="medium" type="text" ng-model="data.links.medium" />
 									<label for="medium">Medium</label>
 								</div>
 								<div class="input-field">
-									<input id="snapchat" type="text" ng-model="data.links.h_snapchat" />
+									<input id="snapchat" type="text" ng-model="data.links.snapchat" />
 									<label for="snapchat">Snapchat</label>
 								</div>
 								<div class="input-field">
-									<input id="devpost" type="text" ng-model="data.links.h_devpost" />
+									<input id="devpost" type="text" ng-model="data.links.devpost" />
 									<label for="devpost">Devpost</label>
 								</div>
 								<div class="input-field">
-									<input id="other" type="text" ng-model="data.links.h_other" />
+									<input id="other" type="text" ng-model="data.links.other" />
 									<label for="other">Other</label>
 								</div>
 							</div>
@@ -357,19 +366,37 @@
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Prizes will be listed in alphabetical order</label>
 								<div class="row">
-									<p class="col s5">
+									<p class="col s3">
 										Name
 									</p>
-									<p class="col s7">
-										Category
+									<p class="col s2">
+										Sponsor
+									</p>
+									<p class="col s1">
+										Winners
+									</p>
+									<p class="col s1">
+										Value
+									</p>
+									<p class="col s5">
+										Description
 									</p>
 								</div>
 								<div class="row" ng-repeat="e in data.prizes | orderBy:name">
-									<div class="col s5 input-field">
+									<div class="col s3 input-field">
 										<input type="text" ng-model="e.name" placeholder="Name"/>
 									</div>
-									<div class="col s5 input-field">
-										<input type="text" ng-model="e.category" placeholder="General / API"/>
+									<div class="col s2 input-field">
+										<input type="text" ng-model="e.sponsor" ng-change="checkSponsor($index)" placeholder="Sponsor"/>
+									</div>
+									<div class="col s1 input-field">
+										<input type="number" min="1" step="1" class="validate" ng-model="e.winners" placeholder="#"/>
+									</div>
+									<div class="col s1 input-field">
+										<input type="number" min="0" step="1" class="validate" ng-model="e.value" placeholder="$"/>
+									</div>
+									<div class="col s3 input-field">
+										<input type="text" ng-model="e.description" placeholder="Description"/>
 									</div>
 									<div class="col s1 row-field">
 										<input class="add-row" type="image" ng-click="addRowPrize($index)" src="assets/plus.png">

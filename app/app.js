@@ -1,9 +1,9 @@
-var GOOGLE_KEY = 'AIzaSyBaNRkaMJ0gY7fCPgjsaX0Fr2FuzwJJRnY';
-
 function updatePicker($root) {
 
     $root.find('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
+        min: -1,
+        max: new Date(2037, 12, 31),
+        formatSubmit: 'yyyy-mm-dd',
         onClose: function(val) {
             val = this.get();
 
@@ -33,12 +33,31 @@ $(document).ready(function() {
     updatePicker($('form'));
     var service = new google.maps.places.AutocompleteService();
 
-    $('#location').materialize_autocomplete({
+    $('#city').materialize_autocomplete({
         dropdown: {
-            el: '#singleDropdown'
+            el: '#firstDropdown'
         },
         getData: function(value, callback) {
             service.getPlacePredictions({ input: value, types: ['(cities)'] }, function(data, status) {
+                if (status != google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(status);
+                    return;
+                }
+                var ret = [];
+                data.forEach(function(prediction) {
+                    ret.push({ id: prediction.place_id, text: prediction.description });
+                });
+                callback(value, ret);
+            });
+        }
+    });
+
+    $('#address').materialize_autocomplete({
+        dropdown: {
+            el: '#secondDropdown'
+        },
+        getData: function(value, callback) {
+            service.getPlacePredictions({ input: value, types: ['address'] }, function(data, status) {
                 if (status != google.maps.places.PlacesServiceStatus.OK) {
                     console.log(status);
                     return;
@@ -65,7 +84,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
                     var $elem = $(elem);
                     $scope.$apply(function() {
                         if ($elem.attr("id") === "logo-upload") {
-                            $scope.data.logo_url = res.data.link;
+                            $scope.data.logo = res.data.link;
                         } else {
                             $scope.data.floorplan.push(res.data.link);
                         }
@@ -75,7 +94,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         });
 
         $scope.data = {
-            logo_url: "",
+            logo: "",
             type: {
                 University: false,
                 Company: false,
@@ -83,22 +102,22 @@ angular.module('SponsorForm', ['LocalStorageModule'])
                 Other: false
             },
             timetable: [
-                { date: "", from: "00:00", to: "00:00", event_desc: "Registration" },
-                { date: "", from: "00:00", to: "00:00", event_desc: "Hacking Starts" },
-                { date: "", from: "00:00", to: "00:00", event_desc: "Sponsor Presentation" },
-                { date: "", from: "00:00", to: "00:00", event_desc: "Closing Ceremony" }
+                { date: "", from: "00:00", to: "00:00", description: "Registration" },
+                { date: "", from: "00:00", to: "00:00", description: "Hacking Starts" },
+                { date: "", from: "00:00", to: "00:00", description: "Sponsor Presentation" },
+                { date: "", from: "00:00", to: "00:00", description: "Closing Ceremony" }
             ],
             floorplan: [],
             travel: false,
             links: {
-                h_website: "",
-                h_facebook: "",
-                h_twitter: "",
-                h_slack: "",
-                h_medium: "",
-                h_snapchat: "",
-                h_devpost: "",
-                h_other: ""
+                website: "",
+                facebook: "",
+                twitter: "",
+                slack: "",
+                medium: "",
+                snapchat: "",
+                devpost: "",
+                other: ""
             },
             tickets: [
                 { name: "Registration" },
@@ -113,12 +132,14 @@ angular.module('SponsorForm', ['LocalStorageModule'])
                 { name: "", title: "" }
             ],
             prizes: [
-                { name: "", category: "" }
+                { name: "", sponsor: "", winners: 1, value: 0, description: "" }
             ],
             hardware: [
                 { amount: 1, type: "" }
             ],
-            contact: ""
+            contact: "",
+            city: "",
+            address: ""
         };
 
         $scope.backup = angular.copy($scope.data);
@@ -156,15 +177,21 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.removeRowTimetable = function(index) {
+            if ($scope.data.timetable.length <= 1) {
+                return;
+            }
             $scope.data.timetable.splice(index, 1);
         };
 
         $scope.addRowTimetable = function(index) {
-            $scope.addRow($scope.data.timetable, index, { date: "", from: "", to: "", event_desc: "" });
+            $scope.addRow($scope.data.timetable, index, { date: "", from: "", to: "", description: "" });
             updatePicker($('#timetables'));
         };
 
         $scope.removeRowTicket = function(index) {
+            if ($scope.data.tickets.length <= 1) {
+                return;
+            }
             $scope.data.tickets.splice(index, 1);
         };
 
@@ -177,6 +204,9 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.removeRowSponsor = function(index) {
+            if ($scope.data.sponsors.length <= 1) {
+                return;
+            }
             $scope.data.sponsors.splice(index, 1);
         };
 
@@ -184,7 +214,20 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             $scope.addRow($scope.data.sponsors, index, { rank: 0, organization: "" });
         };
 
+        $scope.checkSponsor = function(index) {
+
+            var sponsor = $scope.data.prizes[index].sponsor;
+            var has = $scope.data.sponsors.some(function(curr) {
+              return curr === sponsor;
+            });
+            console.log($scope);
+            $scope.data.prizes[index].$setValidity("sponsor", has);
+        };
+
         $scope.removeRowJudge = function(index) {
+            if ($scope.data.judges.length <= 1) {
+                return;
+            }
             $scope.data.judges.splice(index, 1);
         };
 
@@ -193,15 +236,22 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.removeRowPrize = function(index) {
+            if ($scope.data.prizes.length <= 1) {
+                return;
+            }
             $scope.data.prizes.splice(index, 1);
         };
 
         $scope.addRowPrize = function(index) {
-            $scope.addRow($scope.data.prizes, index, { name: "", category: "" });
+            $scope.addRow($scope.data.prizes, index, { name: "", sponsor: "", winners: 1, value: 0, description: "" });
         };
 
         $scope.removeRowHardware = function(index) {
+            if ($scope.data.hardware.length <= 1) {
+                return;
+            }
             $scope.data.hardware.splice(index, 1);
+
         };
 
         $scope.addRowHardware = function(index) {
