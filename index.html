@@ -6,9 +6,8 @@
 	<title>WolfBeacon</title>
 
 	<!-- Jquery-->
-
-	<script defer type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	
 	<!--Angular-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 	<script defer type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.js"></script>
@@ -19,16 +18,19 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 	
+	<!-- Clockpicker -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.css">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.js"></script>
+	
 	<!-- Other CSS -->
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/imgur.css">
 	<link rel="stylesheet" href="css/build.css">
 
-	<script defer src="app/app.js"></script>
-
 	<!--imgur -->
 	<script defer type="text/javascript" src="js/imgur.min.js"></script>
-
+	<script defer src="app/app.js"></script>
+	
 </head>
 
 
@@ -36,34 +38,25 @@
 
 
     <header class="clearfix">
-        <!--
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-      -->
         <h2>WolfBeacon</h2>
     </header>
 
 
     <main ng-controller="FormController">
 		<div class="container">
-            <form novalidate class="simple-form">
+            <form novalidate class="simple-form" id="form">
 				<section>
 					<h4>Name of Hackathon <span class="red-text">*</span></h4>
 					
 					<div class="input-field">
 						<label for="hack_name">Name</label>
-						<input required type="text" id="hack_name" ng-model="data.hackathon_name"/>
+						<input required class="validate" type="text" id="hack_name" ng-model="data.name"/>
 					</div>
 				</section>
 				
 				<section>
 					<h4>Logo <span class="red-text">*</span></h4>
-					<div class="dropzone">
+					<div class="dropzone" id="logo-upload">
 						<img class ="upload-image" src="assets/image-add.png">
 					</div>
 				</section>
@@ -72,19 +65,19 @@
 					<h4>Type of Hackathon <span class="red-text">*</span></h4>
 
 					<div class="input-field">
-						<input type="checkbox" id="box1" class="filled-in" ng-model="data.hackathon_type.University">
+						<input type="checkbox" id="box1" class="filled-in" ng-model="data.type.University">
 						<label for="box1" class="h-type-label">University</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box2" class="filled-in" ng-model="data.hackathon_type.Company">
-						<label for="box2" class="h-type-label">Company</label>
-					</div>
-					<div class="input-field">
-						<input type="checkbox" id="box3" class="filled-in" ng-model="data.hackathon_type.HighSchool">
+						<input type="checkbox" id="box3" class="filled-in" ng-model="data.type.HighSchool">
 						<label for="box3" class="h-type-label">High School</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box4" class="filled-in" ng-model="data.hackathon_type.Other">
+						<input type="checkbox" id="box2" class="filled-in" ng-model="data.type.Company">
+						<label for="box2" class="h-type-label">Company</label>
+					</div>
+					<div class="input-field">
+						<input type="checkbox" id="box4" class="filled-in" ng-model="data.type.Other">
 						<label for="box4" class="h-type-label">Other</label>
 					</div>
                 </section>
@@ -95,16 +88,16 @@
 					<div class="row">
 						<div class="col s6 input-field">
 							<label for="start-date">Starts On</label>
-							<input type="date" id="start-date" class="datepicker" name="start" ng-model="hackathon_start_date" min="2016-01-01" required />
+							<input type="date" id="start-date" class="datepicker validate" name="start" ng-model="data.start_date" min="2016-01-01" required />
 						</div>
 						<div class="col s6 input-field">
 							<label for="end-date">Ends On</label>
-							<input type="date" id="end-date" class="datepicker" name="end" ng-model="hackathon_end_date" min="2016-01-01" required />
+							<input type="date" id="end-date" class="datepicker validate" name="end" ng-model="data.end_date" min="2016-01-01" required />
 						</div>
 					</div>
 				</section>
 
-                <section>
+                <section id="timetables">
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
 							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Timetable</h4>
@@ -124,24 +117,50 @@
 										Event
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hackathon_timetable | orderBy:from">
+								<div class="row" ng-repeat="e in data.timetable | orderBy:from">
 									<div class="col s2 input-field">
-										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
+										<input type="date" class="datepicker validate" placeholder="Date" min="2016-01-01" ng-model="e.date"/>
 									</div>
-									<div class="col s2 input-field">
-										<input type="text" ng-model="e.from" placeholder="00:00 AM"/>
+									<div class="col s2 input-field clockpicker">
+										<input type="text" ng-model="e.from" value="00:00" />
 									</div>
-									<div class="col s2 input-field">
-										<input type="text" ng-model="e.to" placeholder="00:00 AM"/>
+									<div class="col s2 input-field clockpicker">
+										<input type="text" ng-model="e.to" value="00:00" />
 									</div>
 									<div class="col s4 input-field">
 										<input type="text" ng-model="e.event_desc" placeholder="Event"/>
 									</div>
 									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowTimetable()" src="assets/plus.png">
+										<input class="add-row" type="image" ng-click="addRowTimetable($index)" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowTimetable(e)" src="assets/delete.png" />
+										<input class="no-row" type="image" ng-click="removeRowTimetable($index)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</section>
+				
+				<section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Tickets</h4>
+							<div class="collapsible-body">
+								<div class="row">
+									<p class="col s2">
+										Name
+									</p>
+								</div>
+								<div class="row" ng-repeat="e in data.tickets">
+									<div class="col s10 input-field">
+										<input type="text" ng-model="e.name" placeholder="Ticket"/>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRowTicket($index)" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRowTicket($index)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>
@@ -153,7 +172,7 @@
 					<h4>Location <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="location">Which city?</label>
-						<input required type="text" id="location" ng-model="data.hackathon_location"/>
+						<input required class="validate" type="text" id="location" ng-model="data.location"/>
 					</div>
 				</section>
 				
@@ -164,7 +183,7 @@
 							
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Tip: Highlight hacker spaces</label>
-								<div class="dropzone">
+								<div class="dropzone" id="venue-upload">
 									<img class="upload-image" src="assets/image-add.png">
 								</div>
 							</div>
@@ -176,7 +195,7 @@
 					<h4>Size of Hackathon <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="size">How many hackers can you accommodate?</label>
-						<input required type="text" id="size" ng-model="data.hackathon_size" />
+						<input required type="number" class="validate" step="1" min="1" id="size" ng-model="data.size" />
 					</div>
 				</section>
 				
@@ -184,57 +203,63 @@
 					<h4>Description <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="description">Add a short description of your hackathon (e.g. your slogan)</label>
-						<input required type="text" id="description" ng-model="data.hackathon_desc"/>
+						<input required class="validate" type="text" id="description" ng-model="data.desc"/>
 					</div>
 				</section>
 				
 				<section>
 					<h4>Do you offer travel reimbursements? <span class="red-text">*</span></h4>
 					<div class="input-field">
-						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.hackathon_travel" />
+						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.travel" />
 						<label for="yes">Yes</label>
 					</div>
 					<div class="input-field">
-						<input class="with-gap" name="no" id="no" type="radio" ng-value="false" ng-model="data.hackathon_travel" />
+						<input class="with-gap" name="no" id="no" type="radio" ng-value="false" ng-model="data.travel" />
 						<label for="no">No</label>
 					</div>
 				</section>
 				
 				<!-- Hyperlinks -->
 				<section>
-					<h4>Hyperlinks</h4>
-					<div class="input-field">
-						<input id="website" required type="text" ng-model="data.hackathon_links.h_website" />
-						<label for="website">Website <span class="red-text">*</span></label>
-					</div>
-					<div class="input-field">
-						<input id="facebook" type="text" ng-model="data.hackathon_links.h_facebook" />
-						<label for="facebook">Facebook</label>
-					</div>
-					<div class="input-field">
-						<input id="twitter" type="text" ng-model="data.hackathon_links.h_twitter" />
-						<label for="twitter">Twitter</label>
-					</div>
-					<div class="input-field">
-						<input id="slack" type="text" ng-model="data.hackathon_links.h_slack" />
-						<label for="slack">Slack</label>
-					</div>
-					<div class="input-field">
-						<input id="medium" type="text" ng-model="data.hackathon_links.h_medium" />
-						<label for="medium">Medium</label>
-					</div>
-					<div class="input-field">
-						<input id="snapchat" type="text" ng-model="data.hackathon_links.h_snapchat" />
-						<label for="snapchat">Snapchat</label>
-					</div>
-					<div class="input-field">
-						<input id="devpost" type="text" ng-model="data.hackathon_links.h_devpost" />
-						<label for="devpost">Devpost</label>
-					</div>
-					<div class="input-field">
-						<input id="other" type="text" ng-model="data.hackathon_links.h_other" />
-						<label for="other">Other</label>
-					</div>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Hyperlinks</h4>
+							<div class="collapsible-body">
+								<div class="input-field">
+									<input id="website" required class="validate" type="text" ng-model="data.links.h_website" />
+									<label for="website">Website <span class="red-text">*</span></label>
+								</div>
+								<div class="input-field">
+									<input id="facebook" type="text" ng-model="data.links.h_facebook" />
+									<label for="facebook">Facebook</label>
+								</div>
+								<div class="input-field">
+									<input id="twitter" type="text" ng-model="data.links.h_twitter" />
+									<label for="twitter">Twitter</label>
+								</div>
+								<div class="input-field">
+									<input id="slack" type="text" ng-model="data.links.h_slack" />
+									<label for="slack">Slack</label>
+								</div>
+								<div class="input-field">
+									<input id="medium" type="text" ng-model="data.links.h_medium" />
+									<label for="medium">Medium</label>
+								</div>
+								<div class="input-field">
+									<input id="snapchat" type="text" ng-model="data.links.h_snapchat" />
+									<label for="snapchat">Snapchat</label>
+								</div>
+								<div class="input-field">
+									<input id="devpost" type="text" ng-model="data.links.h_devpost" />
+									<label for="devpost">Devpost</label>
+								</div>
+								<div class="input-field">
+									<input id="other" type="text" ng-model="data.links.h_other" />
+									<label for="other">Other</label>
+								</div>
+							</div>
+						</li>
+					</ul>
 				</section>
 				
 				<!-- Sponsors -->
@@ -252,18 +277,18 @@
 										Organization
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hackathon_sponsors | orderBy:rank">
+								<div class="row" ng-repeat="e in data.sponsors | orderBy:rank">
 									<div class="col s3 input-field">
-										<input type="number" min="0" ng-model="e.rank" placeholder="Rank"/>
+										<input type="number" class="validate" step="1" min="1" ng-model="e.rank" placeholder="Rank"/>
 									</div>
 									<div class="col s7 input-field">
 										<input type="text" ng-model="e.organization" placeholder="Organization"/>
 									</div>
 									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowSponsor()" src="assets/plus.png">
+										<input class="add-row" type="image" ng-click="addRowSponsor($index)" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowSponsor(e)" src="assets/delete.png" />
+										<input class="no-row" type="image" ng-click="removeRowSponsor($index)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>
@@ -286,7 +311,7 @@
 										Title
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hackathon_judges | orderBy:name">
+								<div class="row" ng-repeat="e in data.judges | orderBy:name">
 									<div class="col s5 input-field">
 										<input type="text" ng-model="e.name" placeholder="Full Name"/>
 									</div>
@@ -294,10 +319,10 @@
 										<input type="text" ng-model="e.title" placeholder="Title of Judge"/>
 									</div>
 									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowJudge()" src="assets/plus.png">
+										<input class="add-row" type="image" ng-click="addRowJudge($index)" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowJudge(e)" src="assets/delete.png" />
+										<input class="no-row" type="image" ng-click="removeRowJudge($index)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>
@@ -320,7 +345,7 @@
 										Category
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hackathon_prizes | orderBy:name">
+								<div class="row" ng-repeat="e in data.prizes | orderBy:name">
 									<div class="col s5 input-field">
 										<input type="text" ng-model="e.name" placeholder="Name"/>
 									</div>
@@ -328,10 +353,10 @@
 										<input type="text" ng-model="e.category" placeholder="General / API"/>
 									</div>
 									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowPrize()" src="assets/plus.png">
+										<input class="add-row" type="image" ng-click="addRowPrize($index)" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowPrize(e)" src="assets/delete.png" />
+										<input class="no-row" type="image" ng-click="removeRowPrize($index)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>
@@ -354,18 +379,18 @@
 										Type
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hackathon_hardware | orderBy:type">
+								<div class="row" ng-repeat="e in data.hardware | orderBy:type">
 									<div class="col s5 input-field">
-										<input type="text" ng-model="e.amount" placeholder="Amount"/>
+										<input type="number" class="validate" min="1" step="1" ng-model="e.amount" placeholder="Amount"/>
 									</div>
 									<div class="col s5 input-field">
 										<input type="text" ng-model="e.type" placeholder="Type"/>
 									</div>
 									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowHardware()" src="assets/plus.png">
+										<input class="add-row" type="image" ng-click="addRowHardware($index)" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowHardware(e)" src="assets/delete.png" />
+										<input class="no-row" type="image" ng-click="removeRowHardware($index)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>
@@ -377,7 +402,7 @@
 					<h4>Contact Information <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="contact">Who can I email if I have questions or concerns?</label>
-						<input required type="text" id="contact" ng-model="data.hackathon_contact"/>
+						<input required class="validate" type="text" class="validate" id="contact" ng-model="data.contact"/>
 					</div>
 				</section>
 				
@@ -386,9 +411,10 @@
             </form>
 		</div>
 		<div class="row container">
-			<button class="waves-effect waves-light btn red" ng-click="reset()">Reset</button>
+			<button class="waves-effect waves-light btn blue" ng-click="clickClear()">Clear Data</button>
+			<button class="waves-effect waves-light btn red" ng-click="clickReset()">Reset Fields</button>
 			<button type="submit" class ="waves-effect waves-light btn green">Submit</button>
-			<button type="submit" class ="waves-effect waves-light btn yellow" ng-click="update()">Save</button>
+			<button type="submit" class ="waves-effect waves-light btn yellow" ng-click="clickUpdate()">Save</button>
 		</div>
     </main> 
 </body>

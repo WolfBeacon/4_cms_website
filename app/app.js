@@ -1,150 +1,203 @@
-  $('.datepicker').pickadate({
-    selectMonths: true, // Creates a dropdown to control month
-    onClose: function(val) {
-        val = this.get();
+function updatePicker($root) {
 
-        var modelName = this.$node.attr("ng-model");
-        var scope = angular.element(this.$node).scope();
-        scope.$apply(function() {
-            scope.data[modelName] = val;
+    $root.find('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        onClose: function(val) {
+            val = this.get();
+
+            var modelName = this.$node.attr("ng-model");
+            var scope = angular.element(this.$node).scope();
+            scope.$apply(function() {
+                scope.data[modelName] = val;
+            });
+        }
+    });
+
+    $root.find('.clockpicker').clockpicker({ donetext: 'Submit', autoclose: true })
+        .find('input').change(function() {
+            var val = this.value;
+
+            var modelName = $(this).attr("ng-model");
+            modelName = modelName.substr(modelName.indexOf('.') + 1);
+
+            var scope = angular.element('#' + $root.attr('id')).scope();
+            scope.$apply(function() {
+                scope.data.timetable[modelName] = val;
+            });
         });
-    }
-  });
+}
+$(document).ready(function() {
 
-  angular.module('SponsorForm', ['LocalStorageModule'])
-    .controller('FormController', ['$scope','localStorageService', function($scope, localStorageService) {
+    updatePicker($('form'));
 
+    new Imgur({
+        clientid: 'cc86a8de0e7c459',
+        callback: function(res, elem) {
+            if (res.success === true) {
+                var $elem = $(elem);
+                if ($elem.attr("id") === "logo-upload") {
+                    $scope.data.logo_url = res.data.link;
+                } else {
+                    $scope.data.floorplan_urls.push(res.data.link);
+                }
+                console.log($elem.attr("id"));
+                console.log(res.data.link);
+            }
+        }
+    });
+});
 
-    	new Imgur({
-            clientid: 'cc86a8de0e7c459',
-            callback: function (res) {
-	            if (res.success === true) {
+angular.module('SponsorForm', ['LocalStorageModule'])
+    .controller('FormController', ['$scope', 'localStorageService', function($scope, localStorageService) {
 
-	              $scope.data.hackathon_logo_url = res.data.link;
-	               console.log(res.data.link);
-	            }
-	        }
-        });
+        updatePicker($('form'));
 
-  	  $scope.data = {
-        hackathon_logo_url: "",
-        hackathon_type: {
-          University: false,
-          Company: false,
-          HighSchool: false,
-          Other: false
-      	},
-        hackathon_timetable: [
-          {date: "", from: "", to: "", event_desc: "Registration"},
-          {date: "", from: "", to: "", event_desc: "Hacking Starts"},
-          {date: "", from: "", to: "", event_desc: "Sponsor Presentation"},
-          {date: "", from: "", to: "", event_desc: "Closing Ceremony"}
-        ],
-        hackathon_floorplan_urls: [],
-        hackathon_travel: false,
-        hackathon_links: {
-        	h_website: "",
-        	h_facebook: "",
-        	h_twitter: "",
-        	h_slack: "",
-        	h_medium: "",
-        	h_snapchat: "",
-        	h_devpost: "",
-        	h_other: ""
-        },
-        hackathon_sponsors: [
-        	{rank: 0, organization: ""}
-        ],
-        hackathon_judges: [
-        	{name: "", title: ""}
-        ],
-        hackathon_prizes: [
-        	{name: "", category: ""}
-        ],
-        hackathon_hardware: [
-        	{amount: 0, type: ""}
-        ],
-        hackathon_contact: ""
-  	  };
+        $scope.data = {
+            logo_url: "",
+            type: {
+                University: false,
+                Company: false,
+                HighSchool: false,
+                Other: false
+            },
+            timetable: [
+                { date: "", from: "00:00", to: "00:00", event_desc: "Registration" },
+                { date: "", from: "00:00", to: "00:00", event_desc: "Hacking Starts" },
+                { date: "", from: "00:00", to: "00:00", event_desc: "Sponsor Presentation" },
+                { date: "", from: "00:00", to: "00:00", event_desc: "Closing Ceremony" }
+            ],
+            floorplan_urls: [],
+            travel: false,
+            links: {
+                h_website: "",
+                h_facebook: "",
+                h_twitter: "",
+                h_slack: "",
+                h_medium: "",
+                h_snapchat: "",
+                h_devpost: "",
+                h_other: ""
+            },
+            tickets: [
+                { name: "Registration" },
+                { name: "Breakfast" },
+                { name: "Lunch" },
+                { name: "Dinner" }
+            ],
+            sponsors: [
+                { rank: 1, organization: "" }
+            ],
+            judges: [
+                { name: "", title: "" }
+            ],
+            prizes: [
+                { name: "", category: "" }
+            ],
+            hardware: [
+                { amount: 1, type: "" }
+            ],
+            contact: ""
+        };
 
-      $scope.update = function() {
-        $scope.master = angular.copy($scope.data);
-  		localStorageService.set('localStorageKey', JSON.stringify($scope.master));
-      };
+        $scope.backup = angular.copy($scope.data);
 
-      $scope.reset = function() {
-      	if ($scope.master) {
-      	  $scope.data = angular.copy($scope.master);
-    	}
-      };
+        $scope.clickUpdate = function() {
+            $scope.update();
+            Materialize.toast('Saved data to the cache.', 4000);
+        };
 
-	  $scope.removeRowTimetable = function(time) {
-		  var index = $scope.data.hackathon_timetable.indexOf(time);
-		  if (index >= 0 && $scope.data.hackathon_timetable.length > 1) {
-			$scope.data.hackathon_timetable.splice(index, 1);
-		  }
-	  };
+        $scope.clickReset = function() {
+            $scope.reset();
+            Materialize.toast('Reset fields to the saved data.', 4000);
+        };
 
-	  $scope.addRowTimetable = function() {
-		  $scope.data.hackathon_timetable.push({date: "", from: "", to: "", event_desc: ""});
-	  };
+        $scope.update = function() {
+            $scope.master = angular.copy($scope.data);
+            localStorageService.set('localStorageKey', JSON.stringify($scope.master));
+        };
 
-	  $scope.removeRowSponsor = function(time) {
-		  var index = $scope.data.hackathon_sponsors.indexOf(time);
-		  if (index >= 0 && $scope.data.hackathon_sponsors.length > 1) {
-			$scope.data.hackathon_sponsors.splice(index, 1);
-		  }
-	  };
+        $scope.reset = function() {
+            if ($scope.master) {
+                $scope.data = angular.copy($scope.master);
+                updatePicker($('form'));
+            }
+        };
 
-	  $scope.addRowSponsor = function() {
-		  $scope.data.hackathon_sponsors.push({rank: 0, organization: ""});
-	  };
+        $scope.clear = function() {
+            $scope.master = angular.copy($scope.backup);
+            localStorageService.set('localStorageKey', JSON.stringify($scope.master));
+        };
 
-	  $scope.removeRowJudge = function(time) {
-		  var index = $scope.data.hackathon_judges.indexOf(time);
-		  if (index >= 0 && $scope.data.hackathon_judges.length > 1) {
-			$scope.data.hackathon_judges.splice(index, 1);
-		  }
-	  };
+        $scope.clickClear = function() {
+            $scope.clear();
+            Materialize.toast('Cleared all saved data.', 4000);
+        };
 
-	  $scope.addRowJudge = function() {
-		  $scope.data.hackathon_judges.push({name: "", title: ""});
-	  };
+        $scope.removeRowTimetable = function(index) {
+            $scope.data.timetable.splice(index, 1);
+        };
 
-	  $scope.removeRowPrize = function(time) {
-		  var index = $scope.data.hackathon_prizes.indexOf(time);
-		  if (index >= 0 && $scope.data.hackathon_prizes.length > 1) {
-			$scope.data.hackathon_prizes.splice(index, 1);
-		  }
-	  };
+        $scope.addRowTimetable = function(index) {
+            $scope.addRow($scope.data.timetable, index, { date: "", from: "", to: "", event_desc: "" });
+            updatePicker($('#timetables'));
+        };
 
-	  $scope.addRowPrize = function() {
-		  $scope.data.hackathon_prizes.push({name: "", category: ""});
-	  };
+        $scope.removeRowTicket = function(index) {
+            $scope.data.tickets.splice(index, 1);
+        };
 
+        $scope.addRowTicket = function(index) {
+            $scope.addRow($scope.data.tickets, index, { name: "" });
+        };
 
-	  $scope.removeRowHardware = function(time) {
-		  var index = $scope.data.hackathon_hardware.indexOf(time);
-		  if (index >= 0 && $scope.data.hackathon_hardware.length > 1) {
-			$scope.data.hackathon_hardware.splice(index, 1);
-		  }
-	  };
+        $scope.removeRowSponsor = function(index) {
+            $scope.data.sponsors.splice(index, 1);
+        };
 
-	  $scope.addRowHardware = function() {
-		  $scope.data.hackathon_hardware.push({amount: "", type: ""});
-	  };
-    	try {
-  	  		$scope.master = JSON.parse(localStorageService.get('localStorageKey'));
-  	  		$scope.reset();
-  	  	} catch(e) {
-  	  		$scope.master = null;
-  	  	}
+        $scope.addRowSponsor = function(index) {
+            $scope.addRow($scope.data.sponsors, index, { rank: 0, organization: "" });
+        };
 
-  	  	if (!$scope.master) {
-  	  		$scope.update();
-  	  	}
-    
+        $scope.removeRowJudge = function(index) {
+            $scope.data.judges.splice(index, 1);
+        };
 
+        $scope.addRowJudge = function(index) {
+            $scope.addRow($scope.data.judges, index, { name: "", title: "" });
+        };
 
+        $scope.removeRowPrize = function(index) {
+            $scope.data.prizes.splice(index, 1);
+        };
 
+        $scope.addRowPrize = function(index) {
+            $scope.addRow($scope.data.prizes, index, { name: "", category: "" });
+        };
+
+        $scope.removeRowHardware = function(index) {
+            $scope.data.hardware.splice(index, 1);
+        };
+
+        $scope.addRowHardware = function(index) {
+            $scope.addRow($scope.data.hardware, index, { amount: "", type: "" });
+        };
+
+        $scope.addRow = function(arr, index, ob) {
+            if (index >= arr.length - 1) {
+                arr.push(ob);
+            } else {
+                arr.splice(index + 1, 0, ob);
+            }
+        };
+
+        try {
+            $scope.master = JSON.parse(localStorageService.get('localStorageKey'));
+            $scope.reset();
+        } catch (e) {
+            $scope.master = null;
+        }
+
+        if (!$scope.master) {
+            $scope.update();
+        }
     }]);
