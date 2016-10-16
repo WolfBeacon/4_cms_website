@@ -31,24 +31,7 @@ function updatePicker($root) {
 $(document).ready(function() {
 
     updatePicker($('form'));
-
     var service = new google.maps.places.AutocompleteService();
-
-    new Imgur({
-        clientid: 'cc86a8de0e7c459',
-        callback: function(res, elem) {
-            if (res.success === true) {
-                var $elem = $(elem);
-                if ($elem.attr("id") === "logo-upload") {
-                    $scope.data.logo_url = res.data.link;
-                } else {
-                    $scope.data.floorplan.push(res.data.link);
-                }
-                console.log($elem.attr("id"));
-                console.log(res.data.link);
-            }
-        }
-    });
 
     $('#location').materialize_autocomplete({
         dropdown: {
@@ -74,6 +57,22 @@ angular.module('SponsorForm', ['LocalStorageModule'])
     .controller('FormController', ['$scope', 'localStorageService', function($scope, localStorageService) {
 
         updatePicker($('form'));
+
+        new Imgur({
+            clientid: 'cc86a8de0e7c459',
+            callback: function(res, elem) {
+                if (res.success === true) {
+                    var $elem = $(elem);
+                    $scope.$apply(function() {
+                        if ($elem.attr("id") === "logo-upload") {
+                            $scope.data.logo_url = res.data.link;
+                        } else {
+                            $scope.data.floorplan.push(res.data.link);
+                        }
+                    });
+                }
+            }
+        });
 
         $scope.data = {
             logo_url: "",
