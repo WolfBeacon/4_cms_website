@@ -1,5 +1,12 @@
 function updatePicker($root) {
 
+    $root.find('.datepicker, .clockpicker').each(function(elem) {
+        var $elem = $(this);
+        var $parent = $elem.parent();
+
+        $elem.remove().appendTo($parent);
+    });
+
     $root.find('.datepicker').pickadate({
         min: -1,
         max: new Date(2037, 12, 31),
@@ -29,6 +36,10 @@ function updatePicker($root) {
         });
 }
 $(document).ready(function() {
+
+    $('#show-help').click(function() {
+        $('#help-text').slideToggle();
+    });
 
     updatePicker($('form'));
     var service = new google.maps.places.AutocompleteService();
@@ -94,18 +105,23 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         });
 
         $scope.data = {
+            name: "",
             logo: "",
             type: {
-                University: false,
-                Company: false,
-                HighSchool: false,
-                Other: false
+                university: false,
+                company: false,
+                school: false,
+                other: false
             },
+            startDate: "",
+            endDate: "",
+            size: 1,
+            desc: "",
             timetable: [
-                { date: "", from: "00:00", to: "00:00", description: "Registration" },
-                { date: "", from: "00:00", to: "00:00", description: "Hacking Starts" },
-                { date: "", from: "00:00", to: "00:00", description: "Sponsor Presentation" },
-                { date: "", from: "00:00", to: "00:00", description: "Closing Ceremony" }
+                { date: "", from: "00:00", to: "00:00", description: "Registration", ticket: true },
+                { date: "", from: "00:00", to: "00:00", description: "Hacking Starts", ticket: false },
+                { date: "", from: "00:00", to: "00:00", description: "Sponsor Presentation", ticket: false },
+                { date: "", from: "00:00", to: "00:00", description: "Closing Ceremony", ticket: false }
             ],
             floorplan: [],
             travel: false,
@@ -119,12 +135,6 @@ angular.module('SponsorForm', ['LocalStorageModule'])
                 devpost: "",
                 other: ""
             },
-            tickets: [
-                { name: "Registration" },
-                { name: "Breakfast" },
-                { name: "Lunch" },
-                { name: "Dinner" }
-            ],
             sponsors: [
                 { rank: 1, organization: "" }
             ],
@@ -184,23 +194,12 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.addRowTimetable = function(index) {
-            $scope.addRow($scope.data.timetable, index, { date: "", from: "", to: "", description: "" });
+            $scope.addRow($scope.data.timetable, index, { date: "", from: "", to: "", description: "", ticket: false });
             updatePicker($('#timetables'));
-        };
-
-        $scope.removeRowTicket = function(index) {
-            if ($scope.data.tickets.length <= 1) {
-                return;
-            }
-            $scope.data.tickets.splice(index, 1);
         };
 
         $scope.removeRowFloor = function(index) {
             $scope.data.floorplan.splice(index, 1);
-        };
-
-        $scope.addRowTicket = function(index) {
-            $scope.addRow($scope.data.tickets, index, { name: "" });
         };
 
         $scope.removeRowSponsor = function(index) {
@@ -218,7 +217,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
             var sponsor = $scope.data.prizes[index].sponsor;
             var has = $scope.data.sponsors.some(function(curr) {
-              return curr === sponsor;
+                return curr === sponsor;
             });
             console.log($scope);
             $scope.data.prizes[index].$setValidity("sponsor", has);

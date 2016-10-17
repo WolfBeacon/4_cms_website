@@ -68,20 +68,16 @@
 					<h4>Type of Hackathon <span class="red-text">*</span></h4>
 
 					<div class="input-field">
-						<input type="checkbox" id="box1" class="filled-in" ng-model="data.type.University">
-						<label for="box1" class="h-type-label">University</label>
+						<input type="checkbox" id="box1" class="filled-in" ng-model="data.type.university"><label for="box1" class="h-type-label">University</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box3" class="filled-in" ng-model="data.type.HighSchool">
-						<label for="box3" class="h-type-label">High School</label>
+						<input type="checkbox" id="box3" class="filled-in" ng-model="data.type.school"><label for="box3" class="h-type-label">High School</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box2" class="filled-in" ng-model="data.type.Company">
-						<label for="box2" class="h-type-label">Company</label>
+						<input type="checkbox" id="box2" class="filled-in" ng-model="data.type.company"><label for="box2" class="h-type-label">Company</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box4" class="filled-in" ng-model="data.type.Other">
-						<label for="box4" class="h-type-label">Other</label>
+						<input type="checkbox" id="box4" class="filled-in" ng-model="data.type.other"><label for="box4" class="h-type-label">Other</label>
 					</div>
                 </section>
 
@@ -91,11 +87,11 @@
 					<div class="row">
 						<div class="col s6 input-field">
 							<label for="start-date">Starts On</label>
-							<input type="date" id="start-date" class="datepicker" name="start" ng-model="data.start_date" required />
+							<input type="date" id="start-date" class="datepicker" name="start" ng-model="data.startDate" required />
 						</div>
 						<div class="col s6 input-field">
 							<label for="end-date">Ends On</label>
-							<input type="date" id="end-date" class="datepicker" name="end" ng-model="data.end_date" required />
+							<input type="date" id="end-date" class="datepicker" name="end" ng-model="data.endDate" required />
 						</div>
 					</div>
 				</section>
@@ -116,54 +112,41 @@
 									<p class="col s2">
 										To
 									</p>
-									<p class="col s6">
+									<p class="col s2">
 										Event
 									</p>
+									<p class="col s4">
+										Digital Ticket Required?<i id="show-help" class="material-icons">help_circle</i>
+									</p>
+								</div>
+								<div id="help-text" class="row" style="display: none;">
+									<label class="info-label blue-text">Digital Tickets will be generated on our mobile app and will enable hackers to attend an event only once. Select the "Digital Ticket Required?" option for events such as meals, registration, sponsor presentations, etc. Digital Tickets also allow for analytics such as attendance tracking for each event.</label>
 								</div>
 								<div class="row" ng-repeat="e in data.timetable | orderBy:from">
 									<div class="col s2 input-field">
 										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
 									</div>
-									<div class="col s2 input-field clockpicker">
-										<input type="text" ng-model="e.from" value="00:00" />
+									<div class="col s2 input-field">
+										<div class="clockpicker">
+											<input type="text" ng-model="e.from" value="00:00" />
+										</div>
 									</div>
-									<div class="col s2 input-field clockpicker">
-										<input type="text" ng-model="e.to" value="00:00" />
+									<div class="col s2 input-field">
+										<div class="clockpicker">
+											<input type="text" ng-model="e.to" value="00:00" />
+										</div>
 									</div>
-									<div class="col s4 input-field">
+									<div class="col s3 input-field">
 										<input type="text" ng-model="e.description" placeholder="Event"/>
+									</div>
+									<div class="col s1 input-field">
+										<input id="box0-{{$index}}" type="checkbox" class="filled-in" ng-model="e.ticket"/><label for="box0-{{$index}}"></label>
 									</div>
 									<div class="col s1 row-field">
 										<input class="add-row" type="image" ng-click="addRowTimetable($index)" src="assets/plus.png">
 									</div>
 									<div class="col s1 row-field">
 										<input class="no-row" type="image" ng-click="removeRowTimetable($index)" src="assets/delete.png" />
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</section>
-				
-				<section>
-					<ul class="collapsible" data-collapsible="accordion">
-						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Tickets</h4>
-							<div class="collapsible-body">
-								<div class="row">
-									<p class="col s2">
-										Name
-									</p>
-								</div>
-								<div class="row" ng-repeat="e in data.tickets">
-									<div class="col s10 input-field">
-										<input type="text" ng-model="e.name" placeholder="Ticket"/>
-									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowTicket($index)" src="assets/plus.png">
-									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowTicket($index)" src="assets/delete.png" />
 									</div>
 								</div>
 							</div>

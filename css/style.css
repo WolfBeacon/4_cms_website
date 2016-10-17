@@ -67,3 +67,7 @@ button.btn {
 	border: initial;
 	box-shadow: initial;
 }	
+
+#show-help {
+	cursor: pointer;
+}
