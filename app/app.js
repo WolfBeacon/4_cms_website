@@ -84,7 +84,7 @@ $(document).ready(function() {
 });
 
 angular.module('SponsorForm', ['LocalStorageModule'])
-    .controller('FormController', ['$scope', 'localStorageService', function($scope, localStorageService) {
+    .controller('FormController', ['$scope', 'localStorageService', '$timeout', function($scope, localStorageService, $timeout) {
 
         updatePicker($('form'));
 
@@ -156,6 +156,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
         $scope.clickUpdate = function() {
             $scope.update();
+            localStorageService.set('localStorageKey', JSON.stringify($scope.master));
             Materialize.toast('Saved data to the cache.', 4000);
         };
 
@@ -166,7 +167,6 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
         $scope.update = function() {
             $scope.master = angular.copy($scope.data);
-            localStorageService.set('localStorageKey', JSON.stringify($scope.master));
         };
 
         $scope.reset = function() {
@@ -194,9 +194,19 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.addRowTimetable = function(index) {
-            $scope.addRow($scope.data.timetable, index, { date: "", from: "", to: "", description: "", ticket: false });
-            updatePicker($('#timetables'));
+            $scope.addRow($scope.data.timetable, index, { date: "", from: "00:00", to: "00:00", description: "", ticket: false });
         };
+
+        $scope.$watchCollection(function() {
+            return $scope.data.timetable;
+        }, function(newVal, oldVal) {
+            if (newVal === oldVal) {
+                return;
+            }
+            $timeout(function() {
+                updatePicker($('#timetables'));
+            }, 0, false);
+        });
 
         $scope.removeRowFloor = function(index) {
             $scope.data.floorplan.splice(index, 1);
