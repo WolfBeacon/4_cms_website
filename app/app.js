@@ -72,30 +72,30 @@ function autocomplete(id, data) {
     });
 
     $elem.off('keyup').off('.change').autocomplete({ data: arg }).keyup().change(function() {
-        var val = $(this).val();
-        var scope = angular.element('#' + id).scope();
-        scope.$apply(function() {
-            scope.data[id] = val;
-        });
-    })
-    .on('keyup', function(e) {
-        var val = $(this).val();
-        if (!e || val === lastVal || e.which === 13 || val.length === 0) {
-            return;
-        }
-        lastVal = val;
-        service.getPlacePredictions({ input: val, types: [type] }, function(data, status) {
-            if (status != google.maps.places.PlacesServiceStatus.OK) {
-                console.log(status);
+            var val = $(this).val();
+            var scope = angular.element('#' + id).scope();
+            scope.$apply(function() {
+                scope.data[id] = val;
+            });
+        })
+        .on('keyup', function(e) {
+            var val = $(this).val();
+            if (!e || val === lastVal || e.which === 13 || val.length === 0) {
                 return;
             }
-            var ret = [];
-            data.forEach(function(prediction) {
-                ret.push(prediction.description);
+            lastVal = val;
+            service.getPlacePredictions({ input: val, types: [type] }, function(data, status) {
+                if (status != google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(status);
+                    return;
+                }
+                var ret = [];
+                data.forEach(function(prediction) {
+                    ret.push(prediction.description);
+                });
+                autocomplete(id, ret);
             });
-            autocomplete(id, ret);
         });
-    });
 }
 
 $(document).ready(function() {
