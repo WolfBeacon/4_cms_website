@@ -23,14 +23,6 @@ form {
 	margin-top: 2em;
 }
 
-
-.h-type-label {
-
- margin-left: 0.5em;
- margin-bottom: 0.5em;
-
-}
-
 .info-label {
  font-style: italic;
 	margin-bottom: 2em;
@@ -49,6 +41,11 @@ button.btn {
 	margin-right: 1em;
 }
 
+.user-data {
+	padding-bottom: 3em;
+	padding-left: 4em;
+}
+
 .collapsible-body p {
 	padding: initial;
 }
@@ -63,10 +60,14 @@ button.btn {
 	border: initial;
 }
 
-.collapsible {
+.collapsible, .collapsible.popout {
 	border: initial;
 	box-shadow: initial;
 }	
+
+.collapsible.popout>li {
+	margin: 0;
+}
 
 #show-help {
 	cursor: pointer;
@@ -75,4 +76,20 @@ button.btn {
 
 #help-text {
 	display: none;
+}
+
+.collapsible li.active i {
+  -ms-transform: rotate(180deg); /* IE 9 */
+  -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 480px) {
+	.user-data {
+		padding-left: 0;
+	}	
+	.popout [type="checkbox"]+label {
+		line-height: 1em;
+		padding-left: 2em;
+	}
 }

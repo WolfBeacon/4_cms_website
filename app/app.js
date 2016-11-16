@@ -1,3 +1,5 @@
+var storageKey = 'WolfBeaconOSH';
+
 function updatePicker($root) {
 
     $root.find('.datepicker, .clockpicker').each(function(elem) {
@@ -125,16 +127,16 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             ],
             floorplan: [],
             travel: false,
-            links: {
-                website: "",
-                facebook: "",
-                twitter: "",
-                slack: "",
-                medium: "",
-                snapchat: "",
-                devpost: "",
-                other: ""
-            },
+            links: [
+                { text: "Website", slug: "website", value: "", required: true },
+                { text: "Facebook", slug: "facebook", value: "" },
+                { text: "Twitter", slug: "twitter", value: "" },
+                { text: "Slack", slug: "slack", value: "" },
+                { text: "Medium", slug: "medium", value: "" },
+                { text: "Snapchat", slug: "snapchat", value: "" },
+                { text: "DevPost", slug: "devpost", value: "" },
+                { text: "Other", slug: "other", value: "" }
+            ],
             sponsors: [
                 { rank: 1, organization: "" }
             ],
@@ -149,14 +151,118 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             ],
             contact: "",
             city: "",
-            address: ""
+            address: "",
+            advanced: false,
+            advancedQuestions: [
+                { name: "", type: "", target: "", options: [], domain: "", limit: -1, policy: "" }
+            ],
+            userData: [{
+                type: "Personal Info",
+                target: "all",
+                fields: [
+                    { name: "Full Name", type: "text", limit: 50, value: true },
+                    { name: "Gender", type: "option", options: ["Male", "Female", "Unspecified or Other"], value: true },
+                    { name: "Birth Date", type: "date", value: true },
+                    { name: "Phone Number", type: "phone", value: true },
+                    { name: "E-mail Address", type: "email", value: true },
+                    { name: "City of Residence", type: "location", value: true },
+                    { name: "GitHub URL", type: "url", domain: "github.com", value: true },
+                    { name: "Twitter URL", type: "url", domain: "twitter.com", value: true },
+                    { name: "LinkedIn URL", type: "url", domain: "linkedin.com", value: true },
+                    { name: "Personal Website URL", type: "url", value: true },
+                    { name: "Dietary restrictions", type: "text", limit: 50, value: true },
+                    { name: "Reimbursements?", type: "option", options: ["Yes", "No"], value: true },
+                    { name: "T-shirt size", type: "option", options: ["XXL", "XL", "L", "M", "S", "XS"], value: true }
+                ]
+            }, {
+                type: "Career Info",
+                target: "all",
+                fields: [
+                    { name: "Level of Study", type: "option", options: ["High School", "Undergraduate", "Graduate"], value: true },
+                    { name: "Major of Study", type: "text", limit: 50, value: true },
+                    { name: "School last attended", type: "school", value: true },
+                    { name: "Current Year of Study", type: "number", value: true },
+                    { name: "Graduation Year", type: "number", value: true },
+                    { name: "Most recent workplace", type: "text", limit: 50, value: true },
+                    { name: "Industry", type: "text", limit: 50, value: true },
+                    { name: "Resume", type: "file", value: true }
+                ]
+            }, {
+                type: "Hacker Info",
+                target: "hackers",
+                fields: [
+                    { name: "Goals", type: "multioption", options: ["Learning experience", "Meeting new people", "Win prizes", "Other"], value: true },
+                    { name: "Special Hardware", type: "textarea", limit: 200, value: true },
+                    { name: "First Hackathon?", type: "option", options: ["Yes", "No"], value: true },
+                    { name: "Have a team already in mind?", type: "option", options: ["Yes", "No"], value: true },
+                    { name: "Scale of planned project", type: "textarea", limit: 100, value: true }, {
+                        name: "Greatest areas of proficiency",
+                        type: "multioption",
+                        options: ["User Experience and Design (UX / UI)", "Quality Assurance (QA / Testing)", "Front-end Development",
+                            "Back-end Development", "Data Analytics", "Mobile App Development", "Application Development",
+                            "Information Systems", "Planning / Management", "Other"
+                        ],
+                        value: true
+                    },
+                    { name: "Level of experience", type: "option", options: ["Expert", "Advanced", "Intermediate", "Amateur", "Novice"], value: true },
+                    { name: "Technical proficiencies", type: "tech", value: true }
+                ]
+            }, {
+                type: "Volunteer Info",
+                target: "volunteers",
+                fields: [
+                    { name: "Why volunteer?", type: "textarea", limit: 300, value: true },
+                    { name: "Availability", type: "multidate", value: true },
+                    { name: "Previous experience", type: "textarea", limit: 300, value: true }
+                ]
+            }, {
+                type: "Mentor Info",
+                target: "mentors",
+                fields: [
+                    { name: "Why mentor?", type: "textarea", limit: 300, value: true },
+                    { name: "Availability", type: "multidate", value: true },
+                    { name: "Types of previous experiences", type: "textarea", limit: 100, value: true },
+                    { name: "Years of professional experience", type: "number", value: true },
+                    { name: "Areas you have experience in", type: "textarea", limit: 100, value: true },
+                    { name: "Previous experience and works", type: "textarea", limit: 300, value: true }
+                ]
+            }, {
+                type: "Miscellaneous",
+                target: "all",
+                fields: [
+                    { name: "Other special needs", type: "textarea", limit: 100, value: true },
+                    { name: "How you heard about us", type: "textarea", limit: 300, value: true },
+                    { name: "Comments or suggestions for us", type: "textarea", limit: 300, value: true }
+                ]
+            }]
         };
-
+        /*
+        Custom questions (question name, type of question, target)
+        option/multioption: options, text/textarea: limit, policy: long block text, url: domain
+        */
+        $scope.targetTypes = ["All", "Hackers", "Volunteers", "Mentors"];
+        $scope.questionTypes = {
+            "Hardware": "tech",
+            "Short text": "text",
+            "Long text": "textarea",
+            "Single option": "option",
+            "Multiple option": "multioption",
+            "Numeric": "number",
+            "Single date and time": "date",
+            "Multiple dates and times": "multidate",
+            "File upload": "file",
+            "Phone number": "phone",
+            "Email address": "email",
+            "Location": "location",
+            "URL": "url",
+            "University or school": "school"
+        };
+        $scope.questionTypeText = Object.keys($scope.questionTypes);
         $scope.backup = angular.copy($scope.data);
 
         $scope.clickUpdate = function() {
             $scope.update();
-            localStorageService.set('localStorageKey', JSON.stringify($scope.master));
+            localStorageService.set(storageKey, JSON.stringify($scope.master));
             Materialize.toast('Saved data to the cache.', 4000);
         };
 
@@ -178,7 +284,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
         $scope.clear = function() {
             $scope.master = angular.copy($scope.backup);
-            localStorageService.set('localStorageKey', JSON.stringify($scope.master));
+            localStorageService.set(storageKey, JSON.stringify($scope.master));
         };
 
         $scope.clickClear = function() {
@@ -275,8 +381,28 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             }
         };
 
+        $scope.isDataBoxChecked = function(index) {
+            return $scope.data.userData[index].fields.some(function(el) {
+                return el.value;
+            });
+        };
+
+        $scope.isDataBoxIndeterminate = function(index) {
+            return $scope.isDataBoxChecked(index) && !$scope.data.userData[index].fields.every(function(el) {
+                return el.value;
+            });
+        };
+
+        $scope.updateDataBox = function(index) {
+            var toSet = !$scope.isDataBoxChecked(index);
+            // Set unchecked
+            $scope.data.userData[index].fields.forEach(function(el) {
+                el.value = toSet;
+            });
+        };
+
         try {
-            $scope.master = JSON.parse(localStorageService.get('localStorageKey'));
+            $scope.master = JSON.parse(localStorageService.get(storageKey));
             $scope.reset();
         } catch (e) {
             $scope.master = null;
@@ -285,4 +411,14 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         if (!$scope.master) {
             $scope.update();
         }
-    }]);
+    }])
+    .directive('ngIndeterminate', function($compile) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attributes) {
+                scope.$watch(attributes['ngIndeterminate'], function(value) {
+                    element.prop('indeterminate', !!value);
+                });
+            }
+        };
+    });

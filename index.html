@@ -9,9 +9,9 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 	
 	<!--Angular-->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	<script defer type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.js"></script>
-	<script defer src="app/angular-local-storage.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<script defer src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular-local-storage/0.5.0/angular-local-storage.min.js"></script>
 
 	<!-- Materialize -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
@@ -26,7 +26,6 @@
 	<!-- Other CSS -->
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/imgur.css">
-	<link rel="stylesheet" href="css/build.css">
 
 	<!--imgur -->
 	<script defer type="text/javascript" src="js/imgur.min.js"></script>
@@ -50,10 +49,17 @@
             <form novalidate class="simple-form" id="form">
 				<section>
 					<h4>Name of Hackathon <span class="red-text">*</span></h4>
-					
 					<div class="input-field">
-						<label for="hack_name">Name</label>
-						<input required class="validate" type="text" id="hack_name" ng-model="data.name"/>
+						<label for="hack-name">Name</label>
+						<input required class="validate" type="text" id="hack-name" ng-model="data.name"/>
+					</div>
+				</section>
+				
+				<section>
+					<h4>Description <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="description">Short description or slogan</label>
+						<input required class="validate" type="text" id="description" ng-model="data.desc"/>
 					</div>
 				</section>
 				
@@ -65,24 +71,33 @@
 				</section>
 				
 				<section>
-					<h4>Type of Hackathon <span class="red-text">*</span></h4>
+					<h4>Type <span class="red-text">*</span></h4>
 
 					<div class="input-field">
-						<input type="checkbox" id="box1" class="filled-in" ng-model="data.type.university"><label for="box1" class="h-type-label">University</label>
+						<input type="checkbox" id="box1" class="filled-in" ng-model="data.type.university"><label for="box1">University</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box3" class="filled-in" ng-model="data.type.school"><label for="box3" class="h-type-label">High School</label>
+						<input type="checkbox" id="box3" class="filled-in" ng-model="data.type.school"><label for="box3">High School</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box2" class="filled-in" ng-model="data.type.company"><label for="box2" class="h-type-label">Company</label>
+						<input type="checkbox" id="box2" class="filled-in" ng-model="data.type.company"><label for="box2">Company</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box4" class="filled-in" ng-model="data.type.other"><label for="box4" class="h-type-label">Other</label>
+						<input type="checkbox" id="box4" class="filled-in" ng-model="data.type.other"><label for="box4">Other</label>
 					</div>
                 </section>
+				
 
 				<section>
-					<h4>Date Range of Hackathon <span class="red-text">*</span></h4>
+					<h4>Approximate Size <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="size">Number of Hackers</label>
+						<input required type="number" class="validate" step="1" min="1" id="size" ng-model="data.size" />
+					</div>
+				</section>
+
+				<section>
+					<h4>Date Range <span class="red-text">*</span></h4>
 
 					<div class="row">
 						<div class="col s6 input-field">
@@ -95,64 +110,7 @@
 						</div>
 					</div>
 				</section>
-
-                <section id="timetables">
-					<ul class="collapsible" data-collapsible="accordion">
-						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Timetable</h4>
-							<div class="collapsible-body">
-								<label class="info-label blue-text">Events will be listed in chronological order</label>
-								<div class="row">
-									<p class="col s2">
-										Date
-									</p>
-									<p class="col s2">
-										From
-									</p>
-									<p class="col s2">
-										To
-									</p>
-									<p class="col s3">
-										Event
-									</p>
-									<p class="col s2">
-										Ticket? <i id="show-help" class="material-icons">help_circle</i>
-									</p>
-								</div>
-								<div id="help-text" class="row">
-									<label class="info-label blue-text">Digital Tickets will be generated on our mobile app and will enable hackers to attend an event only once. Select the "Ticket?" option for events such as meals, registration, sponsor presentations, etc. Digital Tickets also allow for analytics such as attendance tracking for each event.</label>
-								</div>
-								<div class="row" ng-repeat="e in data.timetable | orderBy:from">
-									<div class="col s2 input-field">
-										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
-									</div>
-									<div class="col s2 input-field">
-										<div class="clockpicker">
-											<input type="text" ng-model="e.from" value="00:00" />
-										</div>
-									</div>
-									<div class="col s2 input-field">
-										<div class="clockpicker">
-											<input type="text" ng-model="e.to" value="00:00" />
-										</div>
-									</div>
-									<div class="col s3 input-field">
-										<input type="text" ng-model="e.description" placeholder="Event"/>
-									</div>
-									<div class="col s1 input-field">
-										<input id="box0-{{$index}}" type="checkbox" class="filled-in" ng-model="e.ticket"/><label for="box0-{{$index}}"></label>
-									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowTimetable($index)" src="assets/plus.png">
-									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowTimetable($index)" src="assets/delete.png" />
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</section>
+				
 
 				<section>
 					<h4>Location <span class="red-text">*</span></h4>
@@ -169,13 +127,82 @@
 							<ul id="secondDropdown" class="dropdown-content ac-dropdown"></ul>
 						</div>
 					</div>
-					
+				</section>
+				
+				<section>
+					<h5>Do you offer travel reimbursements? <span class="red-text">*</span></h5>
+					<div class="input-field">
+						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.travel" />
+						<label for="yes">Yes</label>
+					</div>
+					<div class="input-field">
+						<input class="with-gap" name="no" id="no" type="radio" ng-value="false" ng-model="data.travel" />
+						<label for="no">No</label>
+					</div>
+				</section>
+
+                <section id="timetables">
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Timetable</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Events will be listed in chronological order</label>
+								<div class="row">
+									<p class="col s4 m2">
+										Date
+									</p>
+									<p class="col s4 m2">
+										From
+									</p>
+									<p class="col s4 m2">
+										To
+									</p>
+									<p class="col s6 m3">
+										Event
+									</p>
+									<p class="col s6 m2">
+										Ticket? <i id="show-help" class="material-icons">help_circle</i>
+									</p>
+								</div>
+								<div id="help-text" class="row">
+									<label class="info-label blue-text">Digital Tickets will be generated on our mobile app and will enable hackers to attend an event only once. Select the "Ticket?" option for events such as meals, registration, sponsor presentations, etc. Digital Tickets also allow for analytics such as attendance tracking for each event.</label>
+								</div>
+								<div class="row" ng-repeat="e in data.timetable | orderBy:from">
+									<div class="col s4 m2 input-field">
+										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
+									</div>
+									<div class="col s4 m2 input-field">
+										<div class="clockpicker">
+											<input type="text" ng-model="e.from" value="00:00" />
+										</div>
+									</div>
+									<div class="col s4 m2 input-field">
+										<div class="clockpicker">
+											<input type="text" ng-model="e.to" value="00:00" />
+										</div>
+									</div>
+									<div class="col s8 m3 input-field">
+										<input type="text" ng-model="e.description" placeholder="Event"/>
+									</div>
+									<div class="col s2 m1 row-field">
+										<input id="box0-{{$index}}" type="checkbox" class="filled-in" ng-model="e.ticket"/><label for="box0-{{$index}}"></label>
+									</div>
+									<div class="col s1 row-field">
+										<input class="add-row" type="image" ng-click="addRowTimetable($index)" src="assets/plus.png">
+									</div>
+									<div class="col s1 row-field">
+										<input class="no-row" type="image" ng-click="removeRowTimetable($index)" src="assets/delete.png" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
 				</section>
 				
 				<section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Venue Floor Plan</h4>
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Venue Floor Plan</h4>
 							
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Tip: Highlight hacker spaces</label>
@@ -184,7 +211,7 @@
 								</div>
 								
 								
-								<div class="row">
+								<div class="row" ng-if="data.floorplan.length > 0">
 									<p class="col s5">
 										URL
 									</p>
@@ -201,72 +228,18 @@
 						</li>
 					</ul>
 				</section>
-
-				<section>
-					<h4>Size of Hackathon <span class="red-text">*</span></h4>
-					<div class="input-field">
-						<label for="size">How many hackers can you accommodate?</label>
-						<input required type="number" class="validate" step="1" min="1" id="size" ng-model="data.size" />
-					</div>
-				</section>
-				
-				<section>
-					<h4>Description <span class="red-text">*</span></h4>
-					<div class="input-field">
-						<label for="description">Add a short description of your hackathon (e.g. your slogan)</label>
-						<input required class="validate" type="text" id="description" ng-model="data.desc"/>
-					</div>
-				</section>
-				
-				<section>
-					<h4>Do you offer travel reimbursements? <span class="red-text">*</span></h4>
-					<div class="input-field">
-						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.travel" />
-						<label for="yes">Yes</label>
-					</div>
-					<div class="input-field">
-						<input class="with-gap" name="no" id="no" type="radio" ng-value="false" ng-model="data.travel" />
-						<label for="no">No</label>
-					</div>
-				</section>
 				
 				<!-- Hyperlinks -->
 				<section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Hyperlinks</h4>
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Hyperlinks</h4>
 							<div class="collapsible-body">
-								<div class="input-field">
-									<input id="website" required class="validate" type="text" ng-model="data.links.website" />
-									<label for="website">Website <span class="red-text">*</span></label>
-								</div>
-								<div class="input-field">
-									<input id="facebook" type="text" ng-model="data.links.facebook" />
-									<label for="facebook">Facebook</label>
-								</div>
-								<div class="input-field">
-									<input id="twitter" type="text" ng-model="data.links.twitter" />
-									<label for="twitter">Twitter</label>
-								</div>
-								<div class="input-field">
-									<input id="slack" type="text" ng-model="data.links.slack" />
-									<label for="slack">Slack</label>
-								</div>
-								<div class="input-field">
-									<input id="medium" type="text" ng-model="data.links.medium" />
-									<label for="medium">Medium</label>
-								</div>
-								<div class="input-field">
-									<input id="snapchat" type="text" ng-model="data.links.snapchat" />
-									<label for="snapchat">Snapchat</label>
-								</div>
-								<div class="input-field">
-									<input id="devpost" type="text" ng-model="data.links.devpost" />
-									<label for="devpost">Devpost</label>
-								</div>
-								<div class="input-field">
-									<input id="other" type="text" ng-model="data.links.other" />
-									<label for="other">Other</label>
+								<div class="row" ng-repeat="e in data.links">
+									<div class="col s12 input-field">
+										<input id="{{e.slug}}" ng-required="e.required" class="validate" type="text" ng-model="e.value" />
+										<label for="{{e.slug}}">{{e.text}} <span ng-if="e.required" class="red-text">*</span></label>
+									</div>
 								</div>
 							</div>
 						</li>
@@ -277,7 +250,7 @@
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Sponsors</h4>
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Sponsors</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Sponsors will be listed in rank order</label>
 								<div class="row">
@@ -311,7 +284,7 @@
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Judges</h4>
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Judges</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Judges will be listed in alphabetical order</label>
 								<div class="row">
@@ -345,20 +318,20 @@
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Prizes</h4>
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Prizes</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Prizes will be listed in alphabetical order</label>
 								<div class="row">
-									<p class="col s3">
+									<p class="col s6 m3">
 										Name
 									</p>
-									<p class="col s2">
+									<p class="col s6 m2">
 										Sponsor
 									</p>
-									<p class="col s1">
+									<p class="col s4 m1">
 										Winners
 									</p>
-									<p class="col s1">
+									<p class="col s3 m1">
 										Value
 									</p>
 									<p class="col s5">
@@ -366,16 +339,16 @@
 									</p>
 								</div>
 								<div class="row" ng-repeat="e in data.prizes | orderBy:name">
-									<div class="col s3 input-field">
+									<div class="col s6 m3 input-field">
 										<input type="text" ng-model="e.name" placeholder="Name"/>
 									</div>
-									<div class="col s2 input-field">
+									<div class="col s6 m2 input-field">
 										<input type="text" ng-model="e.sponsor" ng-change="checkSponsor($index)" placeholder="Sponsor"/>
 									</div>
-									<div class="col s1 input-field">
+									<div class="col s4 m1 input-field">
 										<input type="number" min="1" step="1" class="validate" ng-model="e.winners" placeholder="#"/>
 									</div>
-									<div class="col s1 input-field">
+									<div class="col s3 m1 input-field">
 										<input type="number" min="0" step="1" class="validate" ng-model="e.value" placeholder="$"/>
 									</div>
 									<div class="col s3 input-field">
@@ -397,7 +370,7 @@
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
-							<h4 class="collapsible-header active"><i class="material-icons">play_arrow</i>Available Hardware</h4>
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Available Hardware</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Hardware will be listed in alphabetical order</label>
 								<div class="row">
@@ -427,15 +400,42 @@
 					</ul>
 				</section>
 				
+				<!-- User Data -->
+                <section>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>User Data Needed</h4>
+							<div class="collapsible-body">
+								<label class="info-label blue-text">Click a section to reveal specific data</label>
+								<ul class="collapsible popout" data-collapsible="expandable">
+									<li ng-repeat="e in data.userData">
+										<div class="collapsible-header">
+											<i class="material-icons">expand_less</i>
+											<div class="input-field">
+												<input id="box1-{{$index}}" type="checkbox" ng-click="updateDataBox($index)" ng-indeterminate="isDataBoxIndeterminate($index)" ng-checked="isDataBoxChecked($index)"/><label for="box1-{{$index}}">{{e.type}}</label>
+											</div>
+										</div>
+										<div class="collapsible-body user-data">
+											<div class="col s12 input-field" ng-repeat="f in e.fields">
+												<input id="box1-{{$parent.$index}}-{{$index}}" type="checkbox" class="filled-in" ng-model="f.value"/><label for="box1-{{$parent.$index}}-{{$index}}">{{f.name}}</label>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</section>
+				
 				<section>
 					<h4>Contact Information <span class="red-text">*</span></h4>
 					<div class="input-field">
-						<label for="contact">Who can I email if I have questions or concerns?</label>
+						<label for="contact">E-mail</label>
 						<input required class="validate" type="text" class="validate" id="contact" ng-model="data.contact"/>
 					</div>
 				</section>
 				
-				<pre>current_data = {{data | json}}</pre>
+				<pre>current = {{data | json}}</pre>
 				<pre>master = {{master | json}}</pre>
             </form>
 		</div>
