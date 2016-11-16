@@ -45,6 +45,10 @@ button.btn {
 	padding-bottom: 3em;
 	padding-left: 4em;
 }
+.user-data-advanced {
+	padding-bottom: 0.5em;
+	padding-left: 2em;
+}
 
 .collapsible-body p {
 	padding: initial;
@@ -69,23 +73,31 @@ button.btn {
 	margin: 0;
 }
 
+.table-header {
+    font-weight: bold;
+}
+
 #show-help {
 	cursor: pointer;
 	margin-left: 0.35em;
+}
+
+.row-field i {
+	cursor:pointer;
 }
 
 #help-text {
 	display: none;
 }
 
-.collapsible li.active i {
+.collapsible li.active .collapsible-header i {
   -ms-transform: rotate(180deg); /* IE 9 */
   -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
   transform: rotate(180deg);
 }
 
 @media screen and (max-width: 480px) {
-	.user-data {
+	.user-data, .user-data-advanced {
 		padding-left: 0;
 	}	
 	.popout [type="checkbox"]+label {

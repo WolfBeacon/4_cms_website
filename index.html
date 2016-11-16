@@ -130,7 +130,7 @@
 				</section>
 				
 				<section>
-					<h5>Do you offer travel reimbursements? <span class="red-text">*</span></h5>
+					<h5>Do you offer travel reimbursements?</h5>
 					<div class="input-field">
 						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.travel" />
 						<label for="yes">Yes</label>
@@ -147,7 +147,7 @@
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Timetable</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Events will be listed in chronological order</label>
-								<div class="row">
+								<div class="row table-header">
 									<p class="col s4 m2">
 										Date
 									</p>
@@ -167,7 +167,7 @@
 								<div id="help-text" class="row">
 									<label class="info-label blue-text">Digital Tickets will be generated on our mobile app and will enable hackers to attend an event only once. Select the "Ticket?" option for events such as meals, registration, sponsor presentations, etc. Digital Tickets also allow for analytics such as attendance tracking for each event.</label>
 								</div>
-								<div class="row" ng-repeat="e in data.timetable | orderBy:from">
+								<div class="row" ng-repeat="e in data.timetable | orderBy:['date','from','to','description']">
 									<div class="col s4 m2 input-field">
 										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
 									</div>
@@ -182,16 +182,16 @@
 										</div>
 									</div>
 									<div class="col s8 m3 input-field">
-										<input type="text" ng-model="e.description" placeholder="Event"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.description" placeholder="Event"/>
 									</div>
 									<div class="col s2 m1 row-field">
 										<input id="box0-{{$index}}" type="checkbox" class="filled-in" ng-model="e.ticket"/><label for="box0-{{$index}}"></label>
 									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowTimetable($index)" src="assets/plus.png">
+									<div class="col s1 row-field teal-text text-lighten-1">
+										<i class="material-icons" ng-click="addRowTimetable($index)">add</i>
 									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowTimetable($index)" src="assets/delete.png" />
+									<div class="col s1 row-field red-text text-darken-1">
+										<i class="material-icons" ng-click="removeRowTimetable($index)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -211,7 +211,7 @@
 								</div>
 								
 								
-								<div class="row" ng-if="data.floorplan.length > 0">
+								<div class="row table-header" ng-if="data.floorplan.length > 0">
 									<p class="col s5">
 										URL
 									</p>
@@ -220,8 +220,8 @@
 									<div class="col s10 input-field">
 										<p ng-bind="e"></p>
 									</div>
-									<div class="col s2 row-field">
-										<input class="no-row" type="image" ng-click="removeRowFloor($index)" src="assets/delete.png" />
+									<div class="col s2 row-field red-text text-darken-1">
+										<i class="material-icons" ng-click="removeRowFloor($index)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -253,7 +253,7 @@
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Sponsors</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Sponsors will be listed in rank order</label>
-								<div class="row">
+								<div class="row table-header">
 									<p class="col s3">
 										Rank
 									</p>
@@ -261,18 +261,18 @@
 										Organization
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.sponsors | orderBy:rank">
+								<div class="row" ng-repeat="e in data.sponsors | orderBy:['rank','organization']">
 									<div class="col s3 input-field">
-										<input type="number" class="validate" step="1" min="1" ng-model="e.rank" placeholder="Rank"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" step="1" min="1" ng-model="e.rank" placeholder="Rank"/>
 									</div>
 									<div class="col s7 input-field">
-										<input type="text" ng-model="e.organization" placeholder="Organization"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.organization" placeholder="Organization"/>
 									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowSponsor($index)" src="assets/plus.png">
+									<div class="col s1 row-field teal-text text-lighten-1">
+										<i class="material-icons" ng-click="addRowSponsor($index)">add</i>
 									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowSponsor($index)" src="assets/delete.png" />
+									<div class="col s1 row-field red-text text-darken-1">
+										<i class="material-icons" ng-click="removeRowSponsor($index)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -287,7 +287,7 @@
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Judges</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Judges will be listed in alphabetical order</label>
-								<div class="row">
+								<div class="row table-header">
 									<p class="col s5">
 										Name
 									</p>
@@ -295,18 +295,18 @@
 										Title
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.judges | orderBy:name">
+								<div class="row" ng-repeat="e in data.judges | orderBy:['name','title']">
 									<div class="col s5 input-field">
-										<input type="text" ng-model="e.name" placeholder="Full Name"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.name" placeholder="Full Name"/>
 									</div>
 									<div class="col s5 input-field">
-										<input type="text" ng-model="e.title" placeholder="Title of Judge"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.title" placeholder="Title of Judge"/>
 									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowJudge($index)" src="assets/plus.png">
+									<div class="col s1 row-field teal-text text-lighten-1">
+										<i class="material-icons" ng-click="addRowJudge($index)">add</i>
 									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowJudge($index)" src="assets/delete.png" />
+									<div class="col s1 row-field red-text text-darken-1">
+										<i class="material-icons" ng-click="removeRowJudge($index)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -321,7 +321,7 @@
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Prizes</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Prizes will be listed in alphabetical order</label>
-								<div class="row">
+								<div class="row table-header">
 									<p class="col s6 m3">
 										Name
 									</p>
@@ -338,27 +338,27 @@
 										Description
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.prizes | orderBy:name">
+								<div class="row" ng-repeat="e in data.prizes | orderBy:['name','sponsor','value','winners','description']">
 									<div class="col s6 m3 input-field">
-										<input type="text" ng-model="e.name" placeholder="Name"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.name" placeholder="Name"/>
 									</div>
 									<div class="col s6 m2 input-field">
-										<input type="text" ng-model="e.sponsor" ng-change="checkSponsor($index)" placeholder="Sponsor"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.sponsor" ng-change="checkSponsor($index)" placeholder="Sponsor"/>
 									</div>
 									<div class="col s4 m1 input-field">
-										<input type="number" min="1" step="1" class="validate" ng-model="e.winners" placeholder="#"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="number" min="1" step="1" class="validate" ng-model="e.winners" placeholder="#"/>
 									</div>
 									<div class="col s3 m1 input-field">
-										<input type="number" min="0" step="1" class="validate" ng-model="e.value" placeholder="$"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="number" min="0" step="1" class="validate" ng-model="e.value" placeholder="$"/>
 									</div>
 									<div class="col s3 input-field">
-										<input type="text" ng-model="e.description" placeholder="Description"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.description" placeholder="Description"/>
 									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowPrize($index)" src="assets/plus.png">
+									<div class="col s1 row-field teal-text text-lighten-1">
+										<i class="material-icons" ng-click="addRowPrize($index)">add</i>
 									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowPrize($index)" src="assets/delete.png" />
+									<div class="col s1 row-field red-text text-darken-1">
+										<i class="material-icons" ng-click="removeRowPrize($index)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -373,7 +373,7 @@
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Available Hardware</h4>
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Hardware will be listed in alphabetical order</label>
-								<div class="row">
+								<div class="row table-header">
 									<p class="col s5">
 										Amount
 									</p>
@@ -381,18 +381,18 @@
 										Type
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hardware | orderBy:type">
+								<div class="row" ng-repeat="e in data.hardware | orderBy:['type','amount']">
 									<div class="col s5 input-field">
-										<input type="number" class="validate" min="1" step="1" ng-model="e.amount" placeholder="Amount"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" min="1" step="1" ng-model="e.amount" placeholder="Amount"/>
 									</div>
 									<div class="col s5 input-field">
-										<input type="text" ng-model="e.type" placeholder="Type"/>
+										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.type" placeholder="Type"/>
 									</div>
-									<div class="col s1 row-field">
-										<input class="add-row" type="image" ng-click="addRowHardware($index)" src="assets/plus.png">
+									<div class="col s1 row-field teal-text text-lighten-1">
+										<i class="material-icons" ng-click="addRowHardware($index)">add</i>
 									</div>
-									<div class="col s1 row-field">
-										<input class="no-row" type="image" ng-click="removeRowHardware($index)" src="assets/delete.png" />
+									<div class="col s1 row-field red-text text-darken-1">
+										<i class="material-icons" ng-click="removeRowHardware($index)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -418,6 +418,51 @@
 										<div class="collapsible-body user-data">
 											<div class="col s12 input-field" ng-repeat="f in e.fields">
 												<input id="box1-{{$parent.$index}}-{{$index}}" type="checkbox" class="filled-in" ng-model="f.value"/><label for="box1-{{$parent.$index}}-{{$index}}">{{f.name}}</label>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">expand_less</i>
+											<div class="input-field">
+												<input id="box5" type="checkbox" ng-model="data.advanced"/><label for="box5">Advanced</label>
+											</div>
+										</div>
+										<div class="collapsible-body user-data-advanced">
+											<label class="info-label blue-text">Warning: This is only for organizers who know what they are doing!</label>
+											<div ng-if="data.advanced">
+												<label class="info-label blue-text">Questions will be listed in alphabetical order</label>
+												<div class="row table-header">
+													<p class="col s6 m3">
+														Question
+													</p>
+													<p class="col s6 m3">
+														Type
+													</p>
+													<p class="col s6 m2">
+														Visible To?
+													</p>
+													<p class="col s6 m3">
+														Data
+													</p>
+												</div>
+												<div class="row" ng-repeat="e in data.advancedQuestions | orderBy:['name','type','target']">
+													<div class="col s6 m3 input-field">
+														<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.name" placeholder="Question"/>
+													</div>
+													<div class="col s6 m3 input-field">
+													</div>
+													<div class="col s6 m2 input-field">
+													</div>
+													<div class="col s4 m2 input-field">
+													</div>
+													<div class="col s1 row-field teal-text text-lighten-1">
+														<i class="material-icons" ng-click="addRowData($index)">add</i>
+													</div>
+													<div class="col s1 row-field red-text text-darken-1">
+														<i class="material-icons" ng-click="removeRowData($index)">clear</i>
+													</div>
+												</div>
 											</div>
 										</div>
 									</li>

@@ -260,13 +260,21 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         $scope.questionTypeText = Object.keys($scope.questionTypes);
         $scope.backup = angular.copy($scope.data);
 
+        $scope.blur = function() {
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+        };
+
         $scope.clickUpdate = function() {
+            $scope.blur();
             $scope.update();
             localStorageService.set(storageKey, JSON.stringify($scope.master));
             Materialize.toast('Saved data to the cache.', 4000);
         };
 
         $scope.clickReset = function() {
+            $scope.blur();
             $scope.reset();
             Materialize.toast('Reset fields to the saved data.', 4000);
         };
@@ -283,11 +291,13 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.clear = function() {
+            $scope.blur();
             $scope.master = angular.copy($scope.backup);
             localStorageService.set(storageKey, JSON.stringify($scope.master));
         };
 
         $scope.clickClear = function() {
+            $scope.blur();
             $scope.clear();
             Materialize.toast('Cleared all saved data.', 4000);
         };
@@ -330,12 +340,10 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.checkSponsor = function(index) {
-
             var sponsor = $scope.data.prizes[index].sponsor;
             var has = $scope.data.sponsors.some(function(curr) {
                 return curr === sponsor;
             });
-            console.log($scope);
             $scope.data.prizes[index].$setValidity("sponsor", has);
         };
 
@@ -371,6 +379,18 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
         $scope.addRowHardware = function(index) {
             $scope.addRow($scope.data.hardware, index, { amount: "", type: "" });
+        };
+
+        $scope.removeRowData = function(index) {
+            if ($scope.data.advancedQuestions.length <= 1) {
+                return;
+            }
+            $scope.data.advancedQuestions.splice(index, 1);
+
+        };
+
+        $scope.addRowData = function(index) {
+            $scope.addRow($scope.data.advancedQuestions, index, { name: "", type: "", target: "", options: [], domain: "", limit: -1, policy: "" });
         };
 
         $scope.addRow = function(arr, index, ob) {
