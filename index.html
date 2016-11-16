@@ -14,10 +14,9 @@
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular-local-storage/0.5.0/angular-local-storage.min.js"></script>
 
 	<!-- Materialize -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-	<script defer type="text/javascript" src="js/jquery.materialize-autocomplete.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 	
 	<!-- Clockpicker -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.css">
@@ -28,8 +27,8 @@
 	<link rel="stylesheet" href="css/imgur.css">
 
 	<!--imgur -->
-	<script defer type="text/javascript" src="js/imgur.min.js"></script>
-	<script defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaNRkaMJ0gY7fCPgjsaX0Fr2FuzwJJRnY&libraries=places"></script>
+	<script defer src="js/imgur.min.js"></script>
+	<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaNRkaMJ0gY7fCPgjsaX0Fr2FuzwJJRnY&libraries=places"></script>
 	
 	<script defer src="app/app.js"></script>
 	
@@ -117,16 +116,14 @@
 				<section>
 					<h4>Location <span class="red-text">*</span></h4>
 					<div class="row">
-						<div class="col s6 input-field autocomplete ac-input">
+						<div class="col s6 input-field">
 							<label for="location">Which city?</label>
-							<input required class="validate" data-activates="firstDropdown" data-beloworigin="true" type="text" id="city" data-ng-model="data.city"/>
-							<ul id="firstDropdown" class="dropdown-content ac-dropdown"></ul>
+							<input required class="validate autocomplete" type="text" id="city" data-ng-model="data.city"/>
 						</div>
 						
-						<div class="col s6 input-field autocomplete ac-input">
+						<div class="col s6 input-field">
 							<label for="location">Which address?</label>
-							<input required class="validate" data-activates="secondDropdown" data-beloworigin="true" type="text" id="address" data-ng-model="data.address"/>
-							<ul id="secondDropdown" class="dropdown-content ac-dropdown"></ul>
+							<input required class="validate autocomplete" type="text" id="address" data-ng-model="data.address"/>
 						</div>
 					</div>
 				</section>

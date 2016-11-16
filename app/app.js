@@ -1,4 +1,5 @@
 var storageKey = 'WolfBeaconOSH';
+var service;
 
 function updatePicker($root) {
 
@@ -46,6 +47,57 @@ function updatePicker($root) {
     console.log(chips);
     $root.find('.chips').material_chip(chips);
 }
+
+function autocomplete(id, data) {
+    if (!data) {
+        data = [];
+    }
+    if (!id || !service) {
+        return;
+    }
+    var $elem = $('#' + id);
+    if (!$elem || $elem.length <= 0) {
+        return;
+    }
+    var lastVal = $elem.val();
+    var type = id;
+    if (id === 'city') {
+        type = '(cities)';
+    }
+    $('.autocomplete-content').remove();
+
+    var arg = {};
+    data.forEach(function(d) {
+        arg[d] = null;
+    });
+
+    $elem.off('keyup').off('.change').autocomplete({ data: arg }).keyup().change(function() {
+        var val = $(this).val();
+        var scope = angular.element('#' + id).scope();
+        scope.$apply(function() {
+            scope.data[id] = val;
+        });
+    })
+    .on('keyup', function(e) {
+        var val = $(this).val();
+        if (!e || val === lastVal || e.which === 13 || val.length === 0) {
+            return;
+        }
+        lastVal = val;
+        service.getPlacePredictions({ input: val, types: [type] }, function(data, status) {
+            if (status != google.maps.places.PlacesServiceStatus.OK) {
+                console.log(status);
+                return;
+            }
+            var ret = [];
+            data.forEach(function(prediction) {
+                ret.push(prediction.description);
+            });
+            autocomplete(id, ret);
+        });
+    });
+}
+
 $(document).ready(function() {
 
     $('#show-help').click(function() {
@@ -53,59 +105,10 @@ $(document).ready(function() {
     });
 
     updatePicker($('form'));
-    var service = new google.maps.places.AutocompleteService();
+    service = new google.maps.places.AutocompleteService();
 
-    $('#city').materialize_autocomplete({
-        dropdown: {
-            el: '#firstDropdown'
-        },
-        onSelect: function(item) {
-            $('#city').val(item);
-            var scope = angular.element('#city').scope();
-            scope.$apply(function() {
-                scope.data.city = item;
-            });
-        },
-        getData: function(value, callback) {
-            service.getPlacePredictions({ input: value, types: ['(cities)'] }, function(data, status) {
-                if (status != google.maps.places.PlacesServiceStatus.OK) {
-                    console.log(status);
-                    return;
-                }
-                var ret = [];
-                data.forEach(function(prediction) {
-                    ret.push({ id: prediction.place_id, text: prediction.description });
-                });
-                callback(value, ret);
-            });
-        }
-    });
-
-    $('#address').materialize_autocomplete({
-        dropdown: {
-            el: '#secondDropdown'
-        },
-        onSelect: function(item) {
-            $('#address').val(item);
-            var scope = angular.element('#address').scope();
-            scope.$apply(function() {
-                scope.data.address = item;
-            });
-        },
-        getData: function(value, callback) {
-            service.getPlacePredictions({ input: value, types: ['address'] }, function(data, status) {
-                if (status != google.maps.places.PlacesServiceStatus.OK) {
-                    console.log(status);
-                    return;
-                }
-                var ret = [];
-                data.forEach(function(prediction) {
-                    ret.push({ id: prediction.place_id, text: prediction.description });
-                });
-                callback(value, ret);
-            });
-        }
-    });
+    autocomplete('city');
+    autocomplete('address');
 });
 
 angular.module('SponsorForm', ['LocalStorageModule'])
@@ -470,16 +473,16 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             }
         };
     })
-    .directive('bindChips',function(){
-      return {
-        restrict: 'A',
-        link: function($scope, $element, $attributes){
-          $element.bind('chips.add', function(e, chip){
-            scope.data.advancedQuestions;
-          });
-          $element.bind('chips.delete', function(e, chip){
-            console.log('caught my delete!');
-          });
-        }
-      };
+    .directive('bindChips', function() {
+        return {
+            restrict: 'A',
+            link: function($scope, $element, $attributes) {
+                $element.bind('chips.add', function(e, chip) {
+                    scope.data.advancedQuestions;
+                });
+                $element.bind('chips.delete', function(e, chip) {
+                    console.log('caught my delete!');
+                });
+            }
+        };
     });
