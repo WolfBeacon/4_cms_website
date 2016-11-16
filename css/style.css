@@ -97,9 +97,13 @@ button.btn {
 }
 
 @media screen and (max-width: 480px) {
-	.user-data, .user-data-advanced {
+	.user-data {
 		padding-left: 0;
 	}	
+	.user-data-advanced {
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
 	.popout [type="checkbox"]+label {
 		line-height: 1em;
 		padding-left: 2em;

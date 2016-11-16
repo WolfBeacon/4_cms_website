@@ -36,7 +36,7 @@
 </head>
 
 
-<body ng-app="SponsorForm">
+<body data-ng-app="SponsorForm">
 
 
     <header class="clearfix">
@@ -44,14 +44,14 @@
     </header>
 
 
-    <main ng-controller="FormController">
+    <main data-ng-controller="FormController">
 		<div class="container">
             <form novalidate class="simple-form" id="form">
 				<section>
 					<h4>Name of Hackathon <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="hack-name">Name</label>
-						<input required class="validate" type="text" id="hack-name" ng-model="data.name"/>
+						<input required class="validate" type="text" id="hack-name" data-ng-model="data.name"/>
 					</div>
 				</section>
 				
@@ -59,7 +59,7 @@
 					<h4>Description <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="description">Short description or slogan</label>
-						<input required class="validate" type="text" id="description" ng-model="data.desc"/>
+						<input required class="validate" type="text" id="description" data-ng-model="data.desc"/>
 					</div>
 				</section>
 				
@@ -68,22 +68,24 @@
 					<div class="dropzone" id="logo-upload">
 						<img class ="upload-image" src="assets/image-add.png">
 					</div>
+					
+					<a data-ng-href="{{data.logo}}" target="_blank" data-ng-if="data.logo || false">View your image here</a>
 				</section>
 				
 				<section>
 					<h4>Type <span class="red-text">*</span></h4>
 
 					<div class="input-field">
-						<input type="checkbox" id="box1" class="filled-in" ng-model="data.type.university"><label for="box1">University</label>
+						<input type="checkbox" id="box1" class="filled-in" data-ng-model="data.type.university"><label for="box1">University</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box3" class="filled-in" ng-model="data.type.school"><label for="box3">High School</label>
+						<input type="checkbox" id="box3" class="filled-in" data-ng-model="data.type.school"><label for="box3">High School</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box2" class="filled-in" ng-model="data.type.company"><label for="box2">Company</label>
+						<input type="checkbox" id="box2" class="filled-in" data-ng-model="data.type.company"><label for="box2">Company</label>
 					</div>
 					<div class="input-field">
-						<input type="checkbox" id="box4" class="filled-in" ng-model="data.type.other"><label for="box4">Other</label>
+						<input type="checkbox" id="box4" class="filled-in" data-ng-model="data.type.other"><label for="box4">Other</label>
 					</div>
                 </section>
 				
@@ -92,7 +94,7 @@
 					<h4>Approximate Size <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="size">Number of Hackers</label>
-						<input required type="number" class="validate" step="1" min="1" id="size" ng-model="data.size" />
+						<input required type="number" class="validate" step="1" min="1" id="size" data-ng-model="data.size" />
 					</div>
 				</section>
 
@@ -102,11 +104,11 @@
 					<div class="row">
 						<div class="col s6 input-field">
 							<label for="start-date">Starts On</label>
-							<input type="date" id="start-date" class="datepicker" name="start" ng-model="data.startDate" required />
+							<input type="date" id="start-date" class="datepicker" name="start" data-ng-model="data.startDate" required />
 						</div>
 						<div class="col s6 input-field">
 							<label for="end-date">Ends On</label>
-							<input type="date" id="end-date" class="datepicker" name="end" ng-model="data.endDate" required />
+							<input type="date" id="end-date" class="datepicker" name="end" data-ng-model="data.endDate" required />
 						</div>
 					</div>
 				</section>
@@ -117,13 +119,13 @@
 					<div class="row">
 						<div class="col s6 input-field autocomplete ac-input">
 							<label for="location">Which city?</label>
-							<input required class="validate" data-activates="firstDropdown" data-beloworigin="true" type="text" id="city" ng-model="data.city"/>
+							<input required class="validate" data-activates="firstDropdown" data-beloworigin="true" type="text" id="city" data-ng-model="data.city"/>
 							<ul id="firstDropdown" class="dropdown-content ac-dropdown"></ul>
 						</div>
 						
 						<div class="col s6 input-field autocomplete ac-input">
 							<label for="location">Which address?</label>
-							<input required class="validate" data-activates="secondDropdown" data-beloworigin="true" type="text" id="address" ng-model="data.address"/>
+							<input required class="validate" data-activates="secondDropdown" data-beloworigin="true" type="text" id="address" data-ng-model="data.address"/>
 							<ul id="secondDropdown" class="dropdown-content ac-dropdown"></ul>
 						</div>
 					</div>
@@ -132,11 +134,11 @@
 				<section>
 					<h5>Do you offer travel reimbursements?</h5>
 					<div class="input-field">
-						<input class="with-gap" name="yes" id="yes" type="radio" ng-value="true" ng-model="data.travel" />
+						<input class="with-gap" name="yes" id="yes" type="radio" data-ng-value="true" data-ng-model="data.travel" />
 						<label for="yes">Yes</label>
 					</div>
 					<div class="input-field">
-						<input class="with-gap" name="no" id="no" type="radio" ng-value="false" ng-model="data.travel" />
+						<input class="with-gap" name="no" id="no" type="radio" data-ng-value="false" data-ng-model="data.travel" />
 						<label for="no">No</label>
 					</div>
 				</section>
@@ -167,31 +169,31 @@
 								<div id="help-text" class="row">
 									<label class="info-label blue-text">Digital Tickets will be generated on our mobile app and will enable hackers to attend an event only once. Select the "Ticket?" option for events such as meals, registration, sponsor presentations, etc. Digital Tickets also allow for analytics such as attendance tracking for each event.</label>
 								</div>
-								<div class="row" ng-repeat="e in data.timetable | orderBy:['date','from','to','description']">
+								<div class="row" data-ng-repeat="e in data.timetable | orderBy:['date','from','to','description']">
 									<div class="col s4 m2 input-field">
-										<input type="date" class="datepicker" placeholder="Date" ng-model="e.date"/>
+										<input type="date" class="datepicker" placeholder="Date" data-ng-model="e.date"/>
 									</div>
 									<div class="col s4 m2 input-field">
 										<div class="clockpicker">
-											<input type="text" ng-model="e.from" value="00:00" />
+											<input type="text" data-ng-model="e.from" value="00:00" />
 										</div>
 									</div>
 									<div class="col s4 m2 input-field">
 										<div class="clockpicker">
-											<input type="text" ng-model="e.to" value="00:00" />
+											<input type="text" data-ng-model="e.to" value="00:00" />
 										</div>
 									</div>
 									<div class="col s8 m3 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.description" placeholder="Event"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.description" placeholder="Event"/>
 									</div>
 									<div class="col s2 m1 row-field">
-										<input id="box0-{{$index}}" type="checkbox" class="filled-in" ng-model="e.ticket"/><label for="box0-{{$index}}"></label>
+										<input id="box0-{{$index}}" type="checkbox" class="filled-in" data-ng-model="e.ticket"/><label for="box0-{{$index}}"></label>
 									</div>
 									<div class="col s1 row-field teal-text text-lighten-1">
-										<i class="material-icons" ng-click="addRowTimetable($index)">add</i>
+										<i class="material-icons" data-ng-click="addRowTimetable(e)">add</i>
 									</div>
 									<div class="col s1 row-field red-text text-darken-1">
-										<i class="material-icons" ng-click="removeRowTimetable($index)">clear</i>
+										<i class="material-icons" data-ng-click="removeRowTimetable(e)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -211,17 +213,17 @@
 								</div>
 								
 								
-								<div class="row table-header" ng-if="data.floorplan.length > 0">
+								<div class="row table-header" data-ng-if="data.floorplan.length > 0">
 									<p class="col s5">
 										URL
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.floorplan">
+								<div class="row" data-ng-repeat="e in data.floorplan">
 									<div class="col s10 input-field">
-										<p ng-bind="e"></p>
+										<a data-ng-href="{{e}}" target="_blank">Plan {{$index}}</a>
 									</div>
 									<div class="col s2 row-field red-text text-darken-1">
-										<i class="material-icons" ng-click="removeRowFloor($index)">clear</i>
+										<i class="material-icons" data-ng-click="removeRowFloor(e)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -235,10 +237,10 @@
 						<li class="active">
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Hyperlinks</h4>
 							<div class="collapsible-body">
-								<div class="row" ng-repeat="e in data.links">
+								<div class="row" data-ng-repeat="e in data.links">
 									<div class="col s12 input-field">
-										<input id="{{e.slug}}" ng-required="e.required" class="validate" type="text" ng-model="e.value" />
-										<label for="{{e.slug}}">{{e.text}} <span ng-if="e.required" class="red-text">*</span></label>
+										<input id="{{e.slug}}" data-ng-required="e.required" class="validate" type="text" data-ng-model="e.value" />
+										<label for="{{e.slug}}">{{e.text}} <span data-ng-if="e.required" class="red-text">*</span></label>
 									</div>
 								</div>
 							</div>
@@ -261,18 +263,18 @@
 										Organization
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.sponsors | orderBy:['rank','organization']">
+								<div class="row" data-ng-repeat="e in data.sponsors | orderBy:['rank','organization']">
 									<div class="col s3 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" step="1" min="1" ng-model="e.rank" placeholder="Rank"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" step="1" min="1" data-ng-model="e.rank" placeholder="Rank"/>
 									</div>
 									<div class="col s7 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.organization" placeholder="Organization"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.organization" placeholder="Organization"/>
 									</div>
 									<div class="col s1 row-field teal-text text-lighten-1">
-										<i class="material-icons" ng-click="addRowSponsor($index)">add</i>
+										<i class="material-icons" data-ng-click="addRowSponsor(e)">add</i>
 									</div>
 									<div class="col s1 row-field red-text text-darken-1">
-										<i class="material-icons" ng-click="removeRowSponsor($index)">clear</i>
+										<i class="material-icons" data-ng-click="removeRowSponsor(e)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -295,18 +297,18 @@
 										Title
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.judges | orderBy:['name','title']">
+								<div class="row" data-ng-repeat="e in data.judges | orderBy:['name','title']">
 									<div class="col s5 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.name" placeholder="Full Name"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.name" placeholder="Full Name"/>
 									</div>
 									<div class="col s5 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.title" placeholder="Title of Judge"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.title" placeholder="Title of Judge"/>
 									</div>
 									<div class="col s1 row-field teal-text text-lighten-1">
-										<i class="material-icons" ng-click="addRowJudge($index)">add</i>
+										<i class="material-icons" data-ng-click="addRowJudge(e)">add</i>
 									</div>
 									<div class="col s1 row-field red-text text-darken-1">
-										<i class="material-icons" ng-click="removeRowJudge($index)">clear</i>
+										<i class="material-icons" data-ng-click="removeRowJudge(e)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -338,27 +340,27 @@
 										Description
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.prizes | orderBy:['name','sponsor','value','winners','description']">
+								<div class="row" data-ng-repeat="e in data.prizes | orderBy:['name','sponsor','value','winners','description']">
 									<div class="col s6 m3 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.name" placeholder="Name"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.name" placeholder="Name"/>
 									</div>
 									<div class="col s6 m2 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.sponsor" ng-change="checkSponsor($index)" placeholder="Sponsor"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.sponsor" data-ng-change="checkSponsor(e)" placeholder="Sponsor"/>
 									</div>
 									<div class="col s4 m1 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="number" min="1" step="1" class="validate" ng-model="e.winners" placeholder="#"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="number" min="1" step="1" class="validate" data-ng-model="e.winners" placeholder="#"/>
 									</div>
 									<div class="col s3 m1 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="number" min="0" step="1" class="validate" ng-model="e.value" placeholder="$"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="number" min="0" step="1" class="validate" data-ng-model="e.value" placeholder="$"/>
 									</div>
 									<div class="col s3 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.description" placeholder="Description"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.description" placeholder="Description"/>
 									</div>
 									<div class="col s1 row-field teal-text text-lighten-1">
-										<i class="material-icons" ng-click="addRowPrize($index)">add</i>
+										<i class="material-icons" data-ng-click="addRowPrize(e)">add</i>
 									</div>
 									<div class="col s1 row-field red-text text-darken-1">
-										<i class="material-icons" ng-click="removeRowPrize($index)">clear</i>
+										<i class="material-icons" data-ng-click="removeRowPrize(e)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -381,18 +383,18 @@
 										Type
 									</p>
 								</div>
-								<div class="row" ng-repeat="e in data.hardware | orderBy:['type','amount']">
+								<div class="row" data-ng-repeat="e in data.hardware | orderBy:['type','amount']">
 									<div class="col s5 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" min="1" step="1" ng-model="e.amount" placeholder="Amount"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" min="1" step="1" data-ng-model="e.amount" placeholder="Amount"/>
 									</div>
 									<div class="col s5 input-field">
-										<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.type" placeholder="Type"/>
+										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.type" placeholder="Type"/>
 									</div>
 									<div class="col s1 row-field teal-text text-lighten-1">
-										<i class="material-icons" ng-click="addRowHardware($index)">add</i>
+										<i class="material-icons" data-ng-click="addRowHardware(e)">add</i>
 									</div>
 									<div class="col s1 row-field red-text text-darken-1">
-										<i class="material-icons" ng-click="removeRowHardware($index)">clear</i>
+										<i class="material-icons" data-ng-click="removeRowHardware(e)">clear</i>
 									</div>
 								</div>
 							</div>
@@ -408,16 +410,16 @@
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Click a section to reveal specific data</label>
 								<ul class="collapsible popout" data-collapsible="expandable">
-									<li ng-repeat="e in data.userData">
+									<li data-ng-repeat="e in data.userData">
 										<div class="collapsible-header">
 											<i class="material-icons">expand_less</i>
 											<div class="input-field">
-												<input id="box1-{{$index}}" type="checkbox" ng-click="updateDataBox($index)" ng-indeterminate="isDataBoxIndeterminate($index)" ng-checked="isDataBoxChecked($index)"/><label for="box1-{{$index}}">{{e.type}}</label>
+												<input id="box1-{{$index}}" type="checkbox" data-ng-click="updateDataBox(e)" data-ng-indeterminate="isDataBoxIndeterminate(e)" data-ng-checked="isDataBoxChecked(e)"/><label for="box1-{{$index}}">{{e.type}}</label>
 											</div>
 										</div>
 										<div class="collapsible-body user-data">
-											<div class="col s12 input-field" ng-repeat="f in e.fields">
-												<input id="box1-{{$parent.$index}}-{{$index}}" type="checkbox" class="filled-in" ng-model="f.value"/><label for="box1-{{$parent.$index}}-{{$index}}">{{f.name}}</label>
+											<div class="col s12 input-field" data-ng-repeat="f in e.fields">
+												<input id="box1-{{$parent.$index}}-{{$index}}" type="checkbox" class="filled-in" data-ng-model="f.value"/><label for="box1-{{$parent.$index}}-{{$index}}">{{f.name}}</label>
 											</div>
 										</div>
 									</li>
@@ -425,12 +427,12 @@
 										<div class="collapsible-header">
 											<i class="material-icons">expand_less</i>
 											<div class="input-field">
-												<input id="box5" type="checkbox" ng-model="data.advanced"/><label for="box5">Advanced</label>
+												<input id="box5" type="checkbox" data-ng-model="data.advanced"/><label for="box5">Advanced</label>
 											</div>
 										</div>
 										<div class="collapsible-body user-data-advanced">
 											<label class="info-label blue-text">Warning: This is only for organizers who know what they are doing!</label>
-											<div ng-if="data.advanced">
+											<div data-ng-if="data.advanced" id="advanced-questions">
 												<label class="info-label blue-text">Questions will be listed in alphabetical order</label>
 												<div class="row table-header">
 													<p class="col s6 m3">
@@ -446,21 +448,32 @@
 														Data
 													</p>
 												</div>
-												<div class="row" ng-repeat="e in data.advancedQuestions | orderBy:['name','type','target']">
+												<div class="row" data-ng-repeat="e in data.advancedQuestions | orderBy:['name','type','target']">
 													<div class="col s6 m3 input-field">
-														<input ng-model-options="{ updateOn: 'blur'}" type="text" ng-model="e.name" placeholder="Question"/>
+														<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.name" placeholder="Question"/>
 													</div>
 													<div class="col s6 m3 input-field">
+														<select class="validate" data-ng-options="val as key disable when val.length==0 for (key, val) in questionTypes" data-ng-model="e.type"></select>
 													</div>
 													<div class="col s6 m2 input-field">
+														<select class="validate" data-ng-options="val as key disable when val.length==0 for (key, val) in targetTypes" data-ng-model="e.target"></select>
 													</div>
-													<div class="col s4 m2 input-field">
+													<div class="col s3 m2 input-field">
+														<input data-ng-show="e.type=='text'||e.type=='textarea'" data-ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" min="1" step="1" data-ng-model="e.limit" placeholder="Word Limit"/>
+														<input data-ng-show="e.type=='url'" data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.domain" placeholder="Expected domain"/>
+														<input data-ng-show="e.type=='policy'" data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.policy" placeholder="Long text"/>
 													</div>
 													<div class="col s1 row-field teal-text text-lighten-1">
-														<i class="material-icons" ng-click="addRowData($index)">add</i>
+														<i class="material-icons" data-ng-click="addRowData(e)">add</i>
 													</div>
 													<div class="col s1 row-field red-text text-darken-1">
-														<i class="material-icons" ng-click="removeRowData($index)">clear</i>
+														<i class="material-icons" data-ng-click="removeRowData(e)">clear</i>
+													</div>
+													<div class="col s10 chips" data-bind-chips data-ng-show="e.type=='option'||e.type=='multioption'">
+														<div class="chip" data-ng-repeat="f in e.options">
+															{{f}}
+															<i class="close material-icons">close</i>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -476,7 +489,7 @@
 					<h4>Contact Information <span class="red-text">*</span></h4>
 					<div class="input-field">
 						<label for="contact">E-mail</label>
-						<input required class="validate" type="text" class="validate" id="contact" ng-model="data.contact"/>
+						<input required class="validate" type="text" class="validate" id="contact" data-ng-model="data.contact"/>
 					</div>
 				</section>
 				
@@ -485,10 +498,10 @@
             </form>
 		</div>
 		<div class="row container">
-			<button class="waves-effect waves-light btn blue" ng-click="clickClear()">Clear Data</button>
-			<button class="waves-effect waves-light btn red" ng-click="clickReset()">Reset Fields</button>
+			<button class="waves-effect waves-light btn blue" data-ng-click="clickClear()">Clear Data</button>
+			<button class="waves-effect waves-light btn red" data-ng-click="clickReset()">Reset Fields</button>
 			<button type="submit" class ="waves-effect waves-light btn green">Submit</button>
-			<button type="submit" class ="waves-effect waves-light btn yellow" ng-click="clickUpdate()">Save</button>
+			<button type="submit" class ="waves-effect waves-light btn yellow" data-ng-click="clickUpdate()">Save</button>
 		</div>
     </main> 
 </body>

@@ -16,7 +16,7 @@ function updatePicker($root) {
         onClose: function(val) {
             val = this.get();
 
-            var modelName = this.$node.attr("ng-model");
+            var modelName = this.$node.attr("data-ng-model");
             var scope = angular.element(this.$node).scope();
             scope.$apply(function() {
                 scope.data[modelName] = val;
@@ -28,7 +28,7 @@ function updatePicker($root) {
         .find('input').change(function() {
             var val = this.value;
 
-            var modelName = $(this).attr("ng-model");
+            var modelName = $(this).attr("data-ng-model");
             modelName = modelName.substr(modelName.indexOf('.') + 1);
 
             var scope = angular.element('#' + $root.attr('id')).scope();
@@ -36,6 +36,15 @@ function updatePicker($root) {
                 scope.data.timetable[modelName] = val;
             });
         });
+
+    $root.find('select').material_select();
+
+    var chips = [];
+    $root.find('.chips').children().each(function() {
+        chips.push({ tag: $(this).text() });
+    });
+    console.log(chips);
+    $root.find('.chips').material_chip(chips);
 }
 $(document).ready(function() {
 
@@ -49,6 +58,13 @@ $(document).ready(function() {
     $('#city').materialize_autocomplete({
         dropdown: {
             el: '#firstDropdown'
+        },
+        onSelect: function(item) {
+            $('#city').val(item);
+            var scope = angular.element('#city').scope();
+            scope.$apply(function() {
+                scope.data.city = item;
+            });
         },
         getData: function(value, callback) {
             service.getPlacePredictions({ input: value, types: ['(cities)'] }, function(data, status) {
@@ -68,6 +84,13 @@ $(document).ready(function() {
     $('#address').materialize_autocomplete({
         dropdown: {
             el: '#secondDropdown'
+        },
+        onSelect: function(item) {
+            $('#address').val(item);
+            var scope = angular.element('#address').scope();
+            scope.$apply(function() {
+                scope.data.address = item;
+            });
         },
         getData: function(value, callback) {
             service.getPlacePredictions({ input: value, types: ['address'] }, function(data, status) {
@@ -154,7 +177,7 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             address: "",
             advanced: false,
             advancedQuestions: [
-                { name: "", type: "", target: "", options: [], domain: "", limit: -1, policy: "" }
+                { name: "", type: "", target: "", options: [], domain: "", limit: 100, policy: "" }
             ],
             userData: [{
                 type: "Personal Info",
@@ -236,12 +259,15 @@ angular.module('SponsorForm', ['LocalStorageModule'])
                 ]
             }]
         };
-        /*
-        Custom questions (question name, type of question, target)
-        option/multioption: options, text/textarea: limit, policy: long block text, url: domain
-        */
-        $scope.targetTypes = ["All", "Hackers", "Volunteers", "Mentors"];
+        $scope.targetTypes = {
+            "Target": "",
+            "All": "all",
+            "Hackers": "hackers",
+            "Volunteers": "volunteers",
+            "Mentors": "mentors"
+        };
         $scope.questionTypes = {
+            "Type": "",
             "Hardware": "tech",
             "Short text": "text",
             "Long text": "textarea",
@@ -257,7 +283,6 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             "URL": "url",
             "University or school": "school"
         };
-        $scope.questionTypeText = Object.keys($scope.questionTypes);
         $scope.backup = angular.copy($scope.data);
 
         $scope.blur = function() {
@@ -302,15 +327,12 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             Materialize.toast('Cleared all saved data.', 4000);
         };
 
-        $scope.removeRowTimetable = function(index) {
-            if ($scope.data.timetable.length <= 1) {
-                return;
-            }
-            $scope.data.timetable.splice(index, 1);
+        $scope.removeRowTimetable = function(q) {
+            $scope.removeRow($scope.data.timetable, q);
         };
 
-        $scope.addRowTimetable = function(index) {
-            $scope.addRow($scope.data.timetable, index, { date: "", from: "00:00", to: "00:00", description: "", ticket: false });
+        $scope.addRowTimetable = function(q) {
+            $scope.addRow($scope.data.timetable, q, { date: "", from: "00:00", to: "00:00", description: "", ticket: false });
         };
 
         $scope.$watchCollection(function() {
@@ -324,76 +346,78 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             }, 0, false);
         });
 
-        $scope.removeRowFloor = function(index) {
-            $scope.data.floorplan.splice(index, 1);
+        $scope.removeRowFloor = function(q) {
+            $scope.removeRow($scope.data.floorplan, q);
         };
 
-        $scope.removeRowSponsor = function(index) {
-            if ($scope.data.sponsors.length <= 1) {
-                return;
-            }
-            $scope.data.sponsors.splice(index, 1);
+        $scope.removeRowSponsor = function(q) {
+            $scope.removeRow($scope.data.sponsors, q);
         };
 
-        $scope.addRowSponsor = function(index) {
-            $scope.addRow($scope.data.sponsors, index, { rank: 0, organization: "" });
+        $scope.addRowSponsor = function(q) {
+            $scope.addRow($scope.data.sponsors, q, { rank: 0, organization: "" });
         };
 
-        $scope.checkSponsor = function(index) {
-            var sponsor = $scope.data.prizes[index].sponsor;
+        $scope.checkSponsor = function(q) {
             var has = $scope.data.sponsors.some(function(curr) {
-                return curr === sponsor;
+                return curr === q.sponsor;
             });
-            $scope.data.prizes[index].$setValidity("sponsor", has);
+            q.$setValidity("sponsor", has);
         };
 
-        $scope.removeRowJudge = function(index) {
-            if ($scope.data.judges.length <= 1) {
+        $scope.removeRowJudge = function(q) {
+            $scope.removeRow($scope.data.judges, q);
+        };
+
+        $scope.addRowJudge = function(q) {
+            $scope.addRow($scope.data.judges, q, { name: "", title: "" });
+        };
+
+        $scope.removeRowPrize = function(q) {
+            $scope.removeRow($scope.data.prizes, q);
+        };
+
+        $scope.addRowPrize = function(q) {
+            $scope.addRow($scope.data.prizes, q, { name: "", sponsor: "", winners: 1, value: 0, description: "" });
+        };
+
+        $scope.removeRowHardware = function(q) {
+            $scope.removeRow($scope.data.hardware, q);
+        };
+
+        $scope.addRowHardware = function(q) {
+            $scope.addRow($scope.data.hardware, q, { amount: "", type: "" });
+        };
+
+        $scope.removeRowData = function(q) {
+            $scope.removeRow($scope.data.advancedQuestions, q);
+        };
+
+        $scope.addRowData = function(q) {
+            $scope.addRow($scope.data.advancedQuestions, q, { name: "", type: "", target: "", options: [], domain: "", limit: 100, policy: "" });
+        };
+
+        $scope.$watchCollection(function() {
+            return $scope.data.advancedQuestions;
+        }, function(newVal, oldVal) {
+            if (newVal === oldVal) {
                 return;
             }
-            $scope.data.judges.splice(index, 1);
-        };
+            $timeout(function() {
+                updatePicker($('#advanced-questions'));
+            }, 0, false);
+        });
 
-        $scope.addRowJudge = function(index) {
-            $scope.addRow($scope.data.judges, index, { name: "", title: "" });
-        };
-
-        $scope.removeRowPrize = function(index) {
-            if ($scope.data.prizes.length <= 1) {
+        $scope.removeRow = function(arr, val) {
+            var index = arr.indexOf(val);
+            if (arr.length <= 1 || index < 0) {
                 return;
             }
-            $scope.data.prizes.splice(index, 1);
+            arr.splice(index, 1);
         };
 
-        $scope.addRowPrize = function(index) {
-            $scope.addRow($scope.data.prizes, index, { name: "", sponsor: "", winners: 1, value: 0, description: "" });
-        };
-
-        $scope.removeRowHardware = function(index) {
-            if ($scope.data.hardware.length <= 1) {
-                return;
-            }
-            $scope.data.hardware.splice(index, 1);
-
-        };
-
-        $scope.addRowHardware = function(index) {
-            $scope.addRow($scope.data.hardware, index, { amount: "", type: "" });
-        };
-
-        $scope.removeRowData = function(index) {
-            if ($scope.data.advancedQuestions.length <= 1) {
-                return;
-            }
-            $scope.data.advancedQuestions.splice(index, 1);
-
-        };
-
-        $scope.addRowData = function(index) {
-            $scope.addRow($scope.data.advancedQuestions, index, { name: "", type: "", target: "", options: [], domain: "", limit: -1, policy: "" });
-        };
-
-        $scope.addRow = function(arr, index, ob) {
+        $scope.addRow = function(arr, val, ob) {
+            var index = arr.indexOf(val);
             if (index >= arr.length - 1) {
                 arr.push(ob);
             } else {
@@ -401,25 +425,29 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             }
         };
 
-        $scope.isDataBoxChecked = function(index) {
-            return $scope.data.userData[index].fields.some(function(el) {
+        $scope.isDataBoxChecked = function(q) {
+            return q.fields.some(function(el) {
                 return el.value;
             });
         };
 
-        $scope.isDataBoxIndeterminate = function(index) {
-            return $scope.isDataBoxChecked(index) && !$scope.data.userData[index].fields.every(function(el) {
+        $scope.isDataBoxIndeterminate = function(q) {
+            return $scope.isDataBoxChecked(q) && !q.fields.every(function(el) {
                 return el.value;
             });
         };
 
-        $scope.updateDataBox = function(index) {
-            var toSet = !$scope.isDataBoxChecked(index);
+        $scope.updateDataBox = function(q) {
+            var toSet = !$scope.isDataBoxChecked(q);
             // Set unchecked
-            $scope.data.userData[index].fields.forEach(function(el) {
+            q.fields.forEach(function(el) {
                 el.value = toSet;
             });
         };
+
+        /*
+        option/multioption: options
+        */
 
         try {
             $scope.master = JSON.parse(localStorageService.get(storageKey));
@@ -435,10 +463,23 @@ angular.module('SponsorForm', ['LocalStorageModule'])
     .directive('ngIndeterminate', function($compile) {
         return {
             restrict: 'A',
-            link: function(scope, element, attributes) {
-                scope.$watch(attributes['ngIndeterminate'], function(value) {
-                    element.prop('indeterminate', !!value);
+            link: function($scope, $element, $attributes) {
+                $scope.$watch($attributes['ngIndeterminate'], function(value) {
+                    $element.prop('indeterminate', !!value);
                 });
             }
         };
+    })
+    .directive('bindChips',function(){
+      return {
+        restrict: 'A',
+        link: function($scope, $element, $attributes){
+          $element.bind('chips.add', function(e, chip){
+            scope.data.advancedQuestions;
+          });
+          $element.bind('chips.delete', function(e, chip){
+            console.log('caught my delete!');
+          });
+        }
+      };
     });
