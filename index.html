@@ -64,7 +64,7 @@
 				
 				<section>
 					<h4>Logo <span class="red-text">*</span></h4>
-					<div class="dropzone" id="logo-upload">
+					<div class="dropzone" id="logo-upload" data-bind-imgur>
 						<img class ="upload-image" src="assets/image-add.png">
 					</div>
 					
@@ -103,11 +103,11 @@
 					<div class="row">
 						<div class="col s6 input-field">
 							<label for="start-date">Starts On</label>
-							<input type="date" id="start-date" class="datepicker" name="start" data-ng-model="data.startDate" required />
+							<input type="date" data-bind-date id="start-date" class="datepicker" name="start" data-ng-model="data.startDate" required />
 						</div>
 						<div class="col s6 input-field">
 							<label for="end-date">Ends On</label>
-							<input type="date" id="end-date" class="datepicker" name="end" data-ng-model="data.endDate" required />
+							<input type="date" data-bind-date id="end-date" class="datepicker" name="end" data-ng-model="data.endDate" required />
 						</div>
 					</div>
 				</section>
@@ -166,19 +166,15 @@
 								<div id="help-text" class="row">
 									<label class="info-label blue-text">Digital Tickets will be generated on our mobile app and will enable hackers to attend an event only once. Select the "Ticket?" option for events such as meals, registration, sponsor presentations, etc. Digital Tickets also allow for analytics such as attendance tracking for each event.</label>
 								</div>
-								<div class="row" data-ng-repeat="e in data.timetable | orderBy:['date','from','to','description']">
+								<div class="row" data-ng-repeat="e in data.timetable | orderBy:['date','from','to']">
 									<div class="col s4 m2 input-field">
-										<input type="date" class="datepicker" placeholder="Date" data-ng-model="e.date"/>
+										<input type="date" data-bind-date class="datepicker" placeholder="Date" data-ng-model="e.date"/>
 									</div>
 									<div class="col s4 m2 input-field">
-										<div class="clockpicker">
-											<input type="text" data-ng-model="e.from" value="00:00" />
-										</div>
+										<input class="clockpicker" type="text" data-bind-time placeholder="Time" data-ng-model="e.from" value="00:00" />
 									</div>
 									<div class="col s4 m2 input-field">
-										<div class="clockpicker">
-											<input type="text" data-ng-model="e.to" value="00:00" />
-										</div>
+										<input class="clockpicker" type="text" data-bind-time placeholder="Time"  data-ng-model="e.to" value="00:00" />
 									</div>
 									<div class="col s8 m3 input-field">
 										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.description" placeholder="Event"/>
@@ -205,7 +201,7 @@
 							
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Tip: Highlight hacker spaces</label>
-								<div class="dropzone" id="venue-upload">
+								<div class="dropzone" id="venue-upload" data-bind-imgur>
 									<img class="upload-image" src="assets/image-add.png">
 								</div>
 								
@@ -260,7 +256,7 @@
 										Organization
 									</p>
 								</div>
-								<div class="row" data-ng-repeat="e in data.sponsors | orderBy:['rank','organization']">
+								<div class="row" data-ng-repeat="e in data.sponsors | orderBy:'rank'">
 									<div class="col s3 input-field">
 										<input data-ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" step="1" min="1" data-ng-model="e.rank" placeholder="Rank"/>
 									</div>
@@ -294,7 +290,7 @@
 										Title
 									</p>
 								</div>
-								<div class="row" data-ng-repeat="e in data.judges | orderBy:['name','title']">
+								<div class="row" data-ng-repeat="e in data.judges | orderBy:'name'">
 									<div class="col s5 input-field">
 										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.name" placeholder="Full Name"/>
 									</div>
@@ -328,7 +324,7 @@
 										Sponsor
 									</p>
 									<p class="col s4 m1">
-										Winners
+										Wins
 									</p>
 									<p class="col s3 m1">
 										Value
@@ -337,7 +333,7 @@
 										Description
 									</p>
 								</div>
-								<div class="row" data-ng-repeat="e in data.prizes | orderBy:['name','sponsor','value','winners','description']">
+								<div class="row" data-ng-repeat="e in data.prizes | orderBy:'name'">
 									<div class="col s6 m3 input-field">
 										<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.name" placeholder="Name"/>
 									</div>
@@ -380,7 +376,7 @@
 										Type
 									</p>
 								</div>
-								<div class="row" data-ng-repeat="e in data.hardware | orderBy:['type','amount']">
+								<div class="row" data-ng-repeat="e in data.hardware | orderBy:'type'">
 									<div class="col s5 input-field">
 										<input data-ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" min="1" step="1" data-ng-model="e.amount" placeholder="Amount"/>
 									</div>
@@ -445,20 +441,25 @@
 														Data
 													</p>
 												</div>
-												<div class="row" data-ng-repeat="e in data.advancedQuestions | orderBy:['name','type','target']">
+												<div class="row" data-ng-repeat="e in data.advancedQuestions | orderBy:'name'">
 													<div class="col s6 m3 input-field">
 														<input data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.name" placeholder="Question"/>
 													</div>
 													<div class="col s6 m3 input-field">
-														<select class="validate" data-ng-options="val as key disable when val.length==0 for (key, val) in questionTypes" data-ng-model="e.type"></select>
+														<select class="validate" data-ng-options="key as val disable when key.length==0 for (key, val) in questionTypes" data-ng-model="e.type" data-bind-select></select>
 													</div>
 													<div class="col s6 m2 input-field">
-														<select class="validate" data-ng-options="val as key disable when val.length==0 for (key, val) in targetTypes" data-ng-model="e.target"></select>
+														<select class="validate" data-ng-options="key as val disable when key.length==0 for (key, val) in targetTypes" data-ng-model="e.target" data-bind-select></select>
 													</div>
 													<div class="col s3 m2 input-field">
 														<input data-ng-show="e.type=='text'||e.type=='textarea'" data-ng-model-options="{ updateOn: 'blur'}" type="number" class="validate" min="1" step="1" data-ng-model="e.limit" placeholder="Word Limit"/>
 														<input data-ng-show="e.type=='url'" data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.domain" placeholder="Expected domain"/>
-														<input data-ng-show="e.type=='policy'" data-ng-model-options="{ updateOn: 'blur'}" type="text" data-ng-model="e.policy" placeholder="Long text"/>
+														<div data-ng-show="e.type=='policy'">
+															<i class="material-icons">create</i><span>Enter text below</span>
+														</div>
+														<div data-ng-show="e.type=='option'||e.type=='multioption'">
+															<i class="material-icons">create</i><span>Enter options below</span>
+														</div>
 													</div>
 													<div class="col s1 row-field teal-text text-lighten-1">
 														<i class="material-icons" data-ng-click="addRowData(e)">add</i>
@@ -466,11 +467,18 @@
 													<div class="col s1 row-field red-text text-darken-1">
 														<i class="material-icons" data-ng-click="removeRowData(e)">clear</i>
 													</div>
-													<div class="col s10 chips" data-bind-chips data-ng-show="e.type=='option'||e.type=='multioption'">
-														<div class="chip" data-ng-repeat="f in e.options">
-															{{f}}
-															<i class="close material-icons">close</i>
+													<div class="col s10" data-ng-show="e.type=='option'||e.type=='multioption'">
+														<i class="material-icons">note_add</i>
+														<span>Options:</span>
+														<div class="chips" data-chips data-ng-model="e.options">
+															<div class="chip" data-ng-repeat="f in e.options">
+																{{f}}
+																<i class="close material-icons">close</i>
+															</div>
 														</div>
+													</div>
+													<div class="col s10" data-ng-show="e.type=='policy'">
+														<textarea class="materialize-textarea" data-ng-model-options="{ updateOn: 'blur'}" data-ng-model="e.policy" placeholder="Long text"></textarea>
 													</div>
 												</div>
 											</div>

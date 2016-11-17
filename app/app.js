@@ -1,52 +1,6 @@
 var storageKey = 'WolfBeaconOSH';
+var imgurClientId = 'cc86a8de0e7c459';
 var service;
-
-function updatePicker($root) {
-
-    $root.find('.datepicker, .clockpicker').each(function(elem) {
-        var $elem = $(this);
-        var $parent = $elem.parent();
-
-        $elem.remove().appendTo($parent);
-    });
-
-    $root.find('.datepicker').pickadate({
-        min: -1,
-        max: new Date(2037, 12, 31),
-        formatSubmit: 'yyyy-mm-dd',
-        onClose: function(val) {
-            val = this.get();
-
-            var modelName = this.$node.attr("data-ng-model");
-            var scope = angular.element(this.$node).scope();
-            scope.$apply(function() {
-                scope.data[modelName] = val;
-            });
-        }
-    });
-
-    $root.find('.clockpicker').clockpicker({ donetext: 'Submit', autoclose: true })
-        .find('input').change(function() {
-            var val = this.value;
-
-            var modelName = $(this).attr("data-ng-model");
-            modelName = modelName.substr(modelName.indexOf('.') + 1);
-
-            var scope = angular.element('#' + $root.attr('id')).scope();
-            scope.$apply(function() {
-                scope.data.timetable[modelName] = val;
-            });
-        });
-
-    $root.find('select').material_select();
-
-    var chips = [];
-    $root.find('.chips').children().each(function() {
-        chips.push({ tag: $(this).text() });
-    });
-    console.log(chips);
-    $root.find('.chips').material_chip(chips);
-}
 
 function autocomplete(id, data) {
     if (!data) {
@@ -89,11 +43,9 @@ function autocomplete(id, data) {
                     console.log(status);
                     return;
                 }
-                var ret = [];
-                data.forEach(function(prediction) {
-                    ret.push(prediction.description);
-                });
-                autocomplete(id, ret);
+                autocomplete(id, data.map(function(prediction) {
+                    return prediction.description;
+                }));
             });
         });
 }
@@ -104,7 +56,6 @@ $(document).ready(function() {
         $('#help-text').slideToggle();
     });
 
-    updatePicker($('form'));
     service = new google.maps.places.AutocompleteService();
 
     autocomplete('city');
@@ -113,24 +64,6 @@ $(document).ready(function() {
 
 angular.module('SponsorForm', ['LocalStorageModule'])
     .controller('FormController', ['$scope', 'localStorageService', '$timeout', function($scope, localStorageService, $timeout) {
-
-        updatePicker($('form'));
-
-        new Imgur({
-            clientid: 'cc86a8de0e7c459',
-            callback: function(res, elem) {
-                if (res.success === true) {
-                    var $elem = $(elem);
-                    $scope.$apply(function() {
-                        if ($elem.attr("id") === "logo-upload") {
-                            $scope.data.logo = res.data.link;
-                        } else {
-                            $scope.data.floorplan.push(res.data.link);
-                        }
-                    });
-                }
-            }
-        });
 
         $scope.data = {
             name: "",
@@ -146,10 +79,10 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             size: 1,
             desc: "",
             timetable: [
-                { date: "", from: "00:00", to: "00:00", description: "Registration", ticket: true },
-                { date: "", from: "00:00", to: "00:00", description: "Hacking Starts", ticket: false },
-                { date: "", from: "00:00", to: "00:00", description: "Sponsor Presentation", ticket: false },
-                { date: "", from: "00:00", to: "00:00", description: "Closing Ceremony", ticket: false }
+                { date: new Date(), from: "00:00", to: "00:00", description: "Registration", ticket: true },
+                { date: new Date(), from: "00:00", to: "00:00", description: "Hacking Starts", ticket: false },
+                { date: new Date(), from: "00:00", to: "00:00", description: "Sponsor Presentation", ticket: false },
+                { date: new Date(), from: "00:00", to: "00:00", description: "Closing Ceremony", ticket: false }
             ],
             floorplan: [],
             travel: false,
@@ -263,28 +196,29 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             }]
         };
         $scope.targetTypes = {
-            "Target": "",
-            "All": "all",
-            "Hackers": "hackers",
-            "Volunteers": "volunteers",
-            "Mentors": "mentors"
+            "": "Target",
+            "all": "All",
+            "hackers": "Hackers",
+            "volunteers": "Volunteers",
+            "mentors": "Mentors"
         };
         $scope.questionTypes = {
-            "Type": "",
-            "Hardware": "tech",
-            "Short text": "text",
-            "Long text": "textarea",
-            "Single option": "option",
-            "Multiple option": "multioption",
-            "Numeric": "number",
-            "Single date and time": "date",
-            "Multiple dates and times": "multidate",
-            "File upload": "file",
-            "Phone number": "phone",
-            "Email address": "email",
-            "Location": "location",
-            "URL": "url",
-            "University or school": "school"
+            "": "Type",
+            "tech": "Hardware",
+            "text": "Short text",
+            "textarea": "Long text",
+            "option": "Single option",
+            "multioption": "Multiple option",
+            "number": "Numeric",
+            "date": "Single date and time",
+            "multidate": "Multiple dates and times",
+            "file": "File upload",
+            "phone": "Phone number",
+            "email": "Email address",
+            "location": "Location",
+            "url": "URL",
+            "school": "University or school",
+            "policy": "Agree to terms"
         };
         $scope.backup = angular.copy($scope.data);
 
@@ -314,7 +248,6 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         $scope.reset = function() {
             if ($scope.master) {
                 $scope.data = angular.copy($scope.master);
-                updatePicker($('form'));
             }
         };
 
@@ -335,19 +268,8 @@ angular.module('SponsorForm', ['LocalStorageModule'])
         };
 
         $scope.addRowTimetable = function(q) {
-            $scope.addRow($scope.data.timetable, q, { date: "", from: "00:00", to: "00:00", description: "", ticket: false });
+            $scope.addRow($scope.data.timetable, q, { date: new Date(), from: "00:00", to: "00:00", description: "", ticket: false });
         };
-
-        $scope.$watchCollection(function() {
-            return $scope.data.timetable;
-        }, function(newVal, oldVal) {
-            if (newVal === oldVal) {
-                return;
-            }
-            $timeout(function() {
-                updatePicker($('#timetables'));
-            }, 0, false);
-        });
 
         $scope.removeRowFloor = function(q) {
             $scope.removeRow($scope.data.floorplan, q);
@@ -400,17 +322,6 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             $scope.addRow($scope.data.advancedQuestions, q, { name: "", type: "", target: "", options: [], domain: "", limit: 100, policy: "" });
         };
 
-        $scope.$watchCollection(function() {
-            return $scope.data.advancedQuestions;
-        }, function(newVal, oldVal) {
-            if (newVal === oldVal) {
-                return;
-            }
-            $timeout(function() {
-                updatePicker($('#advanced-questions'));
-            }, 0, false);
-        });
-
         $scope.removeRow = function(arr, val) {
             var index = arr.indexOf(val);
             if (arr.length <= 1 || index < 0) {
@@ -454,6 +365,13 @@ angular.module('SponsorForm', ['LocalStorageModule'])
 
         try {
             $scope.master = JSON.parse(localStorageService.get(storageKey));
+            $scope.master.startDate = new Date($scope.master.startDate);
+            $scope.master.endDate = new Date($scope.master.endDate);
+            $scope.master.timetable.forEach(function(ob) {
+                ob.date = new Date(ob.date);
+                ob.from = new Date(ob.from);
+                ob.to = new Date(ob.to);
+            });
             $scope.reset();
         } catch (e) {
             $scope.master = null;
@@ -463,25 +381,116 @@ angular.module('SponsorForm', ['LocalStorageModule'])
             $scope.update();
         }
     }])
-    .directive('ngIndeterminate', function($compile) {
+    .directive('ngIndeterminate', function() {
         return {
             restrict: 'A',
-            link: function($scope, $element, $attributes) {
-                $scope.$watch($attributes['ngIndeterminate'], function(value) {
-                    $element.prop('indeterminate', !!value);
+            link: function(scope, element, attributes) {
+                scope.$watch(attributes.ngIndeterminate, function(value) {
+                    element.prop('indeterminate', !!value);
                 });
             }
         };
     })
-    .directive('bindChips', function() {
+    .directive('bindSelect', function() {
         return {
             restrict: 'A',
-            link: function($scope, $element, $attributes) {
-                $element.bind('chips.add', function(e, chip) {
-                    scope.data.advancedQuestions;
+            scope: {
+                model: '=ngModel'
+            },
+            link: function(scope, element, attributes) {
+                $(element).val('string:' + scope.model);
+                $(element).material_select();
+            }
+        };
+    })
+    .directive('bindDate', function() {
+        return {
+            restrict: 'A',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function(scope, element, attributes) {
+                $(element).pickadate({
+                    min: -1,
+                    max: new Date(2037, 12, 31),
+                    formatSubmit: 'yyyy-mm-dd',
+                    onSet: function(val) {
+                        scope.$apply(function() {
+                            scope.model = new Date(val.select);
+                        });
+                    }
                 });
-                $element.bind('chips.delete', function(e, chip) {
-                    console.log('caught my delete!');
+            }
+        };
+    })
+    .directive('bindTime', function() {
+        return {
+            restrict: 'A',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function(scope, element, attributes) {
+                $(element).clockpicker({
+                    donetext: 'Submit',
+                    autoclose: true,
+                    afterDone: function(element, val) {
+                        scope.$apply(function() {
+                            scope.model = val;
+                        });
+                    }
+                });
+            }
+        };
+    })
+    .directive('bindImgur', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attributes) {
+                new Imgur({
+                    id: '#' + attributes['id'],
+                    clientid: imgurClientId,
+                    callback: function(res) {
+                        if (res.success === true) {
+                            scope.$apply(function() {
+                                if (attributes.id === "logo-upload") {
+                                    scope.data.logo = res.data.link;
+                                } else {
+                                    scope.data.floorplan.push(res.data.link);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+    })
+
+    .directive('chips', function() {
+        return {
+            restrict: 'A',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function(scope, element, attributes) {
+                var chips = [];
+                scope.model.forEach(function(t) {
+                    chips.push({ tag: t });
+                });
+                $(element).material_chip({ data: chips });
+
+                element.bind('chip.add', function(e, chip) {
+                    scope.$apply(function() {
+                        scope.model.push(chip.tag);
+                    });
+                });
+                element.bind('chip.delete', function(e, chip) {
+                    scope.$apply(function() {
+                        var index = scope.model.indexOf(chip.tag);
+                        if (index < 0) {
+                            return;
+                        }
+                        scope.model.splice(index, 1);
+                    });
                 });
             }
         };
