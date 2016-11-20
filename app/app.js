@@ -62,7 +62,7 @@ $(document).ready(function() {
     autocomplete('address');
 });
 
-angular.module('SponsorForm', ['LocalStorageModule'])
+angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngResource'])
     .controller('FormController', ['$scope', 'localStorageService', '$timeout', function($scope, localStorageService, $timeout) {
 
         $scope.data = {

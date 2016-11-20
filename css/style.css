@@ -90,6 +90,24 @@ button.btn {
 	display: none;
 }
 
+.ng-enter, .ng-leave {
+	transition: all 0.6s;
+}
+
+.ng-enter, .ng-leave.ng-leave-active {
+  -ms-transform: translateY(-100%); /* IE 9 */
+  -webkit-transform: translateY(-100%); /* Chrome, Safari, Opera */
+  transform: translateY(-100%);
+	opacity: 0;
+}
+
+.ng-enter.ng-enter-active, .ng-leave {
+  -ms-transform: translateY(0%); /* IE 9 */
+  -webkit-transform: translateY(0%); /* Chrome, Safari, Opera */
+  transform: translateY(0%);
+	opacity: 1;
+}
+
 .collapsible li.active .collapsible-header i {
   -ms-transform: rotate(180deg); /* IE 9 */
   -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
