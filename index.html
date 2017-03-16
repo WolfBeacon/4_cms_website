@@ -90,7 +90,14 @@
 						<input type="checkbox" id="box4" class="filled-in" data-ng-model="data.type.other"><label for="box4">Other</label>
 					</div>
                 </section>
-				
+
+				<section>
+					<h4>Title of Organizing Institution <span class="red-text">*</span></h4>
+					<div class="input-field">
+						<label for="description">University or company name</label>
+						<input required class="validate autocomplete" type="text" id="schoolTitle" data-ng-model="data.schoolTitle"/>
+					</div>
+				</section>
 
 				<section>
 					<h4>Approximate Size <span class="red-text">*</span></h4>
@@ -121,12 +128,12 @@
 					<div class="row">
 						<div class="col s6 input-field">
 							<label for="location">Which city?</label>
-							<input required class="validate autocomplete" type="text" id="city" data-ng-model="data.city"/>
+							<input data-bind-location required class="validate autocomplete ac-location" type="text" id="city" data-ng-model="data.city"/>
 						</div>
 						
 						<div class="col s6 input-field">
 							<label for="location">Which address?</label>
-							<input required class="validate autocomplete" type="text" id="address" data-ng-model="data.address"/>
+							<input data-bind-location required class="validate autocomplete ac-location" type="text" id="address" data-ng-model="data.address"/>
 						</div>
 					</div>
 				</section>
@@ -141,6 +148,44 @@
 						<input class="with-gap" name="no" id="no" type="radio" data-ng-value="false" data-ng-model="data.travel" />
 						<label for="no">No</label>
 					</div>
+				</section>
+				
+                <section id="routes">
+					<ul class="collapsible" data-collapsible="accordion">
+						<li class="active">
+							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Public Transportation Routes</h4>
+							<div class="collapsible-body">
+								<div class="row table-header">
+									<p class="col s6">
+										Start
+									</p>
+									<p class="col s6">
+										Intermediate Locations
+									</p>
+								</div>
+								<div class="row" data-ng-repeat="e in data.routes">
+									<div data-ng-repeat="f in e track by $index">
+										<div class="col s4 input-field">
+											<input data-bind-location id="loc-{{$parent.$index}}-{{$index}}" class="validate autocomplete ac-location" type="text" data-ng-model="f.location" placeholder="Location"/>
+										</div>
+										<div class="col s1 row-field">
+											<i class="material-icons teal-text text-lighten-1" data-ng-click="addRoute(e, f)">add</i>
+											<i class="material-icons red-text text-darken-1" data-ng-click="removeRoute(e, f)">clear</i>
+										</div>
+										<div class="col s1 row-field">
+											<i class="material-icons">arrow_forward</i>
+										</div>
+									</div>
+									<div class="col s5 m3 input-field">
+										<input type="text" data-ng-model="data.city" disabled placeholder="Destination"/>
+									</div>
+									<div class="col s1 row-field teal-text text-lighten-1">
+										<i class="material-icons" data-ng-click="addRowRoute(e)">add</i>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
 				</section>
 
                 <section id="timetables">

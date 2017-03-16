@@ -1,12 +1,56 @@
 var storageKey = 'WolfBeaconOSH';
 var imgurClientId = 'cc86a8de0e7c459';
 var service;
+var universities;
 
-function autocomplete(id, data) {
+function autocomplete(id, data, $elem) {
     if (!data) {
         data = [];
     }
     if (!id || !service) {
+        return;
+    }
+	if (!$elem) {
+		$elem = $('#' + id);
+	}
+    if (!$elem || $elem.length <= 0) {
+        return;
+    }
+    var lastVal = $elem.val();
+    var type = id;
+    if (id !== 'address') {
+        type = '(cities)';
+    }
+    $('.autocomplete-content').remove();
+
+    var arg = {};
+    data.forEach(function(d) {
+        arg[d] = null;
+    });
+
+    var e = $elem.off('keyup').off('.change').autocomplete({ data: arg }).keyup().on('keyup', function(e) {
+            var val = $(this).val();
+            if (!e || val === lastVal || e.which === 13 || val.length === 0) {
+                return;
+            }
+            lastVal = val;
+            service.getPlacePredictions({ input: val, types: [type] }, function(data, status) {
+                if (status != google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(status);
+                    return;
+                }
+                autocomplete(id, data.map(function(prediction) {
+                    return prediction.description;
+                }));
+            });
+        });
+}
+
+function autocomplete_university(id, data) {
+    if (!data) {
+        data = [];
+    }
+    if (!id) {
         return;
     }
     var $elem = $('#' + id);
@@ -14,10 +58,6 @@ function autocomplete(id, data) {
         return;
     }
     var lastVal = $elem.val();
-    var type = id;
-    if (id === 'city') {
-        type = '(cities)';
-    }
     $('.autocomplete-content').remove();
 
     var arg = {};
@@ -38,28 +78,24 @@ function autocomplete(id, data) {
                 return;
             }
             lastVal = val;
-            service.getPlacePredictions({ input: val, types: [type] }, function(data, status) {
-                if (status != google.maps.places.PlacesServiceStatus.OK) {
-                    console.log(status);
-                    return;
-                }
-                autocomplete(id, data.map(function(prediction) {
-                    return prediction.description;
-                }));
-            });
+            autocomplete_university(id, universities.map(p => p.name).filter(p => p.toLowerCase().indexOf(val.toLowerCase()) > 0));
         });
 }
 
 $(document).ready(function() {
-
     $('#show-help').click(function() {
         $('#help-text').slideToggle();
     });
 
     service = new google.maps.places.AutocompleteService();
 
-    autocomplete('city');
-    autocomplete('address');
+	autocomplete('city');
+	
+	
+	$.getJSON("https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json", function(data) {
+		universities = data;
+		autocomplete_university('schoolTitle');
+	});
 });
 
 angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngResource'])
@@ -74,10 +110,12 @@ angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngR
                 school: false,
                 other: false
             },
-            startDate: "",
-            endDate: "",
+			routes: [[{location: "Start Location"}], [{location: "Start Location"}]],
+            startDate: new Date(),
+            endDate: new Date(),
             size: 1,
             desc: "",
+			schoolTitle: "",
             timetable: [
                 { date: new Date(), from: "00:00", to: "00:00", description: "Registration", ticket: true },
                 { date: new Date(), from: "00:00", to: "00:00", description: "Hacking Starts", ticket: false },
@@ -268,7 +306,7 @@ angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngR
         };
 
         $scope.addRowTimetable = function(q) {
-            $scope.addRow($scope.data.timetable, q, { date: new Date(), from: "00:00", to: "00:00", description: "", ticket: false });
+            $scope.addRow($scope.data.timetable, q, { date: new $scope.data.startDate, from: "00:00", to: "00:00", description: "", ticket: false });
         };
 
         $scope.removeRowFloor = function(q) {
@@ -296,6 +334,22 @@ angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngR
 
         $scope.addRowJudge = function(q) {
             $scope.addRow($scope.data.judges, q, { name: "", title: "" });
+        };
+		
+        $scope.addRoute = function(q, r) {
+            $scope.addRow(q, r, {location: "Location"});
+        };
+		
+        $scope.removeRoute = function(q, r) {
+			if (q.length <= 1) {
+				$scope.removeRow($scope.data.routes, q);
+			} else {
+				$scope.removeRow(q, r);
+			}
+        };
+
+        $scope.addRowRoute = function(q) {
+            $scope.addRow($scope.data.routes, q, [[]]);
         };
 
         $scope.removeRowPrize = function(q) {
@@ -400,6 +454,27 @@ angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngR
             link: function(scope, element, attributes) {
                 $(element).val('string:' + scope.model);
                 $(element).material_select();
+            }
+        };
+    })
+    .directive('bindLocation', function($timeout) {
+        return {
+            restrict: 'A',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function(scope, element, attributes) {
+				$timeout(function() {
+					var $elem = $(element);
+					autocomplete(attributes.id, [], $elem);
+					
+					$elem.change(function() {
+						scope.$apply(function() {
+							console.log(scope);
+							scope.model = $elem.val();
+						});
+					});
+				});
             }
         };
     })
