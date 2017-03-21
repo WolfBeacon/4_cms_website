@@ -2,6 +2,7 @@ var storageKey = 'WolfBeaconOSH';
 var imgurClientId = 'cc86a8de0e7c459';
 var service;
 var universities;
+var LIMIT = 500;
 
 function autocomplete(id, data, $elem) {
     if (!data) {
@@ -385,6 +386,9 @@ angular.module('SponsorForm', ['LocalStorageModule', 'ngAnimate', 'ngAria', 'ngR
         };
 
         $scope.addRow = function(arr, val, ob) {
+	    if (arr.length >= LIMIT) {
+		return;
+	    }
             var index = arr.indexOf(val);
             if (index >= arr.length - 1) {
                 arr.push(ob);
