@@ -1,0 +1,23 @@
+{
+    "name": "wolfbeacon-cms",    
+    "require": {
+        "php": ">=5.4.0",
+        "slim/slim": "2.*",
+        "slim/extras": "2.*",
+        "illuminate/console": "*",
+        "illuminate/database": "*",
+        "illuminate/events": "*",
+        "illuminate/filesystem": "*",
+        "davedevelopment/phpmig": "1.1.*@dev",
+        "pimple/pimple": "1.*",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "autoload": {
+        "classmap": [
+            "models"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}

@@ -1,0 +1,135 @@
+body{
+    background-color: #E0F1F0;
+}
+
+header{
+	background-color: #03897b;
+	margin: 0;
+	padding: 1em 0 5em 3em;
+	color: white;
+}
+
+form {
+	margin-top: -5em;
+	background-color: white;
+	padding: 3em;
+	margin-bottom: 2em;
+}
+
+
+.upload-image {
+	vertical-align: middle;
+	margin-left: 3em;
+	margin-top: 2em;
+}
+
+.info-label {
+ font-style: italic;
+	margin-bottom: 2em;
+	display: block;
+}
+
+.row-field {
+	margin-top: 1.5em;
+}
+
+section {
+	margin-bottom: 3em;
+}
+
+button.btn {
+	margin-right: 1em;
+}
+
+.user-data {
+	padding-bottom: 3em;
+	padding-left: 4em;
+}
+.user-data-advanced {
+	padding-bottom: 0.5em;
+	padding-left: 2em;
+}
+
+.collapsible-body p {
+	padding: initial;
+}
+
+.collapsible-header {
+	line-height: initial;
+	padding: initial;
+	border: initial;
+}
+
+.collapsible-body {
+	border: initial;
+}
+
+.collapsible, .collapsible.popout {
+	border: initial;
+	box-shadow: initial;
+}	
+
+.collapsible.popout>li {
+	margin: 0;
+}
+
+.table-header {
+    font-weight: bold;
+}
+
+#show-help {
+	cursor: pointer;
+	margin-left: 0.35em;
+}
+
+.row-field i {
+	cursor:pointer;
+}
+
+#help-text {
+	display: none;
+}
+
+.ng-enter, .ng-leave {
+	transition: all 0.6s;
+}
+
+.ng-enter:not(main), .ng-leave.ng-leave-active:not(main) {
+  -ms-transform: translateY(-100%); /* IE 9 */
+  -webkit-transform: translateY(-100%); /* Chrome, Safari, Opera */
+  transform: translateY(-100%);
+}
+
+.ng-enter.ng-enter-active:not(main), .ng-leave:not(main) {
+  -ms-transform: translateY(0%); /* IE 9 */
+  -webkit-transform: translateY(0%); /* Chrome, Safari, Opera */
+  transform: translateY(0%);
+}
+
+.ng-enter, .ng-leave.ng-leave-active {
+	opacity: 0;
+}
+
+.ng-enter.ng-enter-active, .ng-leave {
+	opacity: 1;
+}
+
+.collapsible li.active .collapsible-header i {
+  -ms-transform: rotate(180deg); /* IE 9 */
+  -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 480px) {
+	.user-data {
+		padding-left: 0;
+	}	
+	.user-data-advanced {
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
+	.popout [type="checkbox"]+label {
+		line-height: 1em;
+		padding-left: 2em;
+	}
+}
