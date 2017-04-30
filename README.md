@@ -1,13 +1,14 @@
 # WolfBeacon CMS Platform
 
-A content management system in Angular 1.x.
+A content management system in Angular.
 
 ## Installation
 
-Install [Git](http://git-scm.com), [node.js](http://nodejs.org), and [PHP 5.6](http://www.php.net/), [MySQL](http://www.mysql.com/) and [Composer](https://getcomposer.org/):
+Install [Node.js](http://nodejs.org), [PHP 5.6](http://www.php.net/), [MySQL](http://www.mysql.com/) and [Composer](https://getcomposer.org/).
 
-Install dependencies manually if composer was not pre-installed:
+Install dependencies:
 
+    npm install -g bower
     php composer.phar update
     bower install
 
