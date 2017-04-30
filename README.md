@@ -2,9 +2,25 @@
 
 A content management system in Angular 1.x.
 
+## Installation
+
+Install [Git](http://git-scm.com), [node.js](http://nodejs.org), and [PHP 5.6](http://www.php.net/), [MySQL](http://www.mysql.com/) and [Composer](https://getcomposer.org/):
+
+Install dependencies manually if composer was not pre-installed:
+
+    `php composer.phar update`
+
 ## How to start
 
-Simply run `index.html` in your favourite browser.
+Run the service:
+
+    `php -S 127.0.0.1:8080 -t public`
+
+Your service will run at [http://localhost:8080](http://localhost:8080).
+
+## Docker
+
+For convenience, a `Makefile` is included. Commands are `make build`, `make up-dev`, `make up-prod`, `make down`.
 
 ## Contributing
 

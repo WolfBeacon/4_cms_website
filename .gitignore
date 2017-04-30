@@ -9,5 +9,6 @@ npm-debug.log
 composer.lock
 generator.json
 public/lib/*
-public/lib
-lib
+public/lib/
+lib/
+lib/*
