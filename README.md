@@ -8,13 +8,14 @@ Install [Git](http://git-scm.com), [node.js](http://nodejs.org), and [PHP 5.6](h
 
 Install dependencies manually if composer was not pre-installed:
 
-    `php composer.phar update`
+    php composer.phar update
+    bower install
 
 ## How to start
 
 Run the service:
 
-    `php -S 127.0.0.1:8080 -t public`
+    php -S 127.0.0.1:8080 -t public
 
 Your service will run at [http://localhost:8080](http://localhost:8080).
 
