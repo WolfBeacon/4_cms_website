@@ -11,6 +11,8 @@ Install dependencies manually if composer was not pre-installed:
     php composer.phar update
     bower install
 
+**You must also get (or create) `db.json` to run the PHP server.**
+
 ## How to start
 
 Run the service:
