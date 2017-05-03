@@ -13,7 +13,7 @@ angular.module('SponsorForm')
                 school: false,
                 other: false
             },
-		    routes: [[{location: "Start Location"}]],
+		    routes: [[{location: ""}]],
             startDate: new Date(),
             endDate: new Date(),
             size: 1,
@@ -269,7 +269,10 @@ angular.module('SponsorForm')
                 if (plan.from.length !== plan.to.length 
                         || plan.from.length !== 5 || plan.from.charAt(2) !== ':' 
                         || parseInt(plan.from.split(':')[0]) < 0 || parseInt(plan.from.split(':')[0]) >= 24
-                        || parseInt(plan.from.split(':')[1]) < 0 || parseInt(plan.from.split(':')[1]) >= 60) {
+                        || parseInt(plan.from.split(':')[1]) < 0 || parseInt(plan.from.split(':')[1]) >= 60
+                        || plan.to.length !== 5 || plan.to.charAt(2) !== ':' 
+                        || parseInt(plan.to.split(':')[0]) < 0 || parseInt(plan.to.split(':')[0]) >= 24
+                        || parseInt(plan.to.split(':')[1]) < 0 || parseInt(plan.to.split(':')[1]) >= 60) {
                     errors.push("Invalid " + plan.description + " event");
                 }
             });
@@ -290,6 +293,7 @@ angular.module('SponsorForm')
                     || $scope.data.prizes.length > LIMIT || $scope.data.prizes.length < 1 
                     || $scope.data.hardware.length > LIMIT || $scope.data.hardware.length < 1 
                     || $scope.data.timetable.length > LIMIT || $scope.data.timetable.length < 1 
+                    || $scope.data.routes.length > LIMIT || $scope.data.routes.length < 1 
                     || $scope.data.advancedQuestions.length > LIMIT || $scope.data.advancedQuestions.length < 1 
                     || !('advanced' in $scope.data)) {
                 errors.push("Invalid links");
@@ -370,7 +374,7 @@ angular.module('SponsorForm')
         };
 
         $scope.addRowRoute = function(q) {
-            $scope.addRow($scope.data.routes, q, [[]]);
+            $scope.addRow($scope.data.routes, q, [[{location: ""}]]);
         };
 
         $scope.removeRowPrize = function(q) {
