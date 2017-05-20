@@ -1,6 +1,6 @@
 {
-  "name": "wolfbeaconCms",
-  "version": "0.0.0",
+  "name": "wolfbeacon-cms",
+  "version": "1.0.0",
   "dependencies": {
     "angular-animate": "~1.6.x",
     "angular-aria": "~1.6.x",
