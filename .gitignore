@@ -9,3 +9,4 @@ npm-debug.log
 composer.lock
 generator.json
 lib
+auth.json

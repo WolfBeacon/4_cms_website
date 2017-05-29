@@ -7,7 +7,6 @@
     "angular-localforage": "~1.3.x",
     "angular-materialize": "~0.2.x",
     "angular-resource": "~1.6.x",
-    "angular-route": "~1.6.x",
     "angular-sanitize": "~1.6.x",
     "angular": "~1.6.x",
     "clockpicker": "~0.0.7",
@@ -16,7 +15,10 @@
     "lodash": "^4.0.0",
     "materialize": "~0.98.x",
     "normalize-css": "^6.0.0",
-    "jquery-ui": "^1.12.1"
+    "jquery-ui": "^1.12.1",
+    "angular-ui-router": "ui-router#^1.0.3+hybrid-2.0.0-2",
+    "angular-jwt": "^0.1.9",
+    "angular-lock": "^2.0.2"
   },
   "devDependencies": {},
   "resolutions": {

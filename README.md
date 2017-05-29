@@ -12,7 +12,7 @@ Install dependencies:
     php composer.phar update
     bower install
 
-**You must also get (or create) `db.json` to run the PHP server.**
+**You must also get (or create) `db.json` and `auth.json` to run the PHP server.**
 
 ## How to start
 

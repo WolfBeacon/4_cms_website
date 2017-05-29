@@ -16,6 +16,10 @@ form {
 	margin-bottom: 2em;
 }
 
+.loading {
+	text-align: center;
+	margin: 0 auto;
+}
 
 .upload-image {
 	vertical-align: middle;

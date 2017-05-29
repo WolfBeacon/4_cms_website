@@ -32,6 +32,7 @@ $CONST = array(
 );
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Auth0\SDK\Auth0;
 
 $capsule = new Capsule;
 
@@ -50,10 +51,44 @@ $capsule->setAsGlobal();
 // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 $capsule->bootEloquent();
 
+// Auth0
+$auth0 = new Auth0(json_decode(file_get_contents('../auth.json'), TRUE));
+
+  if( !function_exists('apache_request_headers') ) {
+
+    function apache_request_headers() {
+      $arh = array();
+      $rx_http = '/\AHTTP_/';
+      foreach($_SERVER as $key => $val) {
+        if( preg_match($rx_http, $key) ) {
+          $arh_key = preg_replace($rx_http, '', $key);
+          $rx_matches = array();
+          // do some nasty string manipulations to restore the original letter case
+          // this should work in most cases
+          $rx_matches = explode('_', $arh_key);
+          if( count($rx_matches) > 0 and strlen($arh_key) > 2 ) {
+            foreach($rx_matches as $ak_key => $ak_val) $rx_matches[$ak_key] = ucfirst($ak_val);
+            $arh_key = implode('-', $rx_matches);
+          }
+          $arh[ucfirst(strtolower($arh_key))] = $val;
+        }
+      }
+      return( $arh );
+    }
+  }
+
 $app = new \Slim\Slim(array(
     'debug' => true
 ));
-$app->get('/', function() use ($app) {
+$app->get('/', function() use ($auth0, $app) {
+    readfile('index.html');
+    $app->stop();
+});
+$app->get('/login', function() use ($app) {
+    readfile('index.html');
+    $app->stop();
+});
+$app->get('/logout', function() use ($app) {
     readfile('index.html');
     $app->stop();
 });
@@ -252,15 +287,22 @@ function validate($obj, $CONST) {
     return true;
 }
 
-$app->post('/api/submitHackathon', function() use($app, $config, $CONST) {
+$app->post('/api/submitHackathon', function() use($auth0, $app, $config, $CONST) {
+    $requestHeaders = apache_request_headers();
+    if (!isset($requestHeaders['Authorization']) || $requestHeaders['Authorization'] == null) {
+        $app->response->setStatus(401);
+        $app->stop();
+    }
+    $authorizationHeader = $requestHeaders['Authorization'];
+
     $obj = json_decode($app->request->getBody(), TRUE);
 
     // Validation
     if (!validate($obj, $CONST)) {
         $app->response->setStatus(400);
         $app->stop();
-        return;
     }
+    $user = $auth0->getUser();
 
     // Create object (do not save yet)
     $hackathon = new Hackathon;
@@ -276,9 +318,15 @@ $app->post('/api/submitHackathon', function() use($app, $config, $CONST) {
             'POST',
             $config['hackathonUrl'],
             [
-                'id' => $hackathon->id,
-                'uuid' => $hackathon->uuid,
-                'data' => $hackathon->data
+                'json' => [
+                    'id' => $hackathon->id,
+                    'uuid' => $hackathon->uuid,
+                    'data' => $hackathon->data,
+                    'userId' => $user['user_id']
+                ],
+                'headers' => [
+                    'Authorization' => $authorizationHeader
+                ]
             ]
         );
 
