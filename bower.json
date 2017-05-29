@@ -16,7 +16,7 @@
     "materialize": "~0.98.x",
     "normalize-css": "^6.0.0",
     "jquery-ui": "^1.12.1",
-    "angular-ui-router": "ui-router#^1.0.3+hybrid-2.0.0-2",
+    "angular-ui-router": "^1.0.3",
     "angular-jwt": "^0.1.9",
     "angular-lock": "^2.0.2"
   },
