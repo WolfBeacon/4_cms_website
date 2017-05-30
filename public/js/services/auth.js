@@ -12,7 +12,6 @@ angular.module('SponsorForm')
       },
       registerAuthenticationListener: function () {
         lock.on('authenticated', function (authResult) {
-          let expiresAt = JSON.stringify(authResult.idTokenPayload.exp * 1000);
           localStorage.setItem('access_token', authResult.accessToken);
           localStorage.setItem('id_token', authResult.idToken);
           authManager.authenticate();

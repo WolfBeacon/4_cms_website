@@ -3,7 +3,12 @@ var storageKey = 'WolfBeaconCMS';
 var imgurClientId = 'cc86a8de0e7c459';
 
 angular.module('SponsorForm')
-    .controller('HomeController', ['$scope', '$localForage', '$timeout', 'submit', function($scope, $localForage, $timeout, submit) {
+    .controller('HomeController', ['authService', '$state', '$scope', '$localForage', '$timeout', 'submit', function(authService, $state, $scope, $localForage, $timeout, submit) {
+        if (!authService.isAuthenticated()) {
+            $timeout(function() {
+                $state.go('login');
+            });
+        }
         $scope.data = {
             name: "",
             logo: "",

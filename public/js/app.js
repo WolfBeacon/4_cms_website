@@ -44,7 +44,7 @@
     // method from angular-jwt can be used
     jwtOptionsProvider.config({
       tokenGetter: function() {
-        return localStorage.getItem('id_token');
+        return localStorage.getItem('access_token');
       },
       unauthenticatedRedirectPath: '/login'
     });
