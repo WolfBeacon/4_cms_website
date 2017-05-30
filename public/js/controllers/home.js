@@ -4,10 +4,9 @@ var imgurClientId = 'cc86a8de0e7c459';
 
 angular.module('SponsorForm')
     .controller('HomeController', ['authService', '$state', '$scope', '$localForage', '$timeout', 'submit', function(authService, $state, $scope, $localForage, $timeout, submit) {
+
         if (!authService.isAuthenticated()) {
-            $timeout(function() {
-                $state.go('login');
-            });
+            $state.go('login');
         }
         $scope.data = {
             name: "",
@@ -321,7 +320,7 @@ angular.module('SponsorForm')
                 Materialize.toast('Error: ' + err[0], 4000);
                 return;
             }
-            submit.submitHackathon($scope.data).then(function(res) {
+            submit.submitHackathon(Object.assign({ accessToken: localStorage.getItem('access_token') }, $scope.data)).then(function(res) {
                 if (res.status === 200 && res.statusText === "OK" && res.data.toLowerCase().indexOf("error") < 0) {
                     Materialize.toast('Successfully sent data.', 4000);
                 } else {

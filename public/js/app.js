@@ -44,7 +44,7 @@
     // method from angular-jwt can be used
     jwtOptionsProvider.config({
       tokenGetter: function() {
-        return localStorage.getItem('access_token');
+        return localStorage.getItem('id_token');
       },
       unauthenticatedRedirectPath: '/login'
     });
@@ -60,7 +60,7 @@
     // without HTML5 mode (will use hashes in routes)
     $locationProvider.html5Mode(true);
   }])
-    .run(['authService',  'lock', 'authManager', function run(authService, lock, authManager) {
+    .run(['authService',  'lock', 'authManager', '$state', function run(authService, lock, authManager, $state) {
     // Handle the authentication
     // result in the hash
       authService.registerAuthenticationListener();
