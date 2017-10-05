@@ -20,7 +20,9 @@ angular.module('SponsorForm')
 		    routes: [[{location: ""}]],
             startDate: new Date(),
             endDate: new Date(),
-            size: 1,
+            hackersSize: 1,
+            mentorsSize: 1,
+            volunteersSize: 1,
             desc: "",
 			schoolTitle: "",
             timetable: [
@@ -31,6 +33,7 @@ angular.module('SponsorForm')
             ],
             floorplan: [],
             travel: false,
+            travelAmount: 0,
             links: [
                 { text: "Website", slug: "website", value: "", required: true },
                 { text: "Facebook", slug: "facebook", value: "" },
@@ -56,6 +59,7 @@ angular.module('SponsorForm')
             contact: "",
             city: "",
             address: "",
+            shippingAddress: "",
             advanced: false,
             advancedQuestions: [
                 { name: "", type: "", target: "", options: [], domain: "", limit: 100, policy: "" }
@@ -232,7 +236,13 @@ angular.module('SponsorForm')
             } else if ($scope.data.schoolTitle.length < 3 || $scope.data.schoolTitle.length > 100) {
                 errors.push("Institution must be appropriate length");
             }
-            if (!$scope.data.size || isNaN($scope.data.size) || parseInt($scope.data.size) !== $scope.data.size || $scope.data.size <= 0) {
+            if (!$scope.data.hackersSize || isNaN($scope.data.hackersSize) || parseInt($scope.data.hackersSize) !== $scope.data.hackersSize || $scope.data.hackersSize <= 0) {
+                errors.push("Size is required");
+            }
+            if (!$scope.data.mentorsSize || isNaN($scope.data.mentorsSize) || parseInt($scope.data.mentorsSize) !== $scope.data.mentorsSize || $scope.data.mentorsSize <= 0) {
+                errors.push("Size is required");
+            }
+            if (!$scope.data.volunteersSize || isNaN($scope.data.volunteersSize) || parseInt($scope.data.volunteersSize) !== $scope.data.volunteersSize || $scope.data.volunteersSize <= 0) {
                 errors.push("Size is required");
             }
             if ($scope.data.endDate < $scope.data.startDate) {
@@ -243,6 +253,9 @@ angular.module('SponsorForm')
             }
             if (!$scope.data.address) {
                 errors.push("Address is required");
+            }
+            if (!$scope.data.shippingAddress) {
+                errors.push("Shipping Address is required");
             }
             if (!$scope.data.contact || !$scope.validateEmail($scope.data.contact)) {
                 errors.push("Contact is required to be a valid e-mail");
@@ -270,11 +283,11 @@ angular.module('SponsorForm')
                 }
             });
             $scope.data.timetable.forEach(function (plan) {
-                if (plan.from.length !== plan.to.length 
-                        || plan.from.length !== 5 || plan.from.charAt(2) !== ':' 
+                if (plan.from.length !== plan.to.length
+                        || plan.from.length !== 5 || plan.from.charAt(2) !== ':'
                         || parseInt(plan.from.split(':')[0]) < 0 || parseInt(plan.from.split(':')[0]) >= 24
                         || parseInt(plan.from.split(':')[1]) < 0 || parseInt(plan.from.split(':')[1]) >= 60
-                        || plan.to.length !== 5 || plan.to.charAt(2) !== ':' 
+                        || plan.to.length !== 5 || plan.to.charAt(2) !== ':'
                         || parseInt(plan.to.split(':')[0]) < 0 || parseInt(plan.to.split(':')[0]) >= 24
                         || parseInt(plan.to.split(':')[1]) < 0 || parseInt(plan.to.split(':')[1]) >= 60) {
                     errors.push("Invalid " + plan.description + " event");
@@ -292,20 +305,20 @@ angular.module('SponsorForm')
             });
 
             if ($scope.data.links.length != $scope.linksLength
-                    || $scope.data.judges.length > LIMIT || $scope.data.judges.length < 1 
-                    || $scope.data.sponsors.length > LIMIT || $scope.data.sponsors.length < 1 
-                    || $scope.data.prizes.length > LIMIT || $scope.data.prizes.length < 1 
-                    || $scope.data.hardware.length > LIMIT || $scope.data.hardware.length < 1 
-                    || $scope.data.timetable.length > LIMIT || $scope.data.timetable.length < 1 
-                    || $scope.data.routes.length > LIMIT || $scope.data.routes.length < 1 
-                    || $scope.data.advancedQuestions.length > LIMIT || $scope.data.advancedQuestions.length < 1 
+                    || $scope.data.judges.length > LIMIT || $scope.data.judges.length < 1
+                    || $scope.data.sponsors.length > LIMIT || $scope.data.sponsors.length < 1
+                    || $scope.data.prizes.length > LIMIT || $scope.data.prizes.length < 1
+                    || $scope.data.hardware.length > LIMIT || $scope.data.hardware.length < 1
+                    || $scope.data.timetable.length > LIMIT || $scope.data.timetable.length < 1
+                    || $scope.data.routes.length > LIMIT || $scope.data.routes.length < 1
+                    || $scope.data.advancedQuestions.length > LIMIT || $scope.data.advancedQuestions.length < 1
                     || !('advanced' in $scope.data)) {
                 errors.push("Invalid links");
             }
 
             if (!!$scope.data.advanced) {
                 $scope.data.advancedQuestions.forEach(function (plan) {
-                    if (!plan.name || !plan.type || !plan.target 
+                    if (!plan.name || !plan.type || !plan.target
                             || !(plan.target in $scope.targetTypes) || !(plan.type in $scope.questionTypes)) {
                         errors.push("Invalid " + plan.name + " advanced user data");
                     }
@@ -364,11 +377,11 @@ angular.module('SponsorForm')
         $scope.addRowJudge = function(q) {
             $scope.addRow($scope.data.judges, q, { name: "", title: "" });
         };
-		
+
         $scope.addRoute = function(q, r) {
             $scope.addRow(q, r, {location: "Location"});
         };
-		
+
         $scope.removeRoute = function(q, r) {
 			if (q.length <= 1) {
 				$scope.removeRow($scope.data.routes, q);
@@ -501,7 +514,7 @@ angular.module('SponsorForm')
 				$timeout(function() {
 					var $elem = $(element);
 					autocomplete(attributes.id, [], $elem);
-					
+
 					$elem.change(function() {
 						scope.$apply(function() {
 							scope.model = $elem.val();

@@ -8,7 +8,7 @@
 						<input required pattern=".{3,50}" class="validate" type="text" id="hack-name" data-ng-model="data.name"/>
 					</div>
 				</section>
-				
+
 				<section>
 					<h4>Description <span class="red-text">*</span></h4>
 					<div data-input-field>
@@ -16,16 +16,16 @@
 						<input required pattern=".{10,100}" class="validate" type="text" id="description" data-ng-model="data.desc"/>
 					</div>
 				</section>
-				
+
 				<section>
 					<h4>Logo <span class="red-text">*</span></h4>
 					<div class="dropzone" id="logo-upload" data-bind-imgur>
 						<img class ="upload-image" src="assets/image-add.png">
 					</div>
-					
+
 					<a data-ng-href="{{data.logo}}" target="_blank" data-ng-if="data.logo || false">View your image here</a>
 				</section>
-				
+
 				<section>
 					<h4>Type <span class="red-text">*</span></h4>
 
@@ -53,10 +53,21 @@
 
 				<section>
 					<h4>Approximate Size <span class="red-text">*</span></h4>
-					<div data-input-field>
-						<label for="size">Number of Hackers</label>
-						<input required type="number" class="validate" step="1" min="1" id="size" data-ng-model="data.size" />
-					</div>
+
+					<div class="row">
+                        <div class="col s4" data-input-field>
+                            <label for="size1">Number of Hackers</label>
+                            <input required type="number" class="validate" step="1" min="1" id="size1" data-ng-model="data.hackersSize" />
+                        </div>
+                        <div class="col s4" data-input-field>
+                            <label for="size2">Number of Volunteers</label>
+                            <input required type="number" class="validate" step="1" min="1" id="size2" data-ng-model="data.volunteersSize" />
+                        </div>
+                        <div class="col s4" data-input-field>
+                            <label for="size3">Number of Mentors</label>
+                            <input required type="number" class="validate" step="1" min="1" id="size3" data-ng-model="data.mentorsSize" />
+                        </div>
+                    </div>
 				</section>
 
 				<section>
@@ -73,7 +84,7 @@
 						</div>
 					</div>
 				</section>
-				
+
 
 				<section>
 					<h4>Location <span class="red-text">*</span></h4>
@@ -82,10 +93,19 @@
 							<label for="location">Which city?</label>
 							<input data-bind-location required class="validate autocomplete ac-location" type="text" id="city" data-ng-model="data.city"/>
 						</div>
-						
+
 						<div class="col s6" data-input-field>
 							<label for="location">Which address?</label>
 							<input data-bind-location required class="validate autocomplete ac-location" type="text" id="address" data-ng-model="data.address"/>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h4>Shipping Location <span class="red-text">*</span></h4>
+					<div class="row">
+						<div class="col s12" data-input-field>
+							<label for="location">Which address?</label>
+							<input data-bind-location required class="validate autocomplete ac-location" type="text" id="shippingAddress" data-ng-model="data.shippingAddress"/>
 						</div>
 					</div>
 				</section>
@@ -143,19 +163,19 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<section>
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
 							<h4 class="collapsible-header active"><i class="material-icons">expand_less</i>Venue Floor Plan</h4>
-							
+
 							<div class="collapsible-body">
 								<label class="info-label blue-text">Tip: Highlight hacker spaces</label>
 								<div class="dropzone" id="venue-upload" data-bind-imgur>
 									<img class="upload-image" src="assets/image-add.png">
 								</div>
-								
-								
+
+
 								<div class="row table-header" data-ng-if="data.floorplan.length > 0">
 									<p class="col s5">
 										URL
@@ -173,7 +193,7 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<!-- Hyperlinks -->
 				<section>
 					<ul class="collapsible" data-collapsible="accordion">
@@ -190,8 +210,8 @@
 						</li>
 					</ul>
 				</section>
-				
-				
+
+
 				<section>
 					<h5>Do you offer travel reimbursements?</h5>
 					<div data-input-field>
@@ -202,8 +222,15 @@
 						<input class="with-gap" name="no" id="no" type="radio" data-ng-value="false" data-ng-model="data.travel" />
 						<label for="no">No</label>
 					</div>
-				</section>
-				
+                </section>
+                <section data-ng-if="data.travel">
+                    <h5>Travel Reimbursement Amount</h5>
+					<div data-input-field>
+						<label for="location">How much? (USD value)</label>
+                        <input class="validate" type="number" id="travelAmount" placeholder="$" step="1" min="1" data-ng-model="data.travelAmount"/>
+                    </div>
+                </section>
+
                 <section id="routes">
 					<ul class="collapsible" data-collapsible="accordion">
 						<li class="active">
@@ -241,7 +268,7 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<!-- Sponsors -->
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
@@ -275,7 +302,7 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<!-- Judges -->
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
@@ -309,7 +336,7 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<!-- Prizes -->
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
@@ -361,7 +388,7 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<!-- Hardware -->
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
@@ -406,7 +433,7 @@
                         <button class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</button>
                     </div>
                 </div>
-				
+
 				<!-- User Data -->
                 <section>
 					<ul class="collapsible" data-collapsible="accordion">
@@ -501,7 +528,7 @@
 						</li>
 					</ul>
 				</section>
-				
+
 				<section>
 					<h4>Contact Information <span class="red-text">*</span></h4>
 					<div data-input-field>
